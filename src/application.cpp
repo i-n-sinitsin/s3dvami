@@ -8,6 +8,8 @@
 #include <GL/glu.h>
 #include <math.h>
 
+#include "config.h"
+
 s3dvami::Application *s3dvami::Application::m_instance = nullptr;
 
 static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
@@ -52,7 +54,7 @@ namespace s3dvami
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-        m_window = glfwCreateWindow(1024, 768, "s3dvami", NULL, NULL);
+        m_window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "s3dvami", NULL, NULL);
         if (!m_window)
         {
             std::cout << "Can`t create window" << std::endl;
