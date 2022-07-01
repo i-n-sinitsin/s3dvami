@@ -2,18 +2,19 @@
 
 #include <iostream>
 #include <string>
+
 #include "application.h"
 
 using namespace std;
 
 int main(int argc, const char **argv)
 {
-    //for(int i = 0; i < argc; i++){
+    // for(int i = 0; i < argc; i++){
     //    std::string tmp(argv[i]);
     //    std::cout << i << "  " << tmp << std::endl;
     //}
 
-    Application* app = Application::GetInstance();
+    s3dvami::Application *app = s3dvami::Application::GetInstance();
     app->init();
     app->run();
     app->deinit();

@@ -4,28 +4,29 @@
 
 #include <GLFW/glfw3.h>
 
-class Application
+namespace s3dvami
 {
-protected:
-    Application();
-public:
-    Application( Application& app ) = delete;
-    void operator=( const Application& ) = delete;
-    
-    static Application* GetInstance();
-    
-    void init();
-    void run();
-    void deinit();
+    class Application
+    {
+    protected:
+        Application();
 
-    void onKey( int key, int scancode, int action, int mods );
-    
-private:
-    
-    static Application* m_instance;
-    GLFWwindow* m_window;
-    
-    double m_lastTime;
-};
+    public:
+        Application(Application &app) = delete;
+        void operator=(const Application &) = delete;
 
+        static Application *GetInstance();
 
+        void init();
+        void run();
+        void deinit();
+
+        void onKey(int key, int scancode, int action, int mods);
+
+    private:
+        static Application *m_instance;
+        GLFWwindow *m_window;
+
+        double m_lastTime;
+    };
+} // namespace s3dvami
