@@ -28,5 +28,8 @@ namespace s3dvami
         GLFWwindow *m_window;
 
         double m_lastTime;
+
+        void process(float dt);
+        void render();
     };
 } // namespace s3dvami

@@ -54,6 +54,8 @@ namespace s3dvami
 
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
         m_window = glfwCreateWindow(defaultWindowWidth, defaultWindowHeight, "s3dvami", NULL, NULL);
         if (!m_window)
         {
@@ -84,7 +86,8 @@ namespace s3dvami
             double time = glfwGetTime();
             double updateTime = time - m_lastTime;
 
-            // render scene here
+            process(updateTime);
+            render();
 
             glfwSwapBuffers(m_window);
             glfwPollEvents();
@@ -106,5 +109,21 @@ namespace s3dvami
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
+    }
+
+    void Application::process(float /*dt*/)
+    {}
+
+    void Application::render()
+    {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+        glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
+
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
+        glDepthRange(0.0f, 1.0f);
+        glDepthFunc(GL_LESS);
+
+        glDisable(GL_DEPTH_TEST);
     }
 } // namespace s3dvami
