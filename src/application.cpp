@@ -121,8 +121,10 @@ namespace s3dvami
         }
     }
 
-    void Application::process(float /*dt*/)
-    {}
+    void Application::process(float dt)
+    {
+        m_model->process(dt);
+    }
 
     void Application::render()
     {
@@ -148,7 +150,7 @@ namespace s3dvami
         ImGuiIO &io = ImGui::GetIO();
         //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
-        // Setup Dear ImGui style
+        ///TODO: switch style
         ImGui::StyleColorsDark();
         // ImGui::StyleColorsClassic();
 
@@ -172,8 +174,44 @@ namespace s3dvami
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        static bool show_demo_window = true;
-        ImGui::ShowDemoWindow(&show_demo_window);
+        //static bool show_demo_window = true;
+        //ImGui::ShowDemoWindow(&show_demo_window);
+
+        // draw main menu
+        /// TODO: move to function
+        if (ImGui::BeginMainMenuBar())
+        {
+            if (ImGui::BeginMenu("File"))
+            {
+                if (ImGui::MenuItem("Open", "CTRL+O"))
+                {
+                    /// TODO: do dialog open file
+                }
+                ImGui::Separator();
+                if (ImGui::MenuItem("Exit", "CTRL+Q"))
+                {
+                    glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+                }
+                ImGui::EndMenu();
+            }
+
+            ImGui::EndMainMenuBar();
+        }
+
+        // drawSticker
+        // TODO: move to function
+        if (!m_model->isLoaded())
+        {
+            ImGuiIO &io = ImGui::GetIO();
+            ImVec2 pos(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f);
+            ImGui::SetNextWindowPos(pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
+            ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
+            if (ImGui::Begin("Message", nullptr, flags))
+            {
+                ImGui::Text("Model not loaded");
+                ImGui::End();
+            }
+        }
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -188,7 +226,7 @@ namespace s3dvami
             m_model = std::make_shared<Model>();
             if (!m_model->load(fileName.value()))
             {
-                //show error message
+                ///TODO: show error message
                 return;
             }
         }

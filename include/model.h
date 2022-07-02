@@ -14,6 +14,13 @@ namespace s3dvami
         ~Model();
 
         bool load(const std::string &fileName);
+        void draw();
+        void process(float dt);
+
+        bool isLoaded()
+        {
+            return m_loaded;
+        }
 
     private:
         bool m_loaded;

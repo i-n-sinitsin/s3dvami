@@ -5,6 +5,7 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+#include "imgui.h"
 
 namespace s3dvami
 {
@@ -35,6 +36,23 @@ namespace s3dvami
 
         m_loaded = result;
         return result;
+    }
+
+    void Model::draw()
+    {
+        if (!m_loaded)
+        {
+            return;
+        }
+
+        /// TODO: draw model
+    }
+
+    void Model::process(float /*dt*/)
+    {
+        if (m_loaded)
+        {
+        }
     }
 
     bool Model::loadTextures()
