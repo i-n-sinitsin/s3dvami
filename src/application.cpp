@@ -8,7 +8,10 @@
 #include <GL/glu.h>
 #include <math.h>
 
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 #include "config.h"
+#include "imgui.h"
 
 s3dvami::Application *s3dvami::Application::m_instance = nullptr;
 
@@ -64,8 +67,11 @@ namespace s3dvami
         }
 
         glfwMakeContextCurrent(m_window);
+        glfwSwapInterval(1);
 
         glfwSetKeyCallback(m_window, keyCallback);
+
+        initImGui();
     }
 
     void Application::run()
@@ -98,6 +104,7 @@ namespace s3dvami
     {
         if (m_window)
         {
+            deinitGui();
             glfwDestroyWindow(m_window);
         }
         glfwTerminate();
@@ -119,11 +126,59 @@ namespace s3dvami
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
         glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
 
+        // draw scene
         glEnable(GL_DEPTH_TEST);
         glDepthMask(GL_TRUE);
         glDepthRange(0.0f, 1.0f);
         glDepthFunc(GL_LESS);
 
         glDisable(GL_DEPTH_TEST);
+
+        // draw GUI
+        renderImGui();
+    }
+
+    void Application::initImGui()
+    {
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO &io = ImGui::GetIO();
+        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+        // Setup Dear ImGui style
+        ImGui::StyleColorsDark();
+        // ImGui::StyleColorsClassic();
+
+        // Setup Platform/Renderer backends
+        ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+        ImGui_ImplOpenGL3_Init("#version 130");
+
+        io.Fonts->AddFontDefault();
+    }
+
+    void Application::deinitGui()
+    {
+        ImGui_ImplOpenGL3_Shutdown();
+        ImGui_ImplGlfw_Shutdown();
+        ImGui::DestroyContext();
+    }
+
+    void Application::renderImGui()
+    {
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        static bool show_demo_window = true;
+        ImGui::ShowDemoWindow(&show_demo_window);
+
+        // Rendering
+        ImGui::Render();
+        //int display_w, display_h;
+        //glfwGetFramebufferSize(m_window, &display_w, &display_h);
+        //glViewport(0, 0, display_w, display_h);
+        //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
+        //glClear(GL_COLOR_BUFFER_BIT);
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 } // namespace s3dvami
