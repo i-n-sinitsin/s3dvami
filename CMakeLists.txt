@@ -9,7 +9,7 @@ include_directories(include)
 
 file(GLOB_RECURSE SOURCES src/*.*)
 add_executable(s3dvami ${SOURCES})
-target_compile_options(s3dvami PRIVATE -Wall)
+target_compile_options(s3dvami PRIVATE -Wall -Wextra -Wpedantic -Werror)
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(s3dvami
@@ -18,12 +18,15 @@ target_link_libraries(s3dvami
         GLU
 )
 
-add_subdirectory(external)
+# externals
 
+# stb - header only
+include_directories(external/stb)
+
+add_subdirectory(external)
 target_link_libraries(s3dvami
   PRIVATE
       glm
       imgui
-      stb
       glfw
 )

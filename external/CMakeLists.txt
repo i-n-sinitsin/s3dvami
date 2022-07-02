@@ -55,22 +55,3 @@ target_include_directories(${IMGUI_LIB_NAME}
         "${IMGUI_INC_PATH}"
         "${GLFW_INC_PATH}"
 )
-
-# stb
-set(STB_LIB_NAME "stb")
-
-set(STB_HEADERS
-    "${STB_LIB_NAME}/stb_image.h"
-)
-
-set(STB_INC_PATH "${STB_LIB_NAME}/")
-
-add_library(${STB_LIB_NAME}
-    STATIC
-        ${STB_HEADERS}
-)
-
-target_include_directories(${STB_LIB_NAME}
-    PUBLIC
-        "${STB_INC_PATH}"
-)
