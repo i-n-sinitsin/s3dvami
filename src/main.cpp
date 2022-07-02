@@ -15,6 +15,10 @@ int main(int argc, const char **argv)
     {
         filename = std::string(argv[1]);
     }
+
+    for (int i = 0; i < argc; i++)
+        std::cout << std::string(argv[i]) << std::endl;
+
     s3dvami::Application *app = s3dvami::Application::GetInstance();
     app->init(filename);
     app->run();

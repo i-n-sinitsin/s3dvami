@@ -6,6 +6,8 @@
 
 #include <GLFW/glfw3.h>
 
+#include "model.h"
+
 namespace s3dvami
 {
     class Application
@@ -30,6 +32,8 @@ namespace s3dvami
         GLFWwindow *m_window;
 
         double m_lastTime;
+
+        ModelPtr m_model;
 
         void process(float dt);
         void render();

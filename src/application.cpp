@@ -34,6 +34,7 @@ namespace s3dvami
     Application::Application()
         : m_window(nullptr)
         , m_lastTime(0.0)
+        , m_model(std::make_shared<Model>())
     {}
 
     Application *Application::GetInstance()
@@ -183,12 +184,13 @@ namespace s3dvami
         if (fileName.has_value())
         {
             // load mode
-            // m_model.reset();
-            // m_model = std::make_shared<Model>();
-            // if (!m_model.load(fileName.value()))
-            //{
-            // show error message
-            //}
+            m_model.reset();
+            m_model = std::make_shared<Model>();
+            if (!m_model->load(fileName.value()))
+            {
+                //show error message
+                return;
+            }
         }
     }
 } // namespace s3dvami
