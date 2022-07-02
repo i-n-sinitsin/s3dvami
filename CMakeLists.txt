@@ -24,5 +24,6 @@ target_link_libraries(s3dvami
   PRIVATE
       glm
       imgui
+      stb
       glfw
 )
