@@ -55,3 +55,14 @@ target_include_directories(${IMGUI_LIB_NAME}
         "${IMGUI_INC_PATH}"
         "${GLFW_INC_PATH}"
 )
+
+# ASSIMP
+set(ASSIMP_LIB_NAME "assimp")
+set(ASSIMP_INC_PATH ${ASSIMP_LIB_NAME}/include)
+
+set(BUILD_SHARED_LIBS     OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_TESTS    OFF CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL        OFF CACHE BOOL "" FORCE)
+set(ASSIMP_BUILD_DRACO    OFF CACHE BOOL "" FORCE)
+
+add_subdirectory(${ASSIMP_LIB_NAME})

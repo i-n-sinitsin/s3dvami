@@ -29,4 +29,5 @@ target_link_libraries(s3dvami
       glm
       imgui
       glfw
+      assimp
 )
