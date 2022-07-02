@@ -31,9 +31,5 @@ namespace s3dvami
 
         void process(float dt);
         void render();
-
-        void initImGui();
-        void deinitGui();
-        void renderImGui();
     };
 } // namespace s3dvami
