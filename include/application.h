@@ -3,10 +3,14 @@
 #pragma once
 
 #include <optional>
+#include <vector>
 
 #include <GLFW/glfw3.h>
 
 #include "model.h"
+#include "windows/dlg_open_file.h"
+#include "windows/menu_bar_main.h"
+#include "windows/msg_choose_file.h"
 
 namespace s3dvami
 {
@@ -34,6 +38,10 @@ namespace s3dvami
         double m_lastTime;
 
         ModelPtr m_model;
+
+        ChooseFileMessagePtr m_chooseFileMessage;
+        MainMenuBarPtr m_mainMenuBar;
+        OpenFileDialogPtr m_openFileDialog;
 
         void process(float dt);
         void render();

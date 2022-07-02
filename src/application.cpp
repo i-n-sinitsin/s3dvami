@@ -35,6 +35,9 @@ namespace s3dvami
         : m_window(nullptr)
         , m_lastTime(0.0)
         , m_model(std::make_shared<Model>())
+        , m_chooseFileMessage(nullptr)
+        , m_mainMenuBar(nullptr)
+        , m_openFileDialog(nullptr)
     {}
 
     Application *Application::GetInstance()
@@ -75,6 +78,19 @@ namespace s3dvami
         initImGui();
 
         reload(fileName);
+
+        // init windows
+        m_chooseFileMessage = std::make_shared<ChooseFileMessage>([=]() {
+            m_openFileDialog->show();
+        });
+        m_mainMenuBar = std::make_shared<MainMenuBar>(
+            [=]() {
+                m_openFileDialog->show();
+            },
+            [=]() {
+                glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+            });
+        m_openFileDialog = std::make_shared<OpenFileDialog>();
     }
 
     void Application::run()
@@ -174,44 +190,14 @@ namespace s3dvami
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        //static bool show_demo_window = true;
-        //ImGui::ShowDemoWindow(&show_demo_window);
+        m_mainMenuBar->draw();
 
-        // draw main menu
-        /// TODO: move to function
-        if (ImGui::BeginMainMenuBar())
-        {
-            if (ImGui::BeginMenu("File"))
-            {
-                if (ImGui::MenuItem("Open", "CTRL+O"))
-                {
-                    /// TODO: do dialog open file
-                }
-                ImGui::Separator();
-                if (ImGui::MenuItem("Exit", "CTRL+Q"))
-                {
-                    glfwSetWindowShouldClose(m_window, GLFW_TRUE);
-                }
-                ImGui::EndMenu();
-            }
-
-            ImGui::EndMainMenuBar();
-        }
-
-        // drawSticker
-        // TODO: move to function
         if (!m_model->isLoaded())
         {
-            ImGuiIO &io = ImGui::GetIO();
-            ImVec2 pos(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f);
-            ImGui::SetNextWindowPos(pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
-            ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
-            if (ImGui::Begin("Message", nullptr, flags))
-            {
-                ImGui::Text("Model not loaded");
-                ImGui::End();
-            }
+            m_chooseFileMessage->draw();
         }
+
+        m_openFileDialog->draw();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
