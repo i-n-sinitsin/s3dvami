@@ -7,6 +7,3 @@
 [submodule "external/glfw"]
 	path = external/glfw
 	url = https://github.com/glfw/glfw.git
-[submodule "external/stb"]
-	path = external/stb
-	url = https://github.com/gracicot/stb-cmake.git
