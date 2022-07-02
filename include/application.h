@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <optional>
+
 #include <GLFW/glfw3.h>
 
 namespace s3dvami
@@ -17,7 +19,7 @@ namespace s3dvami
 
         static Application *GetInstance();
 
-        void init();
+        void init(const std::optional<std::string> &fileName);
         void run();
         void deinit();
 
@@ -35,5 +37,7 @@ namespace s3dvami
         void initImGui();
         void deinitGui();
         void renderImGui();
+
+        void reload(const std::optional<std::string> &fileName);
     };
 } // namespace s3dvami

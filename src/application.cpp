@@ -45,7 +45,7 @@ namespace s3dvami
         return m_instance;
     }
 
-    void Application::init()
+    void Application::init(const std::optional<std::string> &fileName)
     {
         glfwSetErrorCallback(errorCallback);
 
@@ -72,6 +72,8 @@ namespace s3dvami
         glfwSetKeyCallback(m_window, keyCallback);
 
         initImGui();
+
+        reload(fileName);
     }
 
     void Application::run()
@@ -172,13 +174,21 @@ namespace s3dvami
         static bool show_demo_window = true;
         ImGui::ShowDemoWindow(&show_demo_window);
 
-        // Rendering
         ImGui::Render();
-        //int display_w, display_h;
-        //glfwGetFramebufferSize(m_window, &display_w, &display_h);
-        //glViewport(0, 0, display_w, display_h);
-        //glClearColor(clear_color.x * clear_color.w, clear_color.y * clear_color.w, clear_color.z * clear_color.w, clear_color.w);
-        //glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+
+    void Application::reload(const std::optional<std::string> &fileName)
+    {
+        if (fileName.has_value())
+        {
+            // load mode
+            // m_model.reset();
+            // m_model = std::make_shared<Model>();
+            // if (!m_model.load(fileName.value()))
+            //{
+            // show error message
+            //}
+        }
     }
 } // namespace s3dvami
