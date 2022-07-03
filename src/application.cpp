@@ -90,7 +90,9 @@ namespace s3dvami
             [=]() {
                 glfwSetWindowShouldClose(m_window, GLFW_TRUE);
             });
-        m_openFileDialog = std::make_shared<OpenFileDialog>();
+        m_openFileDialog = std::make_shared<OpenFileDialog>([=](const std::string &fileName) {
+            reload(fileName);
+        });
     }
 
     void Application::run()
