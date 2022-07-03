@@ -192,6 +192,8 @@ namespace s3dvami
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
+        ImGui::ShowDemoWindow();
+
         m_mainMenuBar->draw();
 
         if (!m_model->isLoaded())

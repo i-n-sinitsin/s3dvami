@@ -27,13 +27,14 @@ namespace s3dvami
             return;
         }
 
-        ImGuiIO &io = ImGui::GetIO();
-        ImVec2 pos(io.DisplaySize.x * 0.5f, io.DisplaySize.y * 0.5f);
-        ImGui::SetNextWindowPos(pos, ImGuiCond_Always, ImVec2(0.5f, 0.5f));
-        ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
-        if (ImGui::Begin("Select a file", nullptr, flags))
+        ImGui::OpenPopup("Select a file");
+
+        ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+        ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
+        if (ImGui::BeginPopupModal("Select a file", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            ImGui::Text("Select a file");
+            // ImGui::Text("Select a file");
 
             // listbox
             char **items = new char *[m_fsEntries.size()];
@@ -75,6 +76,7 @@ namespace s3dvami
                     {
                         m_fileSelected(file);
                         m_visible = false;
+                        ImGui::CloseCurrentPopup();
                     }
                 }
             }
@@ -82,9 +84,10 @@ namespace s3dvami
             if (ImGui::Button("Cancel"))
             {
                 m_visible = false;
+                ImGui::CloseCurrentPopup();
             }
 
-            ImGui::End();
+            ImGui::EndPopup();
         }
     }
 
