@@ -12,6 +12,7 @@ namespace s3dvami
 
     Model::Model()
         : m_loaded(false)
+        , m_meshes{}
     {}
 
     Model::~Model()
@@ -28,11 +29,11 @@ namespace s3dvami
             return false;
         }
 
-        auto result = loadTextures();
-        result = result && loadMaterials();
-        result = result && loadMeshes();
-        result = result && loadNodes();
-        result = result && loadAnimations();
+        auto result = loadTextures(scene);
+        result = result && loadMaterials(scene);
+        result = result && loadMeshes(scene);
+        result = result && loadNodes(scene);
+        result = result && loadAnimations(scene);
 
         m_loaded = result;
         return result;
@@ -55,27 +56,31 @@ namespace s3dvami
         }
     }
 
-    bool Model::loadTextures()
+    bool Model::loadTextures(const aiScene */*scene*/)
     {
         return true;
     }
 
-    bool Model::loadMaterials()
+    bool Model::loadMaterials(const aiScene */*scene*/)
     {
         return true;
     }
 
-    bool Model::loadMeshes()
+    bool Model::loadMeshes(const aiScene *scene)
+    {
+        for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
+             m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
+        }
+
+        return true;
+    }
+
+    bool Model::loadNodes(const aiScene */*scene*/)
     {
         return true;
     }
 
-    bool Model::loadNodes()
-    {
-        return true;
-    }
-
-    bool Model::loadAnimations()
+    bool Model::loadAnimations(const aiScene */*scene*/)
     {
         return true;
     }

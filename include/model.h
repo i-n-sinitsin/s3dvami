@@ -4,6 +4,8 @@
 
 #include <memory>
 #include <string>
+#include "mesh.h"
+#include "assimp/scene.h"
 
 namespace s3dvami
 {
@@ -25,11 +27,13 @@ namespace s3dvami
     private:
         bool m_loaded;
 
-        bool loadTextures();
-        bool loadMaterials();
-        bool loadMeshes();
-        bool loadNodes();
-        bool loadAnimations();
+        std::vector<MeshPtr> m_meshes;
+
+        bool loadTextures(const aiScene* scene);
+        bool loadMaterials(const aiScene* scene);
+        bool loadMeshes(const aiScene* scene);
+        bool loadNodes(const aiScene* scene);
+        bool loadAnimations(const aiScene* scene);
     };
 
     using ModelPtr = std::shared_ptr<Model>;
