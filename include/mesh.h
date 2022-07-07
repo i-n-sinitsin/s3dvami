@@ -8,6 +8,7 @@
 #include "glad/glad.h"
 
 #include "assimp/scene.h"
+#include "descriptions/mesh_description.h"
 #include "vertex.h"
 
 namespace s3dvami
@@ -15,12 +16,14 @@ namespace s3dvami
     class Mesh
     {
     public:
-        explicit Mesh(const aiMesh *mesh);
+        explicit Mesh(const aiMesh *mesh, MeshDescriptionPtr meshDescription);
         ~Mesh();
 
         void draw();
 
     private:
+        MeshDescriptionPtr m_meshDescription;
+
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;

@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(include)
 include_directories(include/windows)
+include_directories(include/descriptions)
 
 file(GLOB_RECURSE SOURCES src/*.*)
 add_executable(s3dvami ${SOURCES})

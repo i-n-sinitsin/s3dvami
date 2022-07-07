@@ -6,14 +6,17 @@
 
 namespace s3dvami
 {
-    Mesh::Mesh(const aiMesh *mesh)
-        : m_VAO(0)
+    Mesh::Mesh(const aiMesh *mesh, MeshDescriptionPtr meshDescription)
+        : m_meshDescription(meshDescription)
+        , m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
         , m_id()
         , m_vertices{}
         , m_indices{}
     {
+        meshDescription->id = mesh->mName.C_Str();
+
         m_vertices.reserve(mesh->mNumVertices);
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
         {
@@ -34,6 +37,7 @@ namespace s3dvami
 
             m_vertices.push_back(vertex);
         }
+        meshDescription->verticiesAmount = m_vertices.size();
 
         for (unsigned int i = 0; i < mesh->mNumFaces; i++)
         {
@@ -43,6 +47,7 @@ namespace s3dvami
                 m_indices.push_back(face.mIndices[j]);
             }
         }
+        meshDescription->indeciesAmount = m_indices.size();
 
         createBuffers();
         fillBuffers();

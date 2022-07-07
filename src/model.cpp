@@ -13,6 +13,7 @@ namespace s3dvami
     Model::Model()
         : m_loaded(false)
         , m_meshes{}
+        , m_meshesDescription(nullptr)
     {}
 
     Model::~Model()
@@ -56,6 +57,11 @@ namespace s3dvami
         }
     }
 
+    MeshesDescriptionPtr Model::getMeshesDesription() const
+    {
+        return m_meshesDescription;
+    }
+
     bool Model::loadTextures(const aiScene * /*scene*/)
     {
         return true;
@@ -68,9 +74,20 @@ namespace s3dvami
 
     bool Model::loadMeshes(const aiScene *scene)
     {
+        if (m_meshesDescription)
+        {
+            m_meshesDescription.reset();
+        }
+        m_meshesDescription = std::make_shared<MeshesDescription>();
+        m_meshesDescription->amount = scene->mNumMeshes;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
-            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
+            auto meshDescription = std::make_shared<MeshDescription>();
+            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i], meshDescription));
+            m_meshesDescription->meshes.push_back(meshDescription);
+
+            m_meshesDescription->verticiesAmount += meshDescription->verticiesAmount;
+            m_meshesDescription->indeciesAmount += meshDescription->indeciesAmount;
         }
 
         return true;

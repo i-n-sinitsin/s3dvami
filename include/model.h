@@ -6,6 +6,7 @@
 #include <string>
 
 #include "assimp/scene.h"
+#include "descriptions/meshes_description.h"
 #include "mesh.h"
 
 namespace s3dvami
@@ -25,10 +26,13 @@ namespace s3dvami
             return m_loaded;
         }
 
+        MeshesDescriptionPtr getMeshesDesription() const;
+
     private:
         bool m_loaded;
 
         std::vector<MeshPtr> m_meshes;
+        MeshesDescriptionPtr m_meshesDescription;
 
         bool loadTextures(const aiScene *scene);
         bool loadMaterials(const aiScene *scene);

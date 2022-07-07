@@ -215,7 +215,7 @@ namespace s3dvami
 
         m_mainMenuBar->draw();
 
-        m_modelDescription->draw();
+        m_modelDescription->draw(m_model->getMeshesDesription());
 
         if (!m_model->isLoaded())
         {
