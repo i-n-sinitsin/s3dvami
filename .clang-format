@@ -57,24 +57,14 @@ IncludeCategories:
     Priority:        1
   - Regex:           '^<.+>'
     Priority:        2
-  - Regex:           '^"ork/'
+  - Regex:           '^"glad/'
     Priority:        3
-  - Regex:           '^"gameset'
+  - Regex:           '^"GLFW/'
     Priority:        4
-  - Regex:           '^"global/'
+  - Regex:           '^"windows/'
     Priority:        5
-  - Regex:           '^"common/'
-    Priority:        6
-  - Regex:           '^"(game|explorer)/'
-    Priority:        7
-  - Regex:           '^"(game_model|explorer_model)/'
-    Priority:        8
-  - Regex:           '^"messages/'
-    Priority:        9
-  - Regex:           '^"gengine/'
-    Priority:        10
   - Regex:           '.*'
-    Priority:        11
+    Priority:        6
 IncludeIsMainRegex: '(_test)?$'
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash

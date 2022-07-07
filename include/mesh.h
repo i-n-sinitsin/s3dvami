@@ -5,8 +5,9 @@
 #include <memory>
 #include <vector>
 
-#include "assimp/scene.h"
 #include "glad/glad.h"
+
+#include "assimp/scene.h"
 #include "vertex.h"
 
 namespace s3dvami
@@ -15,11 +16,15 @@ namespace s3dvami
     {
     public:
         explicit Mesh(const aiMesh *mesh);
+        ~Mesh();
 
+        void draw();
+
+    private:
+        GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;
 
-    private:
         std::string m_id;
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;

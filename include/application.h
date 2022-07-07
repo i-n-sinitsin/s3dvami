@@ -5,12 +5,15 @@
 #include <optional>
 #include <vector>
 
-#include "GLFW/glfw3.h"
 #include "glad/glad.h"
-#include "model.h"
+
+#include "GLFW/glfw3.h"
+
 #include "windows/dlg_open_file.h"
 #include "windows/menu_bar_main.h"
 #include "windows/msg_choose_file.h"
+
+#include "model.h"
 
 namespace s3dvami
 {
