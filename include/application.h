@@ -5,8 +5,8 @@
 #include <optional>
 #include <vector>
 
-#include <GLFW/glfw3.h>
-
+#include "GLFW/glfw3.h"
+#include "glad/glad.h"
 #include "model.h"
 #include "windows/dlg_open_file.h"
 #include "windows/menu_bar_main.h"

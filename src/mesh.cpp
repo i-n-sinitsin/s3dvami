@@ -2,9 +2,11 @@
 
 #include "mesh.h"
 
+#include "glad/glad.h"
+
 namespace s3dvami
 {
-    Mesh::Mesh(const aiMesh* /*mesh*/)
+    Mesh::Mesh(const aiMesh * /*mesh*/)
         : m_VBO(0)
         , m_EBO(0)
         , m_id()
@@ -22,14 +24,10 @@ namespace s3dvami
     }
 
     void Mesh::destroyBuffers()
-    {
-
-    }
+    {}
 
     void Mesh::fillBuffers()
-    {
-
-    }
+    {}
 
 }
 

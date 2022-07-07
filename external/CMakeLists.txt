@@ -18,6 +18,12 @@ set(GLFW_INSTALL        OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(${GLFW_LIB_NAME})
 
+# GLAD
+set(GLAD_LIB_NAME "glad")
+#set(GLAD_INC_PATH ${GLAD_LIB_NAME}/include)
+
+add_subdirectory(${GLAD_LIB_NAME})
+
 # ImGui
 set(IMGUI_LIB_NAME "imgui")
 

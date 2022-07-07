@@ -5,7 +5,6 @@
 #include <iostream>
 #include <type_traits>
 
-#include <GL/glu.h>
 #include <math.h>
 
 #include "backends/imgui_impl_glfw.h"
@@ -72,6 +71,12 @@ namespace s3dvami
 
         glfwMakeContextCurrent(m_window);
         glfwSwapInterval(1);
+
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            std::cout << "Failed to initialize OpenGL context" << std::endl;
+            return;
+        }
 
         glfwSetKeyCallback(m_window, keyCallback);
 

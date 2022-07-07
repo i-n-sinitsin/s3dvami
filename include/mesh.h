@@ -2,19 +2,19 @@
 
 #pragma once
 
-#include <GL/glew.h>
-#include "GL/gl.h"
-#include "vertex.h"
-#include <vector>
 #include <memory>
-#include "assimp/scene.h"
+#include <vector>
 
+#include "assimp/scene.h"
+#include "glad/glad.h"
+#include "vertex.h"
 
 namespace s3dvami
 {
-    class Mesh {
+    class Mesh
+    {
     public:
-        explicit Mesh(const aiMesh* mesh);
+        explicit Mesh(const aiMesh *mesh);
 
         GLuint m_VBO;
         GLuint m_EBO;
