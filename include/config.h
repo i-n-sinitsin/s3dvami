@@ -10,4 +10,6 @@ namespace s3dvami
     constexpr size_t defaultWindowHeight = 768;
 
     constexpr glm::vec4 defautBackgroundColor = {0.5f, 0.5f, 0.5f, 1.0f};
+
+    constexpr float defaultModelDescroptionWidth = 350.0f;
 }
