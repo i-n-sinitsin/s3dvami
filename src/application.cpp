@@ -28,6 +28,11 @@ static void errorCallback(int /*error*/, const char *description)
     std::cerr << "Error:" << description << std::endl;
 }
 
+static void frameBufferSizeCallback(GLFWwindow * /*window*/, int width, int height)
+{
+    s3dvami::Application::GetInstance()->onResize(width, height);
+}
+
 namespace s3dvami
 {
     Application::Application()
@@ -80,6 +85,7 @@ namespace s3dvami
         }
 
         glfwSetKeyCallback(m_window, keyCallback);
+        glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
 
         initImGui();
 
@@ -144,6 +150,12 @@ namespace s3dvami
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
+    }
+
+    void Application::onResize(int width, int height)
+    {
+        glViewport(0, 0, width, height);
+        render();
     }
 
     void Application::process(float dt)

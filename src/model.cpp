@@ -56,31 +56,32 @@ namespace s3dvami
         }
     }
 
-    bool Model::loadTextures(const aiScene */*scene*/)
+    bool Model::loadTextures(const aiScene * /*scene*/)
     {
         return true;
     }
 
-    bool Model::loadMaterials(const aiScene */*scene*/)
+    bool Model::loadMaterials(const aiScene * /*scene*/)
     {
         return true;
     }
 
     bool Model::loadMeshes(const aiScene *scene)
     {
-        for (unsigned int i = 0; i < scene->mNumMeshes; i++) {
-             m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
+        for (unsigned int i = 0; i < scene->mNumMeshes; i++)
+        {
+            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
         }
 
         return true;
     }
 
-    bool Model::loadNodes(const aiScene */*scene*/)
+    bool Model::loadNodes(const aiScene * /*scene*/)
     {
         return true;
     }
 
-    bool Model::loadAnimations(const aiScene */*scene*/)
+    bool Model::loadAnimations(const aiScene * /*scene*/)
     {
         return true;
     }

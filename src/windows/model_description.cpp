@@ -2,8 +2,8 @@
 
 #include "windows/model_description.h"
 
-#include "imgui.h"
 #include "config.h"
+#include "imgui.h"
 
 namespace s3dvami
 {
@@ -20,13 +20,13 @@ namespace s3dvami
         ImGui::SetNextWindowSize(size);
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
 
-        if (ImGui::Begin("Model Description", nullptr, flags)){
+        if (ImGui::Begin("Model Description", nullptr, flags))
+        {
 
             ImGui::Text("Model description:");
 
             if (ImGui::CollapsingHeader("Meshes"))
             {
-
             }
 
             ImGui::End();

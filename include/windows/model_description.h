@@ -13,7 +13,6 @@ namespace s3dvami
         void draw();
 
     private:
-
     };
 
     using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;

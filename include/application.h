@@ -11,8 +11,8 @@
 
 #include "windows/dlg_open_file.h"
 #include "windows/menu_bar_main.h"
-#include "windows/msg_choose_file.h"
 #include "windows/model_description.h"
+#include "windows/msg_choose_file.h"
 
 #include "model.h"
 
@@ -34,6 +34,7 @@ namespace s3dvami
         void deinit();
 
         void onKey(int key, int scancode, int action, int mods);
+        void onResize(int width, int height);
 
     private:
         static Application *m_instance;

@@ -2,8 +2,8 @@
 
 #include "windows/msg_choose_file.h"
 
-#include "imgui.h"
 #include "config.h"
+#include "imgui.h"
 
 namespace s3dvami
 {
