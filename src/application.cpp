@@ -37,6 +37,7 @@ namespace s3dvami
         , m_chooseFileMessage(nullptr)
         , m_mainMenuBar(nullptr)
         , m_openFileDialog(nullptr)
+        , m_modelDescription(nullptr)
     {}
 
     Application *Application::GetInstance()
@@ -98,6 +99,7 @@ namespace s3dvami
         m_openFileDialog = std::make_shared<OpenFileDialog>([=](const std::string &fileName) {
             reload(fileName);
         });
+        m_modelDescription = std::make_shared<ModelDescription>();
     }
 
     void Application::run()
@@ -200,6 +202,8 @@ namespace s3dvami
         ImGui::ShowDemoWindow();
 
         m_mainMenuBar->draw();
+
+        m_modelDescription->draw();
 
         if (!m_model->isLoaded())
         {

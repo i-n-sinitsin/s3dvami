@@ -12,6 +12,7 @@
 #include "windows/dlg_open_file.h"
 #include "windows/menu_bar_main.h"
 #include "windows/msg_choose_file.h"
+#include "windows/model_description.h"
 
 #include "model.h"
 
@@ -45,6 +46,7 @@ namespace s3dvami
         ChooseFileMessagePtr m_chooseFileMessage;
         MainMenuBarPtr m_mainMenuBar;
         OpenFileDialogPtr m_openFileDialog;
+        ModelDescriptionPtr m_modelDescription;
 
         void process(float dt);
         void render();
