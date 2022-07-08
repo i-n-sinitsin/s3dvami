@@ -1,11 +1,11 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
-#include "windows/model_description.h"
+#include "windows/wnd_model_description.h"
 
 #include "config.h"
 #include "imgui.h"
 
-namespace s3dvami
+namespace s3dvami::windows
 {
 
     ModelDescriptionWindow::ModelDescriptionWindow()

@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-namespace s3dvami
+namespace s3dvami::windows
 {
     class OpenFileDialog
     {

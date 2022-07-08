@@ -10,8 +10,8 @@
 #include "GLFW/glfw3.h"
 
 #include "windows/dlg_open_file.h"
-#include "windows/menu_bar_main.h"
-#include "windows/model_description.h"
+#include "windows/menu_main.h"
+#include "windows/wnd_model_description.h"
 #include "windows/msg_choose_file.h"
 
 #include "model.h"
@@ -47,13 +47,13 @@ namespace s3dvami
         ModelPtr m_model;
 
         //objects
-        FloorPlatePtr m_floorPlate;
+        objects::FloorPlatePtr m_floorPlate;
 
         // windows
-        ChooseFileMessagePtr m_chooseFileMessage;
-        MainMenuBarPtr m_mainMenuBar;
-        OpenFileDialogPtr m_openFileDialog;
-        ModelDescriptionWindowPtr m_modelDescriptionWindow;
+        windows::ChooseFileMessagePtr m_chooseFileMessage;
+        windows::MainMenuBarPtr m_mainMenuBar;
+        windows::OpenFileDialogPtr m_openFileDialog;
+        windows::ModelDescriptionWindowPtr m_modelDescriptionWindow;
 
         void process(float dt);
         void render();

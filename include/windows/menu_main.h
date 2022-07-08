@@ -3,7 +3,7 @@
 #include <functional>
 #include <memory>
 
-namespace s3dvami
+namespace s3dvami::windows
 {
     struct MainMenuBarActions
     {

@@ -97,23 +97,23 @@ namespace s3dvami
         reload(fileName);
 
         // init windows
-        m_chooseFileMessage = std::make_shared<ChooseFileMessage>([=]() {
+        m_chooseFileMessage = std::make_shared<windows::ChooseFileMessage>([=]() {
             m_openFileDialog->show();
         });
 
-        MainMenuBarActions mainMenuBarActions;
+        windows::MainMenuBarActions mainMenuBarActions;
         mainMenuBarActions.fileActions.openClick = [=]() {
             m_openFileDialog->show();
         };
         mainMenuBarActions.fileActions.exitClick = [=]() {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         };
-        m_mainMenuBar = std::make_shared<MainMenuBar>(mainMenuBarActions);
+        m_mainMenuBar = std::make_shared<windows::MainMenuBar>(mainMenuBarActions);
 
-        m_openFileDialog = std::make_shared<OpenFileDialog>([=](const std::string &fileName) {
+        m_openFileDialog = std::make_shared<windows::OpenFileDialog>([=](const std::string &fileName) {
             reload(fileName);
         });
-        m_modelDescriptionWindow = std::make_shared<ModelDescriptionWindow>();
+        m_modelDescriptionWindow = std::make_shared<windows::ModelDescriptionWindow>();
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
@@ -124,7 +124,7 @@ namespace s3dvami
         m_camera->setView(glm::vec3(posX, posY, posZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // objects
-        m_floorPlate = std::make_shared<FloorPlate>();
+        m_floorPlate = std::make_shared<objects::FloorPlate>();
     }
 
     void Application::run()

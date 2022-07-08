@@ -11,7 +11,7 @@
 #include "shaders/shader.h"
 #include "vertex.h"
 
-namespace s3dvami
+namespace s3dvami::objects
 {
     class FloorPlate
     {

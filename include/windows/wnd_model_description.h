@@ -5,7 +5,7 @@
 
 #include "descriptions/model.h"
 
-namespace s3dvami
+namespace s3dvami::windows
 {
     class ModelDescriptionWindow
     {

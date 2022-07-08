@@ -8,7 +8,7 @@
 
 #include "imgui.h"
 
-namespace s3dvami
+namespace s3dvami::windows
 {
 
     OpenFileDialog::OpenFileDialog(std::function<void(const std::string &)> fileSelected)

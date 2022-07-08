@@ -8,7 +8,7 @@
 #include "shaders/simple_frag.h"
 #include "shaders/simple_vert.h"
 
-namespace s3dvami
+namespace s3dvami::objects
 {
     FloorPlate::FloorPlate()
         : m_VAO(0)

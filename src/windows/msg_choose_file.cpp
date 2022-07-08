@@ -5,7 +5,7 @@
 #include "config.h"
 #include "imgui.h"
 
-namespace s3dvami
+namespace s3dvami::windows
 {
 
     ChooseFileMessage::ChooseFileMessage(std::function<void()> buttonClick)

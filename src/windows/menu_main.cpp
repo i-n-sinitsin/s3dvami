@@ -1,10 +1,10 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
-#include "windows/menu_bar_main.h"
+#include "windows/menu_main.h"
 
 #include "imgui.h"
 
-namespace s3dvami
+namespace s3dvami::windows
 {
 
     MainMenuBar::MainMenuBar(const MainMenuBarActions &actions)
