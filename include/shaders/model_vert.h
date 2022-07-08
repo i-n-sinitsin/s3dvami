@@ -6,13 +6,13 @@
 
 namespace s3dvami
 {
-    static const std::string model_vert = R"VERT(#version 430 core
+    static const std::string model_vert = R"VERT(
+#version 430 core
 
 layout(location = 0) in vec3 a_pos;
 layout(location = 1) in vec3 a_norm;
 layout(location = 2) in vec2 a_tex;
 uniform mat4 u_model;
-uniform mat4 u_globalModel;
 uniform mat4 u_view;
 uniform mat4 u_projection;
 

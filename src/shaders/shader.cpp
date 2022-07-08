@@ -4,6 +4,8 @@
 
 #include <iostream>
 
+#include "glm/gtc/type_ptr.hpp"
+
 namespace s3dvami
 {
     Shader::Shader(const std::string &vertShader, const std::string &fragShader)
@@ -20,8 +22,6 @@ namespace s3dvami
         glAttachShader(m_programId, fragShaderId);
         glLinkProgram(m_programId);
 
-        glDetachShader(m_programId, vertShaderId);
-        glDetachShader(m_programId, fragShaderId);
         glDeleteShader(vertShaderId);
         glDeleteShader(fragShaderId);
 
@@ -49,6 +49,11 @@ namespace s3dvami
     void Shader::use()
     {
         glUseProgram(m_programId);
+    }
+
+    void Shader::setUniform(const std::string &name, const glm::mat4 &m)
+    {
+        glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, glm::value_ptr(m));
     }
 
     GLuint Shader::compile(const std::string &src, GLenum type)

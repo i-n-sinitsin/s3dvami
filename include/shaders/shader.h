@@ -7,6 +7,8 @@
 
 #include "glad/glad.h"
 
+#include "glm/glm.hpp"
+
 namespace s3dvami
 {
     class Shader
@@ -16,6 +18,8 @@ namespace s3dvami
         ~Shader();
 
         void use();
+
+        void setUniform(const std::string &name, const glm::mat4 &m);
 
     private:
         GLuint m_programId;
