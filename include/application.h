@@ -53,7 +53,7 @@ namespace s3dvami
         ChooseFileMessagePtr m_chooseFileMessage;
         MainMenuBarPtr m_mainMenuBar;
         OpenFileDialogPtr m_openFileDialog;
-        ModelDescriptionPtr m_modelDescription;
+        ModelDescriptionWindowPtr m_modelDescriptionWindow;
 
         void process(float dt);
         void render();

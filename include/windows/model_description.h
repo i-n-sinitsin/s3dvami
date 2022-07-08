@@ -3,16 +3,16 @@
 #include <functional>
 #include <memory>
 
-#include "descriptions/meshes_description.h"
+#include "descriptions/model_description.h"
 
 namespace s3dvami
 {
-    class ModelDescription
+    class ModelDescriptionWindow
     {
     public:
-        explicit ModelDescription();
+        explicit ModelDescriptionWindow();
 
-        void draw(MeshesDescriptionPtr meshesDescription);
+        void draw(ModelDescriptionPtr modelDescription);
 
     private:
         void drawMeshesDescription(MeshesDescriptionPtr meshesDescription);
@@ -21,5 +21,5 @@ namespace s3dvami
         void drawNodesDescription();
     };
 
-    using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;
+    using ModelDescriptionWindowPtr = std::shared_ptr<ModelDescriptionWindow>;
 }

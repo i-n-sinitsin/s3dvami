@@ -7,7 +7,7 @@
 
 #include "assimp/scene.h"
 #include "camera.h"
-#include "descriptions/meshes_description.h"
+#include "descriptions/model_description.h"
 #include "mesh.h"
 #include "shaders/shader.h"
 
@@ -28,15 +28,16 @@ namespace s3dvami
             return m_loaded;
         }
 
-        MeshesDescriptionPtr getMeshesDesription() const;
+        ModelDescriptionPtr getModelDesription() const;
 
     private:
         bool m_loaded;
 
         ShaderPtr m_shader;
 
+        ModelDescriptionPtr m_modelDescription;
+
         std::vector<MeshPtr> m_meshes;
-        MeshesDescriptionPtr m_meshesDescription;
 
         glm::mat4 m_translation;
         glm::mat4 m_rotation;

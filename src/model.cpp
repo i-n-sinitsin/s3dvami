@@ -17,8 +17,8 @@ namespace s3dvami
     Model::Model()
         : m_loaded(false)
         , m_shader(new Shader(model_vert, model_frag))
+        , m_modelDescription(new ModelDescription())
         , m_meshes{}
-        , m_meshesDescription(nullptr)
         , m_translation(1.0f)
         , m_rotation(1.0f)
         , m_scale(1.0f)
@@ -85,9 +85,9 @@ namespace s3dvami
         }
     }
 
-    MeshesDescriptionPtr Model::getMeshesDesription() const
+    ModelDescriptionPtr Model::getModelDesription() const
     {
-        return m_meshesDescription;
+        return m_modelDescription;
     }
 
     bool Model::loadTextures(const aiScene * /*scene*/)
@@ -102,20 +102,21 @@ namespace s3dvami
 
     bool Model::loadMeshes(const aiScene *scene)
     {
-        if (m_meshesDescription)
+        auto &meshesDescr = m_modelDescription->meshes;
+        if (meshesDescr)
         {
-            m_meshesDescription.reset();
+            meshesDescr.reset();
         }
-        m_meshesDescription = std::make_shared<MeshesDescription>();
-        m_meshesDescription->amount = scene->mNumMeshes;
+        meshesDescr = std::make_shared<MeshesDescription>();
+        meshesDescr->amount = scene->mNumMeshes;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
             auto meshDescription = std::make_shared<MeshDescription>();
             m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i], meshDescription));
-            m_meshesDescription->meshes.push_back(meshDescription);
+            meshesDescr->meshes.push_back(meshDescription);
 
-            m_meshesDescription->verticiesAmount += meshDescription->verticiesAmount;
-            m_meshesDescription->indeciesAmount += meshDescription->indeciesAmount;
+            meshesDescr->verticiesAmount += meshDescription->verticiesAmount;
+            meshesDescr->indeciesAmount += meshDescription->indeciesAmount;
         }
 
         return true;
