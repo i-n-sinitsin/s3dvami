@@ -14,7 +14,7 @@ namespace s3dvami
         GLuint vertShaderId = compile(vertShader, GL_VERTEX_SHADER);
         GLuint fragShaderId = compile(fragShader, GL_FRAGMENT_SHADER);
 
-        GLuint m_programId = glCreateProgram();
+        m_programId = glCreateProgram();
 
         /// TODO: add assert for id
 
