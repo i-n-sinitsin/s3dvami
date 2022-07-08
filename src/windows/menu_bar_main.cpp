@@ -30,6 +30,16 @@ namespace s3dvami
                 ImGui::EndMenu();
             }
 
+            if (ImGui::BeginMenu("Help"))
+            {
+                if (ImGui::MenuItem("About"))
+                {
+                    /// TODO: show about
+                }
+
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMainMenuBar();
         }
     }
