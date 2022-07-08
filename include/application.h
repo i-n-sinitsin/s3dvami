@@ -42,6 +42,7 @@ namespace s3dvami
 
         double m_lastTime;
 
+        CameraPtr m_camera;
         ModelPtr m_model;
 
         ChooseFileMessagePtr m_chooseFileMessage;

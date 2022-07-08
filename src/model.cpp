@@ -43,14 +43,24 @@ namespace s3dvami
         return result;
     }
 
-    void Model::draw()
+    void Model::draw(CameraPtr camera)
     {
         if (!m_loaded)
         {
             return;
         }
 
+        m_shader->use();
+        m_shader->setUniform("u_projection", camera->getProjection());
+        m_shader->setUniform("u_view", camera->getView());
+
+        m_shader->setUniform("u_model", glm::mat4(1.0f));
         /// TODO: draw model
+
+        for (const auto &it : m_meshes)
+        {
+            it->draw();
+        }
     }
 
     void Model::process(float /*dt*/)

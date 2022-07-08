@@ -38,6 +38,7 @@ namespace s3dvami
     Application::Application()
         : m_window(nullptr)
         , m_lastTime(0.0)
+        , m_camera(new Camera())
         , m_model(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenuBar(nullptr)
@@ -108,6 +109,9 @@ namespace s3dvami
             reload(fileName);
         });
         m_modelDescription = std::make_shared<ModelDescription>();
+
+        m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, 0.1f, 100.0f);
+        m_camera->setView(glm::vec3(2.0f, 5.0, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     }
 
     void Application::run()
@@ -157,6 +161,7 @@ namespace s3dvami
     void Application::onResize(int width, int height)
     {
         glViewport(0, 0, width, height);
+        m_camera->setPerspectiveProjection(45.0f, width, height, 0.1f, 100.0f);
         render();
     }
 
@@ -174,12 +179,17 @@ namespace s3dvami
         glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
 
         // draw scene
-        glEnable(GL_DEPTH_TEST);
-        glDepthMask(GL_TRUE);
-        glDepthRange(0.0f, 1.0f);
-        glDepthFunc(GL_LESS);
+        //glEnable(GL_DEPTH_TEST);
+        //glDepthMask(GL_TRUE);
+        //glDepthRange(0.0f, 1.0f);
+        //glDepthFunc(GL_LESS);
 
-        glDisable(GL_DEPTH_TEST);
+        if (m_model)
+        {
+            m_model->draw(m_camera);
+        }
+
+        //glDisable(GL_DEPTH_TEST);
 
         // draw GUI
         renderImGui();

@@ -15,7 +15,8 @@ namespace s3dvami
         , m_vertices{}
         , m_indices{}
     {
-        meshDescription->id = mesh->mName.C_Str();
+        m_id = mesh->mName.C_Str();
+        meshDescription->id = m_id;
 
         m_vertices.reserve(mesh->mNumVertices);
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -63,25 +64,23 @@ namespace s3dvami
         ///TODO: apply material
 
         // TODO: add reading polygon mode from material
-        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-        bool cullFaceTestValue = glIsEnabled(GL_CULL_FACE);
-        glEnable(GL_CULL_FACE);
-        bool depthTestValue = glIsEnabled(GL_DEPTH_TEST);
-        glEnable(GL_DEPTH_TEST);
+        //bool cullFaceTestValue = glIsEnabled(GL_CULL_FACE);
+        //glEnable(GL_CULL_FACE);
+        //bool depthTestValue = glIsEnabled(GL_DEPTH_TEST);
+        //glEnable(GL_DEPTH_TEST);
 
         glBindVertexArray(m_VAO);
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
         glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_indices.size()), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-        // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        if (!depthTestValue)
-            glDisable(GL_DEPTH_TEST);
-        if (!cullFaceTestValue)
-            glDisable(GL_CULL_FACE);
+        //if (!depthTestValue)
+        //    glDisable(GL_DEPTH_TEST);
+        //if (!cullFaceTestValue)
+        //    glDisable(GL_CULL_FACE);
     }
 
     void Mesh::createBuffers()

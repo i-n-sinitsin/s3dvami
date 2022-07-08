@@ -6,6 +6,7 @@
 #include <string>
 
 #include "assimp/scene.h"
+#include "camera.h"
 #include "descriptions/meshes_description.h"
 #include "mesh.h"
 #include "shaders/shader.h"
@@ -19,7 +20,7 @@ namespace s3dvami
         ~Model();
 
         bool load(const std::string &fileName);
-        void draw();
+        void draw(CameraPtr camera);
         void process(float dt);
 
         bool isLoaded()

@@ -66,14 +66,17 @@ namespace s3dvami
 
                 // meshes
                 int open_action = -1;
-                ImGui::SameLine();
                 if (ImGui::Button("Open all"))
+                {
                     open_action = 1;
+                }
                 ImGui::SameLine();
                 if (ImGui::Button("Close all"))
+                {
                     open_action = 0;
+                }
 
-                for (auto meshDescription : meshesDescription->meshes)
+                for (auto &meshDescription : meshesDescription->meshes)
                 {
                     if (open_action != -1)
                         ImGui::SetNextItemOpen(open_action != 0);
