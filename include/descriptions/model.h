@@ -11,6 +11,8 @@ namespace s3dvami::description
 {
     struct Model
     {
+        std::string name;
+
         MeshesPtr meshes;
     };
 

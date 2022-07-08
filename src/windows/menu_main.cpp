@@ -31,13 +31,9 @@ namespace s3dvami::windows
 
             if (ImGui::BeginMenu("View"))
             {
-                if (ImGui::MenuItem("Checked", NULL, true))
+                if (ImGui::MenuItem("Checked", NULL, &(m_mainMenuActions.viewActions.isFloorShow)))
                 {
-                }
-
-                if (ImGui::MenuItem("Floor plate"))
-                {
-                    /// TODO: show about
+                    m_mainMenuActions.viewActions.floorClick();
                 }
 
                 ImGui::EndMenu();

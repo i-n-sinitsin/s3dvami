@@ -40,6 +40,7 @@ namespace s3dvami
         , m_lastTime(0.0)
         , m_camera(new Camera())
         , m_model(nullptr)
+        , m_showFloorPlate(false)
         , m_floorPlate(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenu(nullptr)
@@ -107,6 +108,11 @@ namespace s3dvami
         };
         mainMenuBarActions.fileActions.exitClick = [=]() {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+        };
+
+        mainMenuBarActions.viewActions.isFloorShow = m_showFloorPlate;
+        mainMenuBarActions.viewActions.floorClick = [=]() {
+            m_showFloorPlate = !m_showFloorPlate;
         };
         m_mainMenu = std::make_shared<windows::MainMenu>(mainMenuBarActions);
 
@@ -206,7 +212,10 @@ namespace s3dvami
             m_model->draw(m_camera);
         }
 
-        m_floorPlate->draw(m_camera);
+        if (m_showFloorPlate)
+        {
+            m_floorPlate->draw(m_camera);
+        }
 
         glDisable(GL_DEPTH_TEST);
 

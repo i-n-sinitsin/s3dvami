@@ -47,6 +47,7 @@ namespace s3dvami
         ModelPtr m_model;
 
         //objects
+        bool m_showFloorPlate;
         objects::FloorPlatePtr m_floorPlate;
 
         // windows

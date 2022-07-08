@@ -15,6 +15,7 @@ namespace s3dvami::windows
 
         struct
         {
+            bool isFloorShow;
             std::function<void()> floorClick;
         } viewActions;
 
