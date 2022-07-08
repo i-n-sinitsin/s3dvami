@@ -5,16 +5,34 @@
 
 namespace s3dvami
 {
+    struct MainMenuBarActions
+    {
+        struct
+        {
+            std::function<void()> openClick;
+            std::function<void()> exitClick;
+        } fileActions;
+
+        struct
+        {
+            std::function<void()> floorClick;
+        } viewActions;
+
+        struct
+        {
+            std::function<void()> aboutClick;
+        } helpActions;
+    };
+
     class MainMenuBar
     {
     public:
-        explicit MainMenuBar(std::function<void()> menuOpenClick, std::function<void()> menuExitClick);
+        explicit MainMenuBar(const MainMenuBarActions &actions);
 
         void draw();
 
     private:
-        std::function<void()> m_menuOpenClick;
-        std::function<void()> m_menuExitClick;
+        MainMenuBarActions m_mainMenuBarActions;
     };
 
     using MainMenuBarPtr = std::shared_ptr<MainMenuBar>;

@@ -7,9 +7,8 @@
 namespace s3dvami
 {
 
-    MainMenuBar::MainMenuBar(std::function<void()> menuOpenClick, std::function<void()> menuExitClick)
-        : m_menuOpenClick(menuOpenClick)
-        , m_menuExitClick(menuExitClick)
+    MainMenuBar::MainMenuBar(const MainMenuBarActions &actions)
+        : m_mainMenuBarActions(actions)
     {}
 
     void MainMenuBar::draw()
@@ -20,13 +19,27 @@ namespace s3dvami
             {
                 if (ImGui::MenuItem("Open", "CTRL+O"))
                 {
-                    m_menuOpenClick();
+                    m_mainMenuBarActions.fileActions.openClick();
                 }
                 ImGui::Separator();
                 if (ImGui::MenuItem("Exit", "CTRL+Q"))
                 {
-                    m_menuExitClick();
+                    m_mainMenuBarActions.fileActions.exitClick();
                 }
+                ImGui::EndMenu();
+            }
+
+            if (ImGui::BeginMenu("View"))
+            {
+                if (ImGui::MenuItem("Checked", NULL, true))
+                {
+                }
+
+                if (ImGui::MenuItem("Floor plate"))
+                {
+                    /// TODO: show about
+                }
+
                 ImGui::EndMenu();
             }
 
@@ -34,7 +47,7 @@ namespace s3dvami
             {
                 if (ImGui::MenuItem("About"))
                 {
-                    /// TODO: show about
+                    m_mainMenuBarActions.helpActions.aboutClick();
                 }
 
                 ImGui::EndMenu();

@@ -100,13 +100,16 @@ namespace s3dvami
         m_chooseFileMessage = std::make_shared<ChooseFileMessage>([=]() {
             m_openFileDialog->show();
         });
-        m_mainMenuBar = std::make_shared<MainMenuBar>(
-            [=]() {
-                m_openFileDialog->show();
-            },
-            [=]() {
-                glfwSetWindowShouldClose(m_window, GLFW_TRUE);
-            });
+
+        MainMenuBarActions mainMenuBarActions;
+        mainMenuBarActions.fileActions.openClick = [=]() {
+            m_openFileDialog->show();
+        };
+        mainMenuBarActions.fileActions.exitClick = [=]() {
+            glfwSetWindowShouldClose(m_window, GLFW_TRUE);
+        };
+        m_mainMenuBar = std::make_shared<MainMenuBar>(mainMenuBarActions);
+
         m_openFileDialog = std::make_shared<OpenFileDialog>([=](const std::string &fileName) {
             reload(fileName);
         });
