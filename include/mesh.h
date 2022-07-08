@@ -8,6 +8,7 @@
 #include "glad/glad.h"
 
 #include "assimp/scene.h"
+#include "bounding_box.h"
 #include "descriptions/mesh_description.h"
 #include "vertex.h"
 
@@ -31,6 +32,8 @@ namespace s3dvami
         std::string m_id;
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;
+
+        AABBoxPtr m_aabbox;
 
         void createBuffers();
         void destroyBuffers();

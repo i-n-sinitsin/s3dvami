@@ -14,9 +14,12 @@ namespace s3dvami
         , m_id()
         , m_vertices{}
         , m_indices{}
+        , m_aabbox(nullptr)
     {
         m_id = mesh->mName.C_Str();
         meshDescription->id = m_id;
+
+        m_aabbox = std::make_shared<AABBox>(mesh->mAABB);
 
         m_vertices.reserve(mesh->mNumVertices);
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
