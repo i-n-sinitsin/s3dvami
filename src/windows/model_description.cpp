@@ -26,6 +26,9 @@ namespace s3dvami
             ImGui::Text("Model description:");
 
             drawMeshesDescription(meshesDescription);
+            drawMaterialsDescription();
+            drawTexturesDescription();
+            drawNodesDescription();
 
             ImGui::End();
         }
@@ -98,6 +101,27 @@ namespace s3dvami
                     }
                 }
             }
+        }
+    }
+
+    void ModelDescription::drawMaterialsDescription()
+    {
+        if (ImGui::CollapsingHeader("Materials"))
+        {
+        }
+    }
+
+    void ModelDescription::drawTexturesDescription()
+    {
+        if (ImGui::CollapsingHeader("Textures"))
+        {
+        }
+    }
+
+    void ModelDescription::drawNodesDescription()
+    {
+        if (ImGui::CollapsingHeader("Nodes"))
+        {
         }
     }
 }

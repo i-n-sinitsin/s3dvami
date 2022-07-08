@@ -16,6 +16,9 @@ namespace s3dvami
 
     private:
         void drawMeshesDescription(MeshesDescriptionPtr meshesDescription);
+        void drawMaterialsDescription();
+        void drawTexturesDescription();
+        void drawNodesDescription();
     };
 
     using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;
