@@ -5,6 +5,8 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+#include "config.h"
+#include "glm/gtc/matrix_transform.hpp"
 #include "imgui.h"
 #include "shaders/model_frag.h"
 #include "shaders/model_vert.h"
@@ -41,6 +43,16 @@ namespace s3dvami
         result = result && loadMeshes(scene);
         result = result && loadNodes(scene);
         result = result && loadAnimations(scene);
+
+        AABBox aabb;
+        for (auto &it : m_meshes)
+        {
+            aabb = aabb + it->getAABB();
+        }
+
+        // calc scale
+        auto scale = defaultModelSize / aabb.getMaxDelta();
+        m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
 
         m_loaded = result;
         return result;

@@ -189,19 +189,26 @@ namespace s3dvami
         glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
 
         // draw scene
-        //glEnable(GL_DEPTH_TEST);
-        //glDepthMask(GL_TRUE);
-        //glDepthRange(0.0f, 1.0f);
-        //glDepthFunc(GL_LESS);
+        glEnable(GL_ALPHA_TEST);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-        m_floorPlate->draw(m_camera);
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(GL_TRUE);
+        glDepthRange(0.0f, 1.0f);
+        glDepthFunc(GL_LESS);
 
         if (m_model)
         {
             m_model->draw(m_camera);
         }
 
-        //glDisable(GL_DEPTH_TEST);
+        m_floorPlate->draw(m_camera);
+
+        glDisable(GL_DEPTH_TEST);
+
+        glDisable(GL_ALPHA_TEST);
+        glDisable(GL_BLEND);
 
         // draw GUI
         renderImGui();

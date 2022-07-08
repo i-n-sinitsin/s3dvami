@@ -14,12 +14,10 @@ namespace s3dvami
         , m_id()
         , m_vertices{}
         , m_indices{}
-        , m_aabbox(nullptr)
+        , m_aabbox(mesh->mAABB)
     {
         m_id = mesh->mName.C_Str();
         meshDescription->id = m_id;
-
-        m_aabbox = std::make_shared<AABBox>(mesh->mAABB);
 
         m_vertices.reserve(mesh->mNumVertices);
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -71,8 +69,6 @@ namespace s3dvami
 
         //bool cullFaceTestValue = glIsEnabled(GL_CULL_FACE);
         //glEnable(GL_CULL_FACE);
-        //bool depthTestValue = glIsEnabled(GL_DEPTH_TEST);
-        //glEnable(GL_DEPTH_TEST);
 
         glBindVertexArray(m_VAO);
         glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_indices.size()), GL_UNSIGNED_INT, 0);
@@ -80,10 +76,13 @@ namespace s3dvami
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        //if (!depthTestValue)
-        //    glDisable(GL_DEPTH_TEST);
         //if (!cullFaceTestValue)
         //    glDisable(GL_CULL_FACE);
+    }
+
+    AABBox Mesh::getAABB() const
+    {
+        return m_aabbox;
     }
 
     void Mesh::createBuffers()

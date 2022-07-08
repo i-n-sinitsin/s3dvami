@@ -21,6 +21,7 @@ namespace s3dvami
         ~Mesh();
 
         void draw();
+        AABBox getAABB() const;
 
     private:
         MeshDescriptionPtr m_meshDescription;
@@ -33,7 +34,7 @@ namespace s3dvami
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;
 
-        AABBoxPtr m_aabbox;
+        AABBox m_aabbox;
 
         void createBuffers();
         void destroyBuffers();

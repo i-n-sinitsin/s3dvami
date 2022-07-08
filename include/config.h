@@ -17,4 +17,5 @@ namespace s3dvami
     constexpr float defaultFarPlate = 100.0f;
 
     constexpr float defaultfloorPlateSize = 40.0f;
+    constexpr float defaultModelSize = defaultfloorPlateSize / 2.0f;
 }

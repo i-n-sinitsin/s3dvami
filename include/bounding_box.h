@@ -17,11 +17,12 @@ namespace s3dvami
 
         AABBox operator+(const AABBox &o) const;
 
+        glm::vec3 getDelta() const;
+        float getMinDelta() const;
+        float getMaxDelta() const;
+
     private:
         glm::vec3 m_min;
         glm::vec3 m_max;
     };
-
-    using AABBoxPtr = std::shared_ptr<AABBox>;
-
 }

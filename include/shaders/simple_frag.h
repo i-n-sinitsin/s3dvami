@@ -14,7 +14,7 @@ out vec4 v_color;
 
 void main()
 {
-    v_color = vec4(1.0, 1.0, 1.0, 0.3);
+    v_color = vec4(0.8, 0.8, 0.8, 0.5);
 }
 )FRAG";
 }
