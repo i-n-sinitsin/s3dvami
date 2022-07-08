@@ -15,6 +15,7 @@
 #include "windows/msg_choose_file.h"
 
 #include "model.h"
+#include "objects/floor_plate.h"
 
 namespace s3dvami
 {
@@ -45,6 +46,10 @@ namespace s3dvami
         CameraPtr m_camera;
         ModelPtr m_model;
 
+        //objects
+        FloorPlatePtr m_floorPlate;
+
+        // windows
         ChooseFileMessagePtr m_chooseFileMessage;
         MainMenuBarPtr m_mainMenuBar;
         OpenFileDialogPtr m_openFileDialog;

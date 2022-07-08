@@ -17,6 +17,9 @@ namespace s3dvami
         , m_shader(new Shader(model_vert, model_frag))
         , m_meshes{}
         , m_meshesDescription(nullptr)
+        , m_translation(1.0f)
+        , m_rotation(1.0f)
+        , m_scale(1.0f)
     {}
 
     Model::~Model()
@@ -53,8 +56,8 @@ namespace s3dvami
         m_shader->use();
         m_shader->setUniform("u_projection", camera->getProjection());
         m_shader->setUniform("u_view", camera->getView());
-
-        m_shader->setUniform("u_model", glm::mat4(1.0f));
+        auto model = m_translation * m_rotation * m_scale;
+        m_shader->setUniform("u_model", model);
         /// TODO: draw model
 
         for (const auto &it : m_meshes)

@@ -40,6 +40,7 @@ namespace s3dvami
         , m_lastTime(0.0)
         , m_camera(new Camera())
         , m_model(nullptr)
+        , m_floorPlate(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenuBar(nullptr)
         , m_openFileDialog(nullptr)
@@ -90,6 +91,7 @@ namespace s3dvami
 
         initImGui();
 
+        // model
         m_model = std::make_shared<Model>();
 
         reload(fileName);
@@ -110,8 +112,16 @@ namespace s3dvami
         });
         m_modelDescription = std::make_shared<ModelDescription>();
 
-        m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, 0.1f, 100.0f);
-        m_camera->setView(glm::vec3(2.0f, 5.0, 5.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        // camera
+        m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
+
+        float posX = defaultfloorPlateSize / 2.0f / 1.0f; // half / 2.0f
+        float posY = defaultfloorPlateSize / 2.0f / 1.0f; // half / 3.0f
+        float posZ = (defaultFarPlate - defaultNearPlate) / 2.0f;
+        m_camera->setView(glm::vec3(posX, posY, posZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+
+        // objects
+        m_floorPlate = std::make_shared<FloorPlate>();
     }
 
     void Application::run()
@@ -183,6 +193,8 @@ namespace s3dvami
         //glDepthMask(GL_TRUE);
         //glDepthRange(0.0f, 1.0f);
         //glDepthFunc(GL_LESS);
+
+        m_floorPlate->draw(m_camera);
 
         if (m_model)
         {

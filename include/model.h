@@ -38,6 +38,10 @@ namespace s3dvami
         std::vector<MeshPtr> m_meshes;
         MeshesDescriptionPtr m_meshesDescription;
 
+        glm::mat4 m_translation;
+        glm::mat4 m_rotation;
+        glm::mat4 m_scale;
+
         bool loadTextures(const aiScene *scene);
         bool loadMaterials(const aiScene *scene);
         bool loadMeshes(const aiScene *scene);
