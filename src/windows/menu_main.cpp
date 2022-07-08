@@ -7,11 +7,11 @@
 namespace s3dvami::windows
 {
 
-    MainMenuBar::MainMenuBar(const MainMenuBarActions &actions)
-        : m_mainMenuBarActions(actions)
+    MainMenu::MainMenu(const MainMenuActions &actions)
+        : m_mainMenuActions(actions)
     {}
 
-    void MainMenuBar::draw()
+    void MainMenu::draw()
     {
         if (ImGui::BeginMainMenuBar())
         {
@@ -19,12 +19,12 @@ namespace s3dvami::windows
             {
                 if (ImGui::MenuItem("Open", "CTRL+O"))
                 {
-                    m_mainMenuBarActions.fileActions.openClick();
+                    m_mainMenuActions.fileActions.openClick();
                 }
                 ImGui::Separator();
                 if (ImGui::MenuItem("Exit", "CTRL+Q"))
                 {
-                    m_mainMenuBarActions.fileActions.exitClick();
+                    m_mainMenuActions.fileActions.exitClick();
                 }
                 ImGui::EndMenu();
             }
@@ -47,7 +47,7 @@ namespace s3dvami::windows
             {
                 if (ImGui::MenuItem("About"))
                 {
-                    m_mainMenuBarActions.helpActions.aboutClick();
+                    m_mainMenuActions.helpActions.aboutClick();
                 }
 
                 ImGui::EndMenu();

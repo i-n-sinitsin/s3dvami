@@ -17,14 +17,14 @@ namespace s3dvami
     class Mesh
     {
     public:
-        explicit Mesh(const aiMesh *mesh, description::MeshDescriptionPtr meshDescription);
+        explicit Mesh(const aiMesh *mesh, description::MeshPtr meshDescription);
         ~Mesh();
 
         void draw();
         AABBox getAABB() const;
 
     private:
-        description::MeshDescriptionPtr m_meshDescription;
+        description::MeshPtr m_meshDescription;
 
         GLuint m_VAO;
         GLuint m_VBO;

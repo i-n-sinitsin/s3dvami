@@ -8,10 +8,10 @@
 namespace s3dvami::windows
 {
 
-    ModelDescriptionWindow::ModelDescriptionWindow()
+    ModelDescription::ModelDescription()
     {}
 
-    void ModelDescriptionWindow::draw(description::ModelDescriptionPtr modelDescription)
+    void ModelDescription::draw(description::ModelPtr modelDescription)
     {
         ImGuiIO &io = ImGui::GetIO();
         ImVec2 pos(0.0f, 20.0f);
@@ -34,7 +34,7 @@ namespace s3dvami::windows
         }
     }
 
-    void ModelDescriptionWindow::drawMeshesDescription(description::MeshesDescriptionPtr meshesDescription)
+    void ModelDescription::drawMeshesDescription(description::MeshesPtr meshesDescription)
     {
         if (ImGui::CollapsingHeader("Meshes"))
         {
@@ -107,21 +107,21 @@ namespace s3dvami::windows
         }
     }
 
-    void ModelDescriptionWindow::drawMaterialsDescription()
+    void ModelDescription::drawMaterialsDescription()
     {
         if (ImGui::CollapsingHeader("Materials"))
         {
         }
     }
 
-    void ModelDescriptionWindow::drawTexturesDescription()
+    void ModelDescription::drawTexturesDescription()
     {
         if (ImGui::CollapsingHeader("Textures"))
         {
         }
     }
 
-    void ModelDescriptionWindow::drawNodesDescription()
+    void ModelDescription::drawNodesDescription()
     {
         if (ImGui::CollapsingHeader("Nodes"))
         {

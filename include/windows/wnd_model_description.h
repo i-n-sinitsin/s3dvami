@@ -7,19 +7,19 @@
 
 namespace s3dvami::windows
 {
-    class ModelDescriptionWindow
+    class ModelDescription
     {
     public:
-        explicit ModelDescriptionWindow();
+        explicit ModelDescription();
 
-        void draw(description::ModelDescriptionPtr modelDescription);
+        void draw(description::ModelPtr modelDescription);
 
     private:
-        void drawMeshesDescription(description::MeshesDescriptionPtr meshesDescription);
+        void drawMeshesDescription(description::MeshesPtr meshesDescription);
         void drawMaterialsDescription();
         void drawTexturesDescription();
         void drawNodesDescription();
     };
 
-    using ModelDescriptionWindowPtr = std::shared_ptr<ModelDescriptionWindow>;
+    using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;
 }

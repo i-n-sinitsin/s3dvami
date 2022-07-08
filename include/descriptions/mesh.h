@@ -6,12 +6,12 @@
 
 namespace s3dvami::description
 {
-    struct MeshDescription
+    struct Mesh
     {
         std::string id{};
         size_t verticiesAmount{0};
         size_t indeciesAmount{0};
     };
 
-    using MeshDescriptionPtr = std::shared_ptr<MeshDescription>;
+    using MeshPtr = std::shared_ptr<Mesh>;
 }

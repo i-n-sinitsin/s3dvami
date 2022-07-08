@@ -5,7 +5,7 @@
 
 namespace s3dvami::windows
 {
-    struct MainMenuBarActions
+    struct MainMenuActions
     {
         struct
         {
@@ -24,16 +24,16 @@ namespace s3dvami::windows
         } helpActions;
     };
 
-    class MainMenuBar
+    class MainMenu
     {
     public:
-        explicit MainMenuBar(const MainMenuBarActions &actions);
+        explicit MainMenu(const MainMenuActions &actions);
 
         void draw();
 
     private:
-        MainMenuBarActions m_mainMenuBarActions;
+        MainMenuActions m_mainMenuActions;
     };
 
-    using MainMenuBarPtr = std::shared_ptr<MainMenuBar>;
+    using MainMenuPtr = std::shared_ptr<MainMenu>;
 }

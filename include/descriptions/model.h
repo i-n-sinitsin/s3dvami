@@ -9,10 +9,10 @@
 
 namespace s3dvami::description
 {
-    struct ModelDescription
+    struct Model
     {
-        MeshesDescriptionPtr meshes;
+        MeshesPtr meshes;
     };
 
-    using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;
+    using ModelPtr = std::shared_ptr<Model>;
 }

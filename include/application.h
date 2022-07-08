@@ -11,8 +11,8 @@
 
 #include "windows/dlg_open_file.h"
 #include "windows/menu_main.h"
-#include "windows/wnd_model_description.h"
 #include "windows/msg_choose_file.h"
+#include "windows/wnd_model_description.h"
 
 #include "model.h"
 #include "objects/floor_plate.h"
@@ -51,9 +51,9 @@ namespace s3dvami
 
         // windows
         windows::ChooseFileMessagePtr m_chooseFileMessage;
-        windows::MainMenuBarPtr m_mainMenuBar;
+        windows::MainMenuPtr m_mainMenu;
         windows::OpenFileDialogPtr m_openFileDialog;
-        windows::ModelDescriptionWindowPtr m_modelDescriptionWindow;
+        windows::ModelDescriptionPtr m_modelDescriptionWindow;
 
         void process(float dt);
         void render();

@@ -9,13 +9,13 @@
 
 namespace s3dvami::description
 {
-    struct MeshesDescription
+    struct Meshes
     {
         size_t amount{0};
         size_t verticiesAmount{0};
         size_t indeciesAmount{0};
-        std::vector<MeshDescriptionPtr> meshes{};
+        std::vector<MeshPtr> meshes{};
     };
 
-    using MeshesDescriptionPtr = std::shared_ptr<MeshesDescription>;
+    using MeshesPtr = std::shared_ptr<Meshes>;
 }

@@ -42,7 +42,7 @@ namespace s3dvami
         , m_model(nullptr)
         , m_floorPlate(nullptr)
         , m_chooseFileMessage(nullptr)
-        , m_mainMenuBar(nullptr)
+        , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
         , m_modelDescriptionWindow(nullptr)
     {}
@@ -101,19 +101,19 @@ namespace s3dvami
             m_openFileDialog->show();
         });
 
-        windows::MainMenuBarActions mainMenuBarActions;
+        windows::MainMenuActions mainMenuBarActions;
         mainMenuBarActions.fileActions.openClick = [=]() {
             m_openFileDialog->show();
         };
         mainMenuBarActions.fileActions.exitClick = [=]() {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         };
-        m_mainMenuBar = std::make_shared<windows::MainMenuBar>(mainMenuBarActions);
+        m_mainMenu = std::make_shared<windows::MainMenu>(mainMenuBarActions);
 
         m_openFileDialog = std::make_shared<windows::OpenFileDialog>([=](const std::string &fileName) {
             reload(fileName);
         });
-        m_modelDescriptionWindow = std::make_shared<windows::ModelDescriptionWindow>();
+        m_modelDescriptionWindow = std::make_shared<windows::ModelDescription>();
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
@@ -250,7 +250,7 @@ namespace s3dvami
 
         ImGui::ShowDemoWindow();
 
-        m_mainMenuBar->draw();
+        m_mainMenu->draw();
 
         if (m_model)
         {

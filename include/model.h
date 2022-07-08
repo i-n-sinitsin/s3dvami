@@ -28,14 +28,14 @@ namespace s3dvami
             return m_loaded;
         }
 
-        description::ModelDescriptionPtr getModelDesription() const;
+        description::ModelPtr getModelDesription() const;
 
     private:
         bool m_loaded;
 
         ShaderPtr m_shader;
 
-        description::ModelDescriptionPtr m_modelDescription;
+        description::ModelPtr m_modelDescription;
 
         std::vector<MeshPtr> m_meshes;
 
