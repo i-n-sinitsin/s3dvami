@@ -10,6 +10,7 @@
 #include "assimp/scene.h"
 #include "bounding_box.h"
 #include "descriptions/mesh.h"
+#include "shaders/shader.h"
 #include "vertex.h"
 
 namespace s3dvami
@@ -20,7 +21,7 @@ namespace s3dvami
         explicit Mesh(const aiMesh *mesh, description::MeshPtr meshDescription);
         ~Mesh();
 
-        void draw();
+        void draw(ShaderPtr shader);
         AABBox getAABB() const;
 
     private:

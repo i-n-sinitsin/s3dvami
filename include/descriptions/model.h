@@ -6,14 +6,16 @@
 #include <vector>
 
 #include "descriptions/meshes.h"
+#include "descriptions/node.h"
 
 namespace s3dvami::description
 {
     struct Model
     {
-        std::string name;
+        std::string name{};
 
-        MeshesPtr meshes;
+        MeshesPtr meshes{};
+        NodePtr node{};
     };
 
     using ModelPtr = std::shared_ptr<Model>;

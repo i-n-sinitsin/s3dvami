@@ -16,19 +16,22 @@ namespace s3dvami::windows
         ImGuiIO &io = ImGui::GetIO();
         ImVec2 pos(0.0f, 20.0f);
         ImGui::SetNextWindowPos(pos, ImGuiCond_Always, ImVec2(0.0f, 0.0f));
-        ImVec2 size(defaultModelDescroptionWidth, io.DisplaySize.y);
+        ImVec2 size(defaultModelDescroptionWidth, io.DisplaySize.y - 25.0f);
         ImGui::SetNextWindowSize(size);
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
 
         if (ImGui::Begin("Model Description", nullptr, flags))
         {
-
             ImGui::Text("Model description:");
+            if (!modelDescription->name.empty())
+            {
+                ImGui::Text("Name -> %s", modelDescription->name.c_str());
+            }
 
             drawMeshesDescription(modelDescription->meshes);
             drawMaterialsDescription();
             drawTexturesDescription();
-            drawNodesDescription();
+            drawNodesDescription(modelDescription->node);
 
             ImGui::End();
         }
@@ -65,25 +68,25 @@ namespace s3dvami::windows
                 }
 
                 // meshes
-                int open_action = -1;
+                int openAction = -1;
                 if (ImGui::Button("Open all"))
                 {
-                    open_action = 1;
+                    openAction = 1;
                 }
                 ImGui::SameLine();
                 if (ImGui::Button("Close all"))
                 {
-                    open_action = 0;
+                    openAction = 0;
                 }
 
                 for (auto &meshDescription : meshesDescription->meshes)
                 {
-                    if (open_action != -1)
-                        ImGui::SetNextItemOpen(open_action != 0);
+                    if (openAction != -1)
+                        ImGui::SetNextItemOpen(openAction != 0);
 
                     if (ImGui::TreeNode(meshDescription->id.c_str()))
                     {
-                        if (ImGui::BeginTable(meshDescription->id.c_str(), 3))
+                        if (ImGui::BeginTable(meshDescription->id.c_str(), 2))
                         {
                             ImGui::TableNextColumn();
                             ImGui::Text("Verticies");
@@ -121,10 +124,59 @@ namespace s3dvami::windows
         }
     }
 
-    void ModelDescription::drawNodesDescription()
+    void ModelDescription::drawNodeDescription(description::NodePtr nodeDescription, int openAction)
+    {
+        if (openAction != -1)
+            ImGui::SetNextItemOpen(openAction != 0);
+
+        if (ImGui::TreeNode(nodeDescription->id.c_str()))
+        {
+            if (ImGui::BeginTable(nodeDescription->id.c_str(), 2))
+            {
+                /*
+                ImGui::TableNextColumn();
+                ImGui::Text("Verticies");
+                ImGui::TableNextColumn();
+                ImGui::Text("0");
+                ImGui::TableNextRow();
+
+                ImGui::TableNextColumn();
+                ImGui::Text("Indicies");
+                ImGui::TableNextColumn();
+                ImGui::Text("0");
+                ImGui::TableNextRow();
+                */
+                ImGui::EndTable();
+            }
+
+            for (auto &descr : nodeDescription->nodes)
+            {
+                drawNodeDescription(descr, openAction);
+            }
+
+            ImGui::TreePop();
+        }
+    }
+
+    void ModelDescription::drawNodesDescription(description::NodePtr nodeDescription)
     {
         if (ImGui::CollapsingHeader("Nodes"))
         {
+            if (nodeDescription)
+            {
+                int openAction = -1;
+                if (ImGui::Button("Open all"))
+                {
+                    openAction = 1;
+                }
+                ImGui::SameLine();
+                if (ImGui::Button("Close all"))
+                {
+                    openAction = 0;
+                }
+
+                drawNodeDescription(nodeDescription, openAction);
+            }
         }
     }
 }

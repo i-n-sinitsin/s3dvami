@@ -60,7 +60,7 @@ namespace s3dvami
         destroyBuffers();
     }
 
-    void Mesh::draw()
+    void Mesh::draw(ShaderPtr /*shader*/)
     {
         ///TODO: apply material
 

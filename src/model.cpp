@@ -50,6 +50,8 @@ namespace s3dvami
             aabb = aabb + it->getAABB();
         }
 
+        m_modelDescription->name = scene->mName.C_Str();
+
         // calc scale
         auto scale = defaultModelSize / aabb.getMaxDelta();
         m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
@@ -70,12 +72,8 @@ namespace s3dvami
         m_shader->setUniform("u_view", camera->getView());
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
-        /// TODO: draw model
 
-        for (const auto &it : m_meshes)
-        {
-            it->draw();
-        }
+        m_node->draw(m_shader, glm::mat4(1.0f), m_meshes);
     }
 
     void Model::process(float /*dt*/)
@@ -102,28 +100,35 @@ namespace s3dvami
 
     bool Model::loadMeshes(const aiScene *scene)
     {
-        auto &meshesDescr = m_modelDescription->meshes;
-        if (meshesDescr)
+        auto &meshesDescription = m_modelDescription->meshes;
+        if (meshesDescription)
         {
-            meshesDescr.reset();
+            meshesDescription.reset();
         }
-        meshesDescr = std::make_shared<description::Meshes>();
-        meshesDescr->amount = scene->mNumMeshes;
+        meshesDescription = std::make_shared<description::Meshes>();
+        meshesDescription->amount = scene->mNumMeshes;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
             auto meshDescription = std::make_shared<description::Mesh>();
             m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i], meshDescription));
-            meshesDescr->meshes.push_back(meshDescription);
+            meshesDescription->meshes.push_back(meshDescription);
 
-            meshesDescr->verticiesAmount += meshDescription->verticiesAmount;
-            meshesDescr->indeciesAmount += meshDescription->indeciesAmount;
+            meshesDescription->verticiesAmount += meshDescription->verticiesAmount;
+            meshesDescription->indeciesAmount += meshDescription->indeciesAmount;
         }
 
         return true;
     }
 
-    bool Model::loadNodes(const aiScene * /*scene*/)
+    bool Model::loadNodes(const aiScene *scene)
     {
+        auto &nodeDescription = m_modelDescription->node;
+        if (nodeDescription)
+        {
+            nodeDescription.reset();
+        }
+        nodeDescription = std::make_shared<description::Node>();
+        m_node = std::make_shared<Node>(scene->mRootNode, nodeDescription);
         return true;
     }
 

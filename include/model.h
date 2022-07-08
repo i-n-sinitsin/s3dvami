@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "descriptions/model.h"
 #include "mesh.h"
+#include "node.h"
 #include "shaders/shader.h"
 
 namespace s3dvami
@@ -38,6 +39,7 @@ namespace s3dvami
         description::ModelPtr m_modelDescription;
 
         std::vector<MeshPtr> m_meshes;
+        NodePtr m_node;
 
         glm::mat4 m_translation;
         glm::mat4 m_rotation;
