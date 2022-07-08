@@ -8,6 +8,7 @@
 #include "assimp/scene.h"
 #include "descriptions/meshes_description.h"
 #include "mesh.h"
+#include "shaders/shader.h"
 
 namespace s3dvami
 {
@@ -30,6 +31,8 @@ namespace s3dvami
 
     private:
         bool m_loaded;
+
+        ShaderPtr m_shader;
 
         std::vector<MeshPtr> m_meshes;
         MeshesDescriptionPtr m_meshesDescription;

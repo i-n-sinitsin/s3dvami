@@ -38,7 +38,7 @@ namespace s3dvami
     Application::Application()
         : m_window(nullptr)
         , m_lastTime(0.0)
-        , m_model(std::make_shared<Model>())
+        , m_model(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenuBar(nullptr)
         , m_openFileDialog(nullptr)
@@ -88,6 +88,8 @@ namespace s3dvami
         glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
 
         initImGui();
+
+        m_model = std::make_shared<Model>();
 
         reload(fileName);
 
@@ -160,7 +162,10 @@ namespace s3dvami
 
     void Application::process(float dt)
     {
-        m_model->process(dt);
+        if (m_model)
+        {
+            m_model->process(dt);
+        }
     }
 
     void Application::render()
@@ -215,9 +220,12 @@ namespace s3dvami
 
         m_mainMenuBar->draw();
 
-        m_modelDescription->draw(m_model->getMeshesDesription());
+        if (m_model)
+        {
+            m_modelDescription->draw(m_model->getMeshesDesription());
+        }
 
-        if (!m_model->isLoaded())
+        if (m_model && !m_model->isLoaded())
         {
             m_chooseFileMessage->draw();
         }

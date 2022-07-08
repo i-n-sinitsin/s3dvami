@@ -6,12 +6,15 @@
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
 #include "imgui.h"
+#include "shaders/model_frag.h"
+#include "shaders/model_vert.h"
 
 namespace s3dvami
 {
 
     Model::Model()
         : m_loaded(false)
+        , m_shader(new Shader(model_vert, model_frag))
         , m_meshes{}
         , m_meshesDescription(nullptr)
     {}
