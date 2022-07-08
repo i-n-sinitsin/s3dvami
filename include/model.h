@@ -7,7 +7,7 @@
 
 #include "assimp/scene.h"
 #include "camera.h"
-#include "descriptions/model_description.h"
+#include "descriptions/model.h"
 #include "mesh.h"
 #include "shaders/shader.h"
 
@@ -28,14 +28,14 @@ namespace s3dvami
             return m_loaded;
         }
 
-        ModelDescriptionPtr getModelDesription() const;
+        description::ModelDescriptionPtr getModelDesription() const;
 
     private:
         bool m_loaded;
 
         ShaderPtr m_shader;
 
-        ModelDescriptionPtr m_modelDescription;
+        description::ModelDescriptionPtr m_modelDescription;
 
         std::vector<MeshPtr> m_meshes;
 

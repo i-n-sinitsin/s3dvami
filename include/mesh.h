@@ -9,7 +9,7 @@
 
 #include "assimp/scene.h"
 #include "bounding_box.h"
-#include "descriptions/mesh_description.h"
+#include "descriptions/mesh.h"
 #include "vertex.h"
 
 namespace s3dvami
@@ -17,14 +17,14 @@ namespace s3dvami
     class Mesh
     {
     public:
-        explicit Mesh(const aiMesh *mesh, MeshDescriptionPtr meshDescription);
+        explicit Mesh(const aiMesh *mesh, description::MeshDescriptionPtr meshDescription);
         ~Mesh();
 
         void draw();
         AABBox getAABB() const;
 
     private:
-        MeshDescriptionPtr m_meshDescription;
+        description::MeshDescriptionPtr m_meshDescription;
 
         GLuint m_VAO;
         GLuint m_VBO;

@@ -3,7 +3,7 @@
 #include <functional>
 #include <memory>
 
-#include "descriptions/model_description.h"
+#include "descriptions/model.h"
 
 namespace s3dvami
 {
@@ -12,10 +12,10 @@ namespace s3dvami
     public:
         explicit ModelDescriptionWindow();
 
-        void draw(ModelDescriptionPtr modelDescription);
+        void draw(description::ModelDescriptionPtr modelDescription);
 
     private:
-        void drawMeshesDescription(MeshesDescriptionPtr meshesDescription);
+        void drawMeshesDescription(description::MeshesDescriptionPtr meshesDescription);
         void drawMaterialsDescription();
         void drawTexturesDescription();
         void drawNodesDescription();

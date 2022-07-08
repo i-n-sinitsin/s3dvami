@@ -17,7 +17,7 @@ namespace s3dvami
     Model::Model()
         : m_loaded(false)
         , m_shader(new Shader(model_vert, model_frag))
-        , m_modelDescription(new ModelDescription())
+        , m_modelDescription(new description::ModelDescription())
         , m_meshes{}
         , m_translation(1.0f)
         , m_rotation(1.0f)
@@ -85,7 +85,7 @@ namespace s3dvami
         }
     }
 
-    ModelDescriptionPtr Model::getModelDesription() const
+    description::ModelDescriptionPtr Model::getModelDesription() const
     {
         return m_modelDescription;
     }
@@ -107,11 +107,11 @@ namespace s3dvami
         {
             meshesDescr.reset();
         }
-        meshesDescr = std::make_shared<MeshesDescription>();
+        meshesDescr = std::make_shared<description::MeshesDescription>();
         meshesDescr->amount = scene->mNumMeshes;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
-            auto meshDescription = std::make_shared<MeshDescription>();
+            auto meshDescription = std::make_shared<description::MeshDescription>();
             m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i], meshDescription));
             meshesDescr->meshes.push_back(meshDescription);
 

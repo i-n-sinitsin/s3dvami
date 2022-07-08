@@ -6,7 +6,7 @@
 
 namespace s3dvami
 {
-    Mesh::Mesh(const aiMesh *mesh, MeshDescriptionPtr meshDescription)
+    Mesh::Mesh(const aiMesh *mesh, description::MeshDescriptionPtr meshDescription)
         : m_meshDescription(meshDescription)
         , m_VAO(0)
         , m_VBO(0)

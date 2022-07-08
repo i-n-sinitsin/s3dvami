@@ -11,7 +11,7 @@ namespace s3dvami
     ModelDescriptionWindow::ModelDescriptionWindow()
     {}
 
-    void ModelDescriptionWindow::draw(ModelDescriptionPtr modelDescription)
+    void ModelDescriptionWindow::draw(description::ModelDescriptionPtr modelDescription)
     {
         ImGuiIO &io = ImGui::GetIO();
         ImVec2 pos(0.0f, 20.0f);
@@ -34,7 +34,7 @@ namespace s3dvami
         }
     }
 
-    void ModelDescriptionWindow::drawMeshesDescription(MeshesDescriptionPtr meshesDescription)
+    void ModelDescriptionWindow::drawMeshesDescription(description::MeshesDescriptionPtr meshesDescription)
     {
         if (ImGui::CollapsingHeader("Meshes"))
         {

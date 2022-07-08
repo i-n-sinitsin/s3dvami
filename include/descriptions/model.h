@@ -5,9 +5,9 @@
 #include <memory>
 #include <vector>
 
-#include "descriptions/meshes_description.h"
+#include "descriptions/meshes.h"
 
-namespace s3dvami
+namespace s3dvami::description
 {
     struct ModelDescription
     {

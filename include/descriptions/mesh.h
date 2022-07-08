@@ -4,7 +4,7 @@
 
 #include <memory>
 
-namespace s3dvami
+namespace s3dvami::description
 {
     struct MeshDescription
     {
