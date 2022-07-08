@@ -12,4 +12,9 @@ namespace s3dvami
     constexpr glm::vec4 defautBackgroundColor = {0.5f, 0.5f, 0.5f, 1.0f};
 
     constexpr float defaultModelDescroptionWidth = 350.0f;
+
+    constexpr float defaultNearPlate = 0.1f;
+    constexpr float defaultFarPlate = 100.0f;
+
+    constexpr float defaultfloorPlateSize = 40.0f;
 }
