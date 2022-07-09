@@ -16,10 +16,12 @@ layout(location = 2) in vec2 a_tex;
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
+uniform mat4 u_nodeTransformation;
 
 void main()
 {
     mat4 pvm = u_projection * u_view * u_model;
+    mat4 pvmnt = pvm * u_nodeTransformation;
     gl_Position = pvm * vec4(a_pos, 1.0f);
 }
 )VERT";

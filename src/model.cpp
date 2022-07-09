@@ -7,6 +7,7 @@
 #include "assimp/scene.h"
 #include "config.h"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
 #include "shaders/model_frag.h"
 #include "shaders/model_vert.h"
@@ -18,6 +19,8 @@ namespace s3dvami
         : m_loaded(false)
         , m_shader(new Shader(model_vert, model_frag))
         , m_modelDescription(new description::Model())
+        , m_globalTransform(1.0f)
+        , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
         , m_meshes{}
         , m_translation(1.0f)
         , m_rotation(1.0f)
@@ -51,6 +54,9 @@ namespace s3dvami
         }
 
         m_modelDescription->name = scene->mName.C_Str();
+
+        m_globalTransform = glm::transpose(glm::make_mat4(&(scene->mRootNode->mTransformation.a1)));
+        m_globalInverseTransform = glm::inverse(m_globalTransform);
 
         // calc scale
         auto scale = defaultModelSize / aabb.getMaxDelta();

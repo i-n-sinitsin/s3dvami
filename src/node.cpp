@@ -40,7 +40,10 @@ namespace s3dvami
 
     void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, const std::vector<MeshPtr> &meshes)
     {
-        glm::mat4 currentTransformation = parentTransformation * m_transformation;
+        glm::mat4 nodeTransformation = glm::mat4(1.0f);
+        // TODO: update when animations is ready
+        nodeTransformation = parentTransformation * m_transformation;
+        shader->setUniform("u_nodeTransformation", nodeTransformation);
 
         for (auto mesh : m_meshes)
         {
@@ -49,7 +52,7 @@ namespace s3dvami
 
         for (const auto &node : m_nodes)
         {
-            node->draw(shader, currentTransformation, meshes);
+            node->draw(shader, nodeTransformation, meshes);
         }
     }
 }

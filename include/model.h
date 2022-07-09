@@ -38,6 +38,9 @@ namespace s3dvami
 
         description::ModelPtr m_modelDescription;
 
+        glm::mat4 m_globalTransform;
+        glm::mat4 m_globalInverseTransform;
+
         std::vector<MeshPtr> m_meshes;
         NodePtr m_node;
 
