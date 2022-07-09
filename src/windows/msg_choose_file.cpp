@@ -20,7 +20,8 @@ namespace s3dvami::windows
         ImGuiWindowFlags flags = ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoSavedSettings;
         if (ImGui::Begin("Message", nullptr, flags))
         {
-            ImGui::Text("   Model not loaded  ");
+            ImGui::Text("   Drop file to view  ");
+            ImGui::Text("           or         ");
 
             if (ImGui::Button("    Choose a file    "))
             {
