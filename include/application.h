@@ -36,6 +36,7 @@ namespace s3dvami
 
         void onKey(int key, int scancode, int action, int mods);
         void onResize(int width, int height);
+        void onDrop(const std::string &fileName);
 
     private:
         static Application *m_instance;

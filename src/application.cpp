@@ -33,6 +33,25 @@ static void frameBufferSizeCallback(GLFWwindow * /*window*/, int width, int heig
     s3dvami::Application::GetInstance()->onResize(width, height);
 }
 
+void mouseCallback(GLFWwindow * /*window*/, double /*xPos*/, double /*yPos*/)
+{
+    //s3dvami::Application::GetInstance()->onMouseMove(width, height);
+}
+
+void scrollCallback(GLFWwindow * /*window*/, double /*xOffset*/, double /*yOffset*/)
+{
+    //s3dvami::Application::GetInstance()->onMouseScroll(width, height);
+}
+
+void dropCallback(GLFWwindow * /*window*/, int pathCount, const char *paths[])
+{
+    // take only first path if exist
+    if (pathCount > 0)
+    {
+        s3dvami::Application::GetInstance()->onDrop(std::string(paths[0]));
+    }
+}
+
 namespace s3dvami
 {
     Application::Application()
@@ -87,8 +106,13 @@ namespace s3dvami
             return;
         }
 
+        // callbacks
         glfwSetKeyCallback(m_window, keyCallback);
+        glfwSetCursorPosCallback(m_window, mouseCallback);
+        glfwSetScrollCallback(m_window, scrollCallback);
+        //glfwSetMouseButtonCallback
         glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
+        glfwSetDropCallback(m_window, dropCallback);
 
         initImGui();
 
@@ -184,6 +208,11 @@ namespace s3dvami
         render();
     }
 
+    void Application::onDrop(const std::string &fileName)
+    {
+        reload(fileName);
+    }
+
     void Application::process(float dt)
     {
         if (m_model)
@@ -231,7 +260,8 @@ namespace s3dvami
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         ImGuiIO &io = ImGui::GetIO();
-        //io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+        // disable save ini file
+        io.IniFilename = nullptr;
 
         ///TODO: switch style
         ImGui::StyleColorsDark();
