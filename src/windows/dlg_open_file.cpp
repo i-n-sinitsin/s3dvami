@@ -72,11 +72,13 @@ namespace s3dvami::windows
         if (ImGui::BeginPopupModal("Select a file", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
             // listbox
+            ImGui::PushItemWidth(-1);
             ImGui::ListBox("##hidelabel", &m_currentItem, items, m_fsEntries.size(), 10);
             if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
             {
                 selectItem();
             }
+            ImGui::PopItemWidth();
             delete[] items;
 
             // current path
