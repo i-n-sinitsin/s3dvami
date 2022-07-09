@@ -27,6 +27,43 @@ namespace s3dvami::windows
             return;
         }
 
+        // fill items
+        char **items = new char *[m_fsEntries.size()];
+        for (unsigned int i = 0; i < m_fsEntries.size(); i++)
+        {
+            items[i] = const_cast<char *>(m_fsEntries[i].c_str());
+        }
+
+        auto selectItem = [=]() {
+            auto item = m_fsEntries[m_currentItem];
+            if (item == "..")
+            {
+                if (std::filesystem::current_path().has_parent_path())
+                {
+                    std::filesystem::current_path(std::filesystem::current_path().parent_path());
+                }
+                fillList();
+                m_currentItem = 0;
+            }
+            else
+            {
+                std::filesystem::path file = std::filesystem::current_path();
+                file.append(item);
+                if (std::filesystem::is_directory(file))
+                {
+                    std::filesystem::current_path(file);
+                    fillList();
+                    m_currentItem = 0;
+                }
+                else
+                {
+                    m_fileSelected(file);
+                    m_visible = false;
+                    ImGui::CloseCurrentPopup();
+                }
+            }
+        };
+
         ImGui::OpenPopup("Select a file");
 
         ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -34,15 +71,12 @@ namespace s3dvami::windows
 
         if (ImGui::BeginPopupModal("Select a file", NULL, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            // ImGui::Text("Select a file");
-
             // listbox
-            char **items = new char *[m_fsEntries.size()];
-            for (unsigned int i = 0; i < m_fsEntries.size(); i++)
-            {
-                items[i] = const_cast<char *>(m_fsEntries[i].c_str());
-            }
             ImGui::ListBox("##hidelabel", &m_currentItem, items, m_fsEntries.size(), 10);
+            if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+            {
+                selectItem();
+            }
             delete[] items;
 
             // current path
@@ -52,33 +86,7 @@ namespace s3dvami::windows
             // buttons
             if (ImGui::Button("Choose"))
             {
-                auto item = m_fsEntries[m_currentItem];
-                if (item == "..")
-                {
-                    if (std::filesystem::current_path().has_parent_path())
-                    {
-                        std::filesystem::current_path(std::filesystem::current_path().parent_path());
-                    }
-                    fillList();
-                    m_currentItem = 0;
-                }
-                else
-                {
-                    std::filesystem::path file = std::filesystem::current_path();
-                    file.append(item);
-                    if (std::filesystem::is_directory(file))
-                    {
-                        std::filesystem::current_path(file);
-                        fillList();
-                        m_currentItem = 0;
-                    }
-                    else
-                    {
-                        m_fileSelected(file);
-                        m_visible = false;
-                        ImGui::CloseCurrentPopup();
-                    }
-                }
+                selectItem();
             }
             ImGui::SameLine();
             if (ImGui::Button("Cancel"))
