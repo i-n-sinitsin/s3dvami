@@ -27,9 +27,8 @@ namespace s3dvami::windows
             {
                 m_buttonClick();
             }
-
-            ImGui::End();
         }
+        ImGui::End();
     }
 
 }

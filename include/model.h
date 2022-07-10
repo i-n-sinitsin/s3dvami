@@ -11,6 +11,7 @@
 #include "mesh.h"
 #include "node.h"
 #include "shaders/shader.h"
+#include "texture.h"
 
 namespace s3dvami
 {
@@ -43,6 +44,7 @@ namespace s3dvami
 
         std::vector<MeshPtr> m_meshes;
         NodePtr m_node;
+        TextureMgrPtr m_textures;
 
         glm::mat4 m_translation;
         glm::mat4 m_rotation;

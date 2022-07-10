@@ -22,6 +22,8 @@ namespace s3dvami
         , m_globalTransform(1.0f)
         , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
         , m_meshes{}
+        , m_node(nullptr)
+        , m_textures(nullptr)
         , m_translation(1.0f)
         , m_rotation(1.0f)
         , m_scale(1.0f)
@@ -94,9 +96,18 @@ namespace s3dvami
         return m_modelDescription;
     }
 
-    bool Model::loadTextures(const aiScene * /*scene*/)
+    bool Model::loadTextures(const aiScene *scene)
     {
-        return true;
+        bool result = true;
+        m_textures = std::make_shared<TextureMgr>();
+
+        for (unsigned int i = 0; i < scene->mNumTextures; i++)
+        {
+            const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
+            result = result && m_textures->loadTexture(aiTex);
+        }
+
+        return result;
     }
 
     bool Model::loadMaterials(const aiScene * /*scene*/)

@@ -113,6 +113,7 @@ namespace s3dvami
         //glfwSetMouseButtonCallback
         glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
         glfwSetDropCallback(m_window, dropCallback);
+        //glfwSetInputMode
 
         initImGui();
 
