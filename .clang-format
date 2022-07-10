@@ -61,10 +61,20 @@ IncludeCategories:
     Priority:        3
   - Regex:           '^"GLFW/'
     Priority:        4
-  - Regex:           '^"windows/'
+  - Regex:           '^"assimp/'
     Priority:        5
-  - Regex:           '.*'
+  - Regex:           '^"model/'
     Priority:        6
+  - Regex:           '^"windows/'
+    Priority:        7
+  - Regex:           '^"objects/'
+    Priority:        8
+  - Regex:           '^"descriptions/'
+    Priority:        9
+  - Regex:           '^"shaders/'
+    Priority:        10
+  - Regex:           '.*'
+    Priority:        11
 IncludeIsMainRegex: '(_test)?$'
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash

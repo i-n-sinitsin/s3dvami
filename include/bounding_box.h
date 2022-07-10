@@ -5,6 +5,7 @@
 #include <memory>
 
 #include "assimp/scene.h"
+
 #include "glm/glm.hpp"
 
 namespace s3dvami

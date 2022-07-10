@@ -9,10 +9,14 @@
 #include "glad/glad.h"
 
 #include "assimp/scene.h"
-#include "descriptions/node.h"
-#include "glm/glm.hpp"
+
 #include "model/mesh.h"
+
+#include "descriptions/node.h"
+
 #include "shaders/shader.h"
+
+#include "glm/glm.hpp"
 
 namespace s3dvami
 {

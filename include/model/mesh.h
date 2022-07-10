@@ -6,9 +6,12 @@
 #include <vector>
 
 #include "assimp/scene.h"
-#include "bounding_box.h"
+
 #include "descriptions/mesh.h"
+
 #include "shaders/shader.h"
+
+#include "bounding_box.h"
 #include "vertex.h"
 
 namespace s3dvami

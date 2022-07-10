@@ -14,8 +14,9 @@
 #include "windows/msg_choose_file.h"
 #include "windows/wnd_model_description.h"
 
-#include "model.h"
 #include "objects/floor_plate.h"
+
+#include "model.h"
 
 namespace s3dvami
 {

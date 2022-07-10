@@ -4,9 +4,10 @@
 
 #include "glad/glad.h"
 
-#include "config.h"
 #include "shaders/simple_frag.h"
 #include "shaders/simple_vert.h"
+
+#include "config.h"
 
 namespace s3dvami::objects
 {

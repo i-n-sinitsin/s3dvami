@@ -6,11 +6,15 @@
 #include <string>
 
 #include "assimp/scene.h"
-#include "camera.h"
-#include "descriptions/model.h"
+
 #include "model/mesh.h"
-#include "node.h"
+
+#include "descriptions/model.h"
+
 #include "shaders/shader.h"
+
+#include "camera.h"
+#include "node.h"
 #include "texture.h"
 
 namespace s3dvami

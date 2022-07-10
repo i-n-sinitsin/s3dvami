@@ -7,8 +7,9 @@
 
 #include "glad/glad.h"
 
-#include "camera.h"
 #include "shaders/shader.h"
+
+#include "camera.h"
 #include "vertex.h"
 
 namespace s3dvami::objects

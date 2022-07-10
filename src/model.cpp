@@ -5,12 +5,14 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
+
+#include "shaders/model_frag.h"
+#include "shaders/model_vert.h"
+
 #include "config.h"
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
-#include "shaders/model_frag.h"
-#include "shaders/model_vert.h"
 
 namespace s3dvami
 {
