@@ -4,12 +4,14 @@
 
 #include "glad/glad.h"
 
-#include "model/vertex.h"
-
 #include "shaders/simple_frag.h"
 #include "shaders/simple_vert.h"
 
 #include "config.h"
+
+// x - red
+// y - green
+// z - b
 
 namespace s3dvami::objects
 {
@@ -17,16 +19,40 @@ namespace s3dvami::objects
         : m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
+        , m_vertices{}
+        , m_indices{}
         , m_shader(new Shader(simple_vert, simple_frag))
     {
         float half = defaultfloorPlateSize / 2.0f;
-        std::vector<Vertex> m_vertices = {
-            {{-half, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-            {{-half, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-            {{half, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-            {{half, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}},
-        };
-        std::vector<unsigned int> m_indices = {0, 1, 3, 1, 2, 3};
+
+        float dx = defaultfloorPlateSize / static_cast<float>(defaultfloorPartsByAxes);
+        float dz = defaultfloorPlateSize / static_cast<float>(defaultfloorPartsByAxes);
+        for (unsigned int x = 0; x < defaultfloorPartsByAxes; x++)
+        {
+            for (unsigned int z = 0; z < defaultfloorPartsByAxes; z++)
+            {
+                float xmin = -half + dx * x;
+                float xmax = -half + dx * (x + 1);
+                float zmin = half - dz * z;
+                float zmax = half - dz * (z + 1);
+
+                unsigned int startIndex = m_vertices.size();
+
+                m_vertices.push_back({{xmin, 0.0f, zmin}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+                m_vertices.push_back({{xmin, 0.0f, zmax}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+                m_vertices.push_back({{xmax, 0.0f, zmax}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+                m_vertices.push_back({{xmax, 0.0f, zmin}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+                m_indices.push_back(startIndex + 0);
+                m_indices.push_back(startIndex + 1);
+                m_indices.push_back(startIndex + 1);
+                m_indices.push_back(startIndex + 2);
+                m_indices.push_back(startIndex + 2);
+                m_indices.push_back(startIndex + 3);
+                m_indices.push_back(startIndex + 0);
+                m_indices.push_back(startIndex + 3);
+            }
+        }
 
         glGenVertexArrays(1, &m_VAO);
         glGenBuffers(1, &m_VBO);
@@ -64,25 +90,12 @@ namespace s3dvami::objects
         m_shader->setUniform("u_view", camera->getView());
         m_shader->setUniform("u_model", glm::mat4(1.0f));
 
-        ///TODO: apply material
-
-        // TODO: add reading polygon mode from material
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-
-        //bool cullFaceTestValue = glIsEnabled(GL_CULL_FACE);
-        //glEnable(GL_CULL_FACE);
-        //bool depthTestValue = glIsEnabled(GL_DEPTH_TEST);
-        //glEnable(GL_DEPTH_TEST);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         glBindVertexArray(m_VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
 
-        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-        //if (!depthTestValue)
-        //    glDisable(GL_DEPTH_TEST);
-        //if (!cullFaceTestValue)
-        //    glDisable(GL_CULL_FACE);
+        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }

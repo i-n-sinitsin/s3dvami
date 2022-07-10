@@ -5,6 +5,8 @@
 #include <memory>
 #include <vector>
 
+#include "model/vertex.h"
+
 #include "shaders/shader.h"
 
 #include "camera.h"
@@ -23,6 +25,9 @@ namespace s3dvami::objects
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;
+
+        std::vector<Vertex> m_vertices;
+        std::vector<unsigned int> m_indices;
 
         ShaderPtr m_shader;
     };

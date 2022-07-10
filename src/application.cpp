@@ -59,7 +59,7 @@ namespace s3dvami
         , m_lastTime(0.0)
         , m_camera(new Camera())
         , m_model(nullptr)
-        , m_showFloorPlate(false)
+        , m_showFloorPlate(true)
         , m_floorPlate(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenu(nullptr)
@@ -148,11 +148,7 @@ namespace s3dvami
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
-
-        float posX = defaultfloorPlateSize / 2.0f / 1.0f; // half / 2.0f
-        float posY = defaultfloorPlateSize / 2.0f / 1.0f; // half / 3.0f
-        float posZ = (defaultFarPlate - defaultNearPlate) / 2.0f;
-        m_camera->setView(glm::vec3(posX, posY, posZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera->setView(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
