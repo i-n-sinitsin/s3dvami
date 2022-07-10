@@ -8,7 +8,7 @@
 #include "assimp/scene.h"
 #include "camera.h"
 #include "descriptions/model.h"
-#include "mesh.h"
+#include "model/mesh.h"
 #include "node.h"
 #include "shaders/shader.h"
 #include "texture.h"

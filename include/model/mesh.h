@@ -5,8 +5,6 @@
 #include <memory>
 #include <vector>
 
-#include "glad/glad.h"
-
 #include "assimp/scene.h"
 #include "bounding_box.h"
 #include "descriptions/mesh.h"
@@ -18,11 +16,15 @@ namespace s3dvami
     class Mesh
     {
     public:
-        explicit Mesh(const aiMesh *mesh, description::MeshPtr meshDescription);
+        explicit Mesh(const aiMesh *mesh);
         ~Mesh();
 
         void draw(ShaderPtr shader);
         AABBox getAABB() const;
+
+        std::string id() const;
+        unsigned int verticiesAmount() const;
+        unsigned int indicesAmount() const;
 
     private:
         description::MeshPtr m_meshDescription;

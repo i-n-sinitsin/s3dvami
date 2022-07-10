@@ -127,7 +127,7 @@ namespace s3dvami
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
             auto meshDescription = std::make_shared<description::Mesh>();
-            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i], meshDescription));
+            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
             meshesDescription->meshes.push_back(meshDescription);
 
             meshesDescription->verticiesAmount += meshDescription->verticiesAmount;

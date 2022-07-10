@@ -11,7 +11,7 @@
 #include "assimp/scene.h"
 #include "descriptions/node.h"
 #include "glm/glm.hpp"
-#include "mesh.h"
+#include "model/mesh.h"
 #include "shaders/shader.h"
 
 namespace s3dvami

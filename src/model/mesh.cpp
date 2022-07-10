@@ -1,14 +1,13 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
-#include "mesh.h"
+#include "model/mesh.h"
 
 #include "glad/glad.h"
 
 namespace s3dvami
 {
-    Mesh::Mesh(const aiMesh *mesh, description::MeshPtr meshDescription)
-        : m_meshDescription(meshDescription)
-        , m_VAO(0)
+    Mesh::Mesh(const aiMesh *mesh)
+        : m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
         , m_id()
@@ -17,7 +16,6 @@ namespace s3dvami
         , m_aabbox(mesh->mAABB)
     {
         m_id = mesh->mName.C_Str();
-        meshDescription->id = m_id;
 
         m_vertices.reserve(mesh->mNumVertices);
         for (unsigned int i = 0; i < mesh->mNumVertices; i++)
@@ -30,7 +28,7 @@ namespace s3dvami
                 vertex.norm = {mesh->mNormals[i].x, mesh->mNormals[i].y, mesh->mNormals[i].z};
             }
 
-            if (mesh->mTextureCoords[0])
+            if (mesh->mTextureCoords[0] != nullptr)
             {
                 vertex.tex = {mesh->mTextureCoords[0][i].x, mesh->mTextureCoords[0][i].y};
             }
@@ -39,7 +37,6 @@ namespace s3dvami
 
             m_vertices.push_back(vertex);
         }
-        meshDescription->verticiesAmount = m_vertices.size();
 
         for (unsigned int i = 0; i < mesh->mNumFaces; i++)
         {
@@ -49,7 +46,6 @@ namespace s3dvami
                 m_indices.push_back(face.mIndices[j]);
             }
         }
-        meshDescription->indeciesAmount = m_indices.size();
 
         createBuffers();
         fillBuffers();
@@ -85,6 +81,21 @@ namespace s3dvami
         return m_aabbox;
     }
 
+    std::string Mesh::id() const
+    {
+        return m_id;
+    }
+
+    unsigned int Mesh::verticiesAmount() const
+    {
+        return m_vertices.size();
+    }
+
+    unsigned int Mesh::indicesAmount() const
+    {
+        return m_indices.size();
+    }
+
     void Mesh::createBuffers()
     {
         glGenVertexArrays(1, &m_VAO);
@@ -115,15 +126,13 @@ namespace s3dvami
         glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, norm));
         glEnableVertexAttribArray(2);
         glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tex));
-
+        /*
+        glEnableVertexAttribArray(3);
+        glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex3D), (void*)offsetof(Vertex3D, bonesIds));
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)offsetof(Vertex3D, bonesWeights));
+        */
         glBindVertexArray(0);
     }
 
 }
-
-/*
-    glEnableVertexAttribArray(3);
-    glVertexAttribIPointer(3, 4, GL_INT, sizeof(Vertex3D), (void*)offsetof(Vertex3D, bonesIds));
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex3D), (void*)offsetof(Vertex3D, bonesWeights));
-*/

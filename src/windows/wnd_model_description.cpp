@@ -101,7 +101,6 @@ namespace s3dvami::windows
                     if ((it.open = ImGui::CollapsingHeader(it.name.c_str())))
                     {
 
-
                         it.draw(modelDescription);
                     }
                 }
@@ -227,17 +226,11 @@ namespace s3dvami::windows
     }
 
     void ModelDescription::drawCamerasDescription()
-    {
-
-    }
+    {}
 
     void ModelDescription::drawAnimationsDescription()
-    {
-
-    }
+    {}
 
     void ModelDescription::drawLightsDescription()
-    {
-
-    }
+    {}
 }
