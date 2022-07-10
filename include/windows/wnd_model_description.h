@@ -34,13 +34,13 @@ namespace s3dvami::windows
         std::vector<Description> m_descriptions;
 
         void drawMeshesDescription(description::MeshesPtr meshesDescription);
-
         void drawMaterialsDescription();
-
         void drawTexturesDescription();
-
         void drawNodeDescription(description::NodePtr nodeDescription, int openAction);
         void drawNodesDescription(description::NodePtr nodeDescription);
+        void drawCamerasDescription();
+        void drawAnimationsDescription();
+        void drawLightsDescription();
     };
 
     using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;

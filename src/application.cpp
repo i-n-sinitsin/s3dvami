@@ -292,7 +292,7 @@ namespace s3dvami
 
         m_mainMenu->draw();
 
-        if (m_model)
+        if (m_model && m_model->isLoaded())
         {
             m_modelDescriptionWindow->draw(m_model->getModelDesription());
         }

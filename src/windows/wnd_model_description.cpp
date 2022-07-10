@@ -19,7 +19,6 @@ namespace s3dvami::windows
                 [=](description::ModelPtr model) {
                     drawMeshesDescription(model->meshes);
                 }},
-
             {"Materials", false, Type::Attached,
                 [=](description::ModelPtr /*model*/) {
                     drawMaterialsDescription();
@@ -27,6 +26,18 @@ namespace s3dvami::windows
             {"Textures", false, Type::Attached,
                 [=](description::ModelPtr /*model*/) {
                     drawTexturesDescription();
+                }},
+            {"Cameras", false, Type::Attached,
+                [=](description::ModelPtr /*model*/) {
+                    drawCamerasDescription();
+                }},
+            {"Animations", false, Type::Attached,
+                [=](description::ModelPtr /*model*/) {
+                    drawAnimationsDescription();
+                }},
+            {"Lights", false, Type::Attached,
+                [=](description::ModelPtr /*model*/) {
+                    drawLightsDescription();
                 }},
         }
     {}
@@ -81,12 +92,15 @@ namespace s3dvami::windows
                     //    it.type = Type::Detached;
                     //}
 
+                    if (ImGui::ArrowButton("Detach2", ImGuiDir_::ImGuiDir_Up))
+                    {
+                        it.type = Type::Detached;
+                    }
+                    ImGui::SameLine();
+
                     if ((it.open = ImGui::CollapsingHeader(it.name.c_str())))
                     {
-                        if (ImGui::ArrowButton("Detach2", ImGuiDir_::ImGuiDir_Up))
-                        {
-                            it.type = Type::Detached;
-                        }
+
 
                         it.draw(modelDescription);
                     }
@@ -210,5 +224,20 @@ namespace s3dvami::windows
 
             drawNodeDescription(nodeDescription, openAction);
         }
+    }
+
+    void ModelDescription::drawCamerasDescription()
+    {
+
+    }
+
+    void ModelDescription::drawAnimationsDescription()
+    {
+
+    }
+
+    void ModelDescription::drawLightsDescription()
+    {
+
     }
 }
