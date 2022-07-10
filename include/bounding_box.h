@@ -18,11 +18,11 @@ namespace s3dvami
 
         AABBox operator+(const AABBox &o) const;
 
-        glm::vec3 getDelta() const;
-        float getMinDelta() const;
-        float getMaxDelta() const;
+        glm::vec3 delta() const;
+        float minDelta() const;
+        float maxDelta() const;
 
-        glm::vec3 getCenter() const;
+        glm::vec3 center() const;
 
     private:
         glm::vec3 m_min;

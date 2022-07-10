@@ -27,24 +27,24 @@ namespace s3dvami
         return result;
     }
 
-    glm::vec3 AABBox::getDelta() const
+    glm::vec3 AABBox::delta() const
     {
         return glm::vec3(m_max.x - m_min.x, m_max.y - m_min.y, m_max.z - m_min.z);
     }
 
-    float AABBox::getMinDelta() const
+    float AABBox::minDelta() const
     {
-        auto delta = getDelta();
-        return std::min(delta.x, std::min(delta.y, delta.z));
+        auto d = delta();
+        return std::min(d.x, std::min(d.y, d.z));
     }
 
-    float AABBox::getMaxDelta() const
+    float AABBox::maxDelta() const
     {
-        auto delta = getDelta();
-        return std::max(delta.x, std::max(delta.y, delta.z));
+        auto d = delta();
+        return std::max(d.x, std::max(d.y, d.z));
     }
 
-    glm::vec3 AABBox::getCenter() const
+    glm::vec3 AABBox::center() const
     {
         return (m_min + m_max) / 2.0f;
     }

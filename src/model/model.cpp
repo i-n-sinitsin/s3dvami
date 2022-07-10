@@ -58,7 +58,7 @@ namespace s3dvami::model
         m_name = scene->mName.C_Str();
 
         // calc scale
-        auto scale = defaultModelSize / aabb.getMaxDelta();
+        auto scale = defaultModelSize / aabb.maxDelta();
         m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
 
         m_loaded = result;
