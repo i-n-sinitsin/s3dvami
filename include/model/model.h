@@ -7,7 +7,7 @@
 
 #include "assimp/scene.h"
 
-#include "model/mesh.h"
+#include "model/mesh_mgr.h"
 
 #include "descriptions/model.h"
 
@@ -17,7 +17,7 @@
 #include "node.h"
 #include "texture.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     class Model
     {
@@ -46,7 +46,8 @@ namespace s3dvami
         glm::mat4 m_globalTransform;
         glm::mat4 m_globalInverseTransform;
 
-        std::vector<MeshPtr> m_meshes;
+        MeshMgrPtr m_meshMgr;
+
         NodePtr m_node;
         TextureMgrPtr m_textures;
 

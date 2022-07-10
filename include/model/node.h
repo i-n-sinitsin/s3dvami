@@ -10,7 +10,7 @@
 
 #include "assimp/scene.h"
 
-#include "model/mesh.h"
+#include "model/mesh_mgr.h"
 
 #include "descriptions/node.h"
 
@@ -18,7 +18,7 @@
 
 #include "glm/glm.hpp"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     class Node;
     using NodePtr = std::shared_ptr<Node>;
@@ -29,7 +29,7 @@ namespace s3dvami
         explicit Node(const aiNode *node, description::NodePtr nodeDescription);
         ~Node();
 
-        void draw(ShaderPtr shader, glm::mat4 parentTransformation, const std::vector<MeshPtr> &meshes);
+        void draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr);
 
     private:
         description::NodePtr m_nodeDescription;

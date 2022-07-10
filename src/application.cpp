@@ -118,7 +118,7 @@ namespace s3dvami
         initImGui();
 
         // model
-        m_model = std::make_shared<Model>();
+        m_model = std::make_shared<model::Model>();
 
         reload(fileName);
 
@@ -314,7 +314,7 @@ namespace s3dvami
         {
             // load mode
             m_model.reset();
-            m_model = std::make_shared<Model>();
+            m_model = std::make_shared<model::Model>();
             if (!m_model->load(fileName.value()))
             {
                 ///TODO: show error message

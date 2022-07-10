@@ -14,7 +14,7 @@
 #include "bounding_box.h"
 #include "vertex.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     class Mesh
     {
@@ -23,7 +23,7 @@ namespace s3dvami
         ~Mesh();
 
         void draw(ShaderPtr shader);
-        AABBox getAABB() const;
+        AABBox aabb() const;
 
         std::string id() const;
         unsigned int verticiesAmount() const;

@@ -9,14 +9,14 @@
 
 #include "GLFW/glfw3.h"
 
+#include "model/model.h"
+
 #include "windows/dlg_open_file.h"
 #include "windows/menu_main.h"
 #include "windows/msg_choose_file.h"
 #include "windows/wnd_model_description.h"
 
 #include "objects/floor_plate.h"
-
-#include "model.h"
 
 namespace s3dvami
 {
@@ -46,7 +46,7 @@ namespace s3dvami
         double m_lastTime;
 
         CameraPtr m_camera;
-        ModelPtr m_model;
+        model::ModelPtr m_model;
 
         //objects
         bool m_showFloorPlate;

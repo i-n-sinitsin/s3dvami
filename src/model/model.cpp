@@ -1,6 +1,6 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
-#include "model.h"
+#include "model/model.h"
 
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
@@ -14,7 +14,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
 
     Model::Model()
@@ -23,7 +23,7 @@ namespace s3dvami
         , m_modelDescription(new description::Model())
         , m_globalTransform(1.0f)
         , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
-        , m_meshes{}
+        , m_meshMgr(new MeshMgr())
         , m_node(nullptr)
         , m_textures(nullptr)
         , m_translation(1.0f)
@@ -51,16 +51,11 @@ namespace s3dvami
         result = result && loadNodes(scene);
         result = result && loadAnimations(scene);
 
-        AABBox aabb;
-        for (auto &it : m_meshes)
-        {
-            aabb = aabb + it->getAABB();
-        }
-
-        m_modelDescription->name = scene->mName.C_Str();
-
         m_globalTransform = glm::transpose(glm::make_mat4(&(scene->mRootNode->mTransformation.a1)));
         m_globalInverseTransform = glm::inverse(m_globalTransform);
+
+        AABBox aabb = m_meshMgr->aabb();
+        m_modelDescription->name = scene->mName.C_Str();
 
         // calc scale
         auto scale = defaultModelSize / aabb.getMaxDelta();
@@ -83,7 +78,7 @@ namespace s3dvami
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
 
-        m_node->draw(m_shader, glm::mat4(1.0f), m_meshes);
+        m_node->draw(m_shader, glm::mat4(1.0f), m_meshMgr);
     }
 
     void Model::process(float /*dt*/)
@@ -129,7 +124,7 @@ namespace s3dvami
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
             auto meshDescription = std::make_shared<description::Mesh>();
-            m_meshes.push_back(std::make_shared<Mesh>(scene->mMeshes[i]));
+            m_meshMgr->add(scene->mMeshes[i]);
             meshesDescription->meshes.push_back(meshDescription);
 
             meshesDescription->verticiesAmount += meshDescription->verticiesAmount;

@@ -1,12 +1,12 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
-#include "node.h"
+#include "model/node.h"
 
 #include "glad/glad.h"
 
 #include "glm/gtc/type_ptr.hpp"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     Node::Node(const aiNode *node, description::NodePtr nodeDescription)
         : m_nodeDescription(nodeDescription)
@@ -38,21 +38,17 @@ namespace s3dvami
     Node::~Node()
     {}
 
-    void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, const std::vector<MeshPtr> &meshes)
+    void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr)
     {
         glm::mat4 nodeTransformation = glm::mat4(1.0f);
         // TODO: update when animations is ready
         nodeTransformation = parentTransformation * m_transformation;
         shader->setUniform("u_nodeTransformation", nodeTransformation);
 
-        for (auto mesh : m_meshes)
-        {
-            meshes[mesh]->draw(shader);
-        }
-
+        meshMgr->draw(shader, m_meshes);
         for (const auto &node : m_nodes)
         {
-            node->draw(shader, nodeTransformation, meshes);
+            node->draw(shader, nodeTransformation, meshMgr);
         }
     }
 }

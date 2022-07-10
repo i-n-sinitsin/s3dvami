@@ -4,7 +4,7 @@
 
 #include "glad/glad.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     Mesh::Mesh(const aiMesh *mesh)
         : m_VAO(0)
@@ -76,7 +76,7 @@ namespace s3dvami
         //    glDisable(GL_CULL_FACE);
     }
 
-    AABBox Mesh::getAABB() const
+    AABBox Mesh::aabb() const
     {
         return m_aabbox;
     }
