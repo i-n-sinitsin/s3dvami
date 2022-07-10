@@ -24,6 +24,13 @@ namespace s3dvami::model
 
         void add(const aiMesh *mesh);
 
+        unsigned int meshAmount() const;
+        unsigned int verticiesAmount() const;
+        unsigned int indeciesAmount() const;
+
+        MeshPtr mesh(unsigned int index);
+        const std::vector<MeshPtr> &meshes() const;
+
     private:
         std::vector<MeshPtr> m_meshes;
 

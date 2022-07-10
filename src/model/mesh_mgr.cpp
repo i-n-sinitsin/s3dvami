@@ -68,6 +68,36 @@ namespace s3dvami::model
         m_meshes.push_back(std::make_shared<Mesh>(mesh));
     }
 
+    unsigned int MeshMgr::meshAmount() const
+    {
+        return m_meshes.size();
+    }
+
+    unsigned int MeshMgr::verticiesAmount() const
+    {
+        unsigned int result = 0;
+        for (const auto &mesh : m_meshes)
+        {
+            result += mesh->verticiesAmount();
+        }
+        return result;
+    }
+
+    unsigned int MeshMgr::indeciesAmount() const
+    {
+        unsigned int result = 0;
+        for (const auto &mesh : m_meshes)
+        {
+            result += mesh->indicesAmount();
+        }
+        return result;
+    }
+
+    const std::vector<MeshPtr> &MeshMgr::meshes() const
+    {
+        return m_meshes;
+    }
+
     int MeshMgr::indexById(const std::string &id)
     {
         /// TODO: add error out

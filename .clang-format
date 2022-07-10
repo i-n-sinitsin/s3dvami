@@ -69,12 +69,10 @@ IncludeCategories:
     Priority:        7
   - Regex:           '^"objects/'
     Priority:        8
-  - Regex:           '^"descriptions/'
-    Priority:        9
   - Regex:           '^"shaders/'
-    Priority:        10
+    Priority:        9
   - Regex:           '.*'
-    Priority:        11
+    Priority:        10
 IncludeIsMainRegex: '(_test)?$'
 IndentCaseLabels: true
 IndentPPDirectives: AfterHash

@@ -20,11 +20,11 @@ namespace s3dvami::model
     Model::Model()
         : m_loaded(false)
         , m_shader(new Shader(model_vert, model_frag))
-        , m_modelDescription(new description::Model())
+        , m_name()
         , m_globalTransform(1.0f)
         , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
         , m_meshMgr(new MeshMgr())
-        , m_node(nullptr)
+        , m_nodeMgr(new NodeMgr())
         , m_textures(nullptr)
         , m_translation(1.0f)
         , m_rotation(1.0f)
@@ -55,7 +55,7 @@ namespace s3dvami::model
         m_globalInverseTransform = glm::inverse(m_globalTransform);
 
         AABBox aabb = m_meshMgr->aabb();
-        m_modelDescription->name = scene->mName.C_Str();
+        m_name = scene->mName.C_Str();
 
         // calc scale
         auto scale = defaultModelSize / aabb.getMaxDelta();
@@ -78,7 +78,7 @@ namespace s3dvami::model
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
 
-        m_node->draw(m_shader, glm::mat4(1.0f), m_meshMgr);
+        m_nodeMgr->draw(m_shader, m_meshMgr);
     }
 
     void Model::process(float /*dt*/)
@@ -88,9 +88,19 @@ namespace s3dvami::model
         }
     }
 
-    description::ModelPtr Model::getModelDesription() const
+    std::string Model::name() const
     {
-        return m_modelDescription;
+        return m_name;
+    }
+
+    const MeshMgrPtr Model::meshMgr() const
+    {
+        return m_meshMgr;
+    }
+
+    const NodeMgrPtr Model::nodeMgr() const
+    {
+        return m_nodeMgr;
     }
 
     bool Model::loadTextures(const aiScene *scene)
@@ -114,21 +124,9 @@ namespace s3dvami::model
 
     bool Model::loadMeshes(const aiScene *scene)
     {
-        auto &meshesDescription = m_modelDescription->meshes;
-        if (meshesDescription)
-        {
-            meshesDescription.reset();
-        }
-        meshesDescription = std::make_shared<description::Meshes>();
-        meshesDescription->amount = scene->mNumMeshes;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
-            auto meshDescription = std::make_shared<description::Mesh>();
             m_meshMgr->add(scene->mMeshes[i]);
-            meshesDescription->meshes.push_back(meshDescription);
-
-            meshesDescription->verticiesAmount += meshDescription->verticiesAmount;
-            meshesDescription->indeciesAmount += meshDescription->indeciesAmount;
         }
 
         return true;
@@ -136,13 +134,7 @@ namespace s3dvami::model
 
     bool Model::loadNodes(const aiScene *scene)
     {
-        auto &nodeDescription = m_modelDescription->node;
-        if (nodeDescription)
-        {
-            nodeDescription.reset();
-        }
-        nodeDescription = std::make_shared<description::Node>();
-        m_node = std::make_shared<Node>(scene->mRootNode, nodeDescription);
+        m_nodeMgr = std::make_shared<NodeMgr>(scene->mRootNode);
         return true;
     }
 

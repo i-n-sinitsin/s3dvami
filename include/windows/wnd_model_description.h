@@ -5,16 +5,16 @@
 #include <string>
 #include <vector>
 
-#include "descriptions/model.h"
+#include "model/model.h"
 
 namespace s3dvami::windows
 {
-    class ModelDescription
+    class Model
     {
     public:
-        ModelDescription();
+        Model();
 
-        void draw(description::ModelPtr modelDescription);
+        void draw(model::ModelPtr modelDescription);
 
     private:
         enum class Type
@@ -23,25 +23,25 @@ namespace s3dvami::windows
             Detached
         };
 
-        struct Description
+        struct Page
         {
             std::string name;
             bool open;
             Type type;
-            std::function<void(description::ModelPtr)> draw;
+            std::function<void(model::ModelPtr)> draw;
         };
 
-        std::vector<Description> m_descriptions;
+        std::vector<Page> m_pages;
 
-        void drawMeshesDescription(description::MeshesPtr meshesDescription);
+        void drawMeshesDescription(model::MeshMgrPtr meshMgr);
         void drawMaterialsDescription();
         void drawTexturesDescription();
-        void drawNodeDescription(description::NodePtr nodeDescription, int openAction);
-        void drawNodesDescription(description::NodePtr nodeDescription);
+        void drawNodeDescription(model::NodePtr node, int openAction);
+        void drawNodesDescription(model::NodeMgrPtr nodeMgr);
         void drawCamerasDescription();
         void drawAnimationsDescription();
         void drawLightsDescription();
     };
 
-    using ModelDescriptionPtr = std::shared_ptr<ModelDescription>;
+    using ModelPtr = std::shared_ptr<Model>;
 }

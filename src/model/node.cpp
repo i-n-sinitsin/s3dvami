@@ -2,41 +2,30 @@
 
 #include "model/node.h"
 
-#include "glad/glad.h"
-
 #include "glm/gtc/type_ptr.hpp"
 
 namespace s3dvami::model
 {
-    Node::Node(const aiNode *node, description::NodePtr nodeDescription)
-        : m_nodeDescription(nodeDescription)
-        , m_id()
+    Node::Node(const aiNode *node)
+        : m_id()
         , m_transformation(1.0f)
         , m_meshes{}
         , m_nodes{}
     {
         m_id = node->mName.C_Str();
-        nodeDescription->id = m_id;
 
         m_transformation = glm::transpose(glm::make_mat4(&(node->mTransformation.a1)));
 
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
             m_meshes.push_back(node->mMeshes[i]);
-            nodeDescription->meshes.push_back(node->mMeshes[i]);
         }
 
         for (unsigned int i = 0; i < node->mNumChildren; i++)
         {
-            auto childDescription = std::make_shared<description::Node>();
-            auto child = std::make_shared<Node>(node->mChildren[i], childDescription);
-            m_nodes.push_back(child);
-            nodeDescription->nodes.push_back(childDescription);
+            m_nodes.push_back(std::make_shared<Node>(node->mChildren[i]));
         }
     }
-
-    Node::~Node()
-    {}
 
     void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr)
     {
@@ -50,5 +39,20 @@ namespace s3dvami::model
         {
             node->draw(shader, nodeTransformation, meshMgr);
         }
+    }
+
+    std::string Node::id() const
+    {
+        return m_id;
+    }
+
+    const std::vector<NodePtr> Node::nodes() const
+    {
+        return m_nodes;
+    }
+
+    const std::vector<unsigned int> Node::meshes() const
+    {
+        return m_meshes;
     }
 }

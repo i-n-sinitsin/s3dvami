@@ -4,6 +4,8 @@
 
 #include "glad/glad.h"
 
+#include "model/vertex.h"
+
 #include "shaders/simple_frag.h"
 #include "shaders/simple_vert.h"
 

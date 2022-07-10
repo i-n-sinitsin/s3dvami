@@ -5,10 +5,6 @@
 #include <memory>
 #include <vector>
 
-#include "glad/glad.h"
-
-#include "model/vertex.h"
-
 #include "shaders/shader.h"
 
 #include "camera.h"

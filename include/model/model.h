@@ -8,14 +8,12 @@
 #include "assimp/scene.h"
 
 #include "model/mesh_mgr.h"
-
-#include "descriptions/model.h"
+#include "model/node_mgr.h"
+#include "model/texture.h"
 
 #include "shaders/shader.h"
 
 #include "camera.h"
-#include "node.h"
-#include "texture.h"
 
 namespace s3dvami::model
 {
@@ -34,21 +32,21 @@ namespace s3dvami::model
             return m_loaded;
         }
 
-        description::ModelPtr getModelDesription() const;
+        std::string name() const;
+        const MeshMgrPtr meshMgr() const;
+        const NodeMgrPtr nodeMgr() const;
 
     private:
         bool m_loaded;
 
         ShaderPtr m_shader;
 
-        description::ModelPtr m_modelDescription;
-
+        std::string m_name;
         glm::mat4 m_globalTransform;
         glm::mat4 m_globalInverseTransform;
 
         MeshMgrPtr m_meshMgr;
-
-        NodePtr m_node;
+        NodeMgrPtr m_nodeMgr;
         TextureMgrPtr m_textures;
 
         glm::mat4 m_translation;

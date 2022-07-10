@@ -7,8 +7,6 @@
 
 #include "assimp/scene.h"
 
-#include "descriptions/mesh.h"
-
 #include "shaders/shader.h"
 
 #include "bounding_box.h"
@@ -30,8 +28,6 @@ namespace s3dvami::model
         unsigned int indicesAmount() const;
 
     private:
-        description::MeshPtr m_meshDescription;
-
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;

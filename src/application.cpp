@@ -64,7 +64,7 @@ namespace s3dvami
         , m_chooseFileMessage(nullptr)
         , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
-        , m_modelDescriptionWindow(nullptr)
+        , m_modelWindow(nullptr)
     {}
 
     Application *Application::GetInstance()
@@ -144,7 +144,7 @@ namespace s3dvami
         m_openFileDialog = std::make_shared<windows::OpenFileDialog>([=](const std::string &fileName) {
             reload(fileName);
         });
-        m_modelDescriptionWindow = std::make_shared<windows::ModelDescription>();
+        m_modelWindow = std::make_shared<windows::Model>();
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
@@ -294,7 +294,7 @@ namespace s3dvami
 
         if (m_model && m_model->isLoaded())
         {
-            m_modelDescriptionWindow->draw(m_model->getModelDesription());
+            m_modelWindow->draw(m_model);
         }
 
         if (m_model && !m_model->isLoaded())

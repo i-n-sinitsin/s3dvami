@@ -56,7 +56,7 @@ namespace s3dvami
         windows::ChooseFileMessagePtr m_chooseFileMessage;
         windows::MainMenuPtr m_mainMenu;
         windows::OpenFileDialogPtr m_openFileDialog;
-        windows::ModelDescriptionPtr m_modelDescriptionWindow;
+        windows::ModelPtr m_modelWindow;
 
         void process(float dt);
         void render();
