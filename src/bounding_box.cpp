@@ -43,4 +43,9 @@ namespace s3dvami
         auto delta = getDelta();
         return std::max(delta.x, std::max(delta.y, delta.z));
     }
+
+    glm::vec3 AABBox::getCenter() const
+    {
+        return (m_min + m_max) / 2.0f;
+    }
 }

@@ -22,6 +22,8 @@ namespace s3dvami
         float getMinDelta() const;
         float getMaxDelta() const;
 
+        glm::vec3 getCenter() const;
+
     private:
         glm::vec3 m_min;
         glm::vec3 m_max;
