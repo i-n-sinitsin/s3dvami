@@ -2,12 +2,108 @@
 
 #include "model/texture_mgr.h"
 
+#include <algorithm>
+#include <fstream>
+#include <iterator>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 namespace s3dvami
 {
 
     TextureMgr::TextureMgr()
-    //: m_loadedTextures{}
+        : m_textures{}
     {}
+
+    bool TextureMgr::addByFileName(const std::string &id, const std::string &fileName, bool needCheckId)
+    {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        std::ifstream fi(fileName, std::ios::in | std::ios::binary);
+        fi.seekg(0, std::ios::end);
+        std::vector<uint8_t> buffer(fi.tellg(), '\0');
+        fi.seekg(0);
+        buffer.insert(buffer.begin(), std::istream_iterator<uint8_t>(fi), std::istream_iterator<uint8_t>());
+
+        return addByFileData(id, buffer, false);
+    }
+
+    bool TextureMgr::addByFileData(const std::string &id, const std::vector<uint8_t> &fileData, bool needCheckId)
+    {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        stbi_set_flip_vertically_on_load(true);
+        /// TODO: use channel from file
+        int width = 0;
+        int height = 0;
+        unsigned char *data = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
+
+        if (data == nullptr)
+        {
+            /// TODO: add log
+            return false;
+        }
+
+        return addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
+    }
+
+    bool TextureMgr::addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId)
+    {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        auto TexturePtr = std::make_shared<Texture>(id, rawData, width, height);
+        return true;
+    }
+
+    TexturePtr TextureMgr::texture(unsigned int index)
+    {
+        /// TODO: add error out
+        if (index < m_textures.size())
+        {
+            return m_textures[index];
+        }
+
+        return nullptr;
+    }
+
+    const std::vector<TexturePtr> &TextureMgr::textures() const
+    {
+        return m_textures;
+    }
+
+    bool TextureMgr::exist(const std::string &id)
+    {
+        auto it = std::find_if(m_textures.begin(), m_textures.end(), [=](const TexturePtr texture) {
+            return id == texture->id();
+        });
+
+        if (it == m_textures.end())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     /*
     bool TextureMgr::loadTexture(const aiTexture *tex)
     {

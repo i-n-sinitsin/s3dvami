@@ -22,7 +22,7 @@ namespace s3dvami::model
         void draw(ShaderPtr shader, const std::string &id);
         void draw(ShaderPtr shader, const std::vector<std::string> &ids);
 
-        void add(const aiMesh *mesh);
+        bool add(const aiMesh *mesh);
 
         unsigned int meshAmount() const;
         unsigned int verticiesAmount() const;

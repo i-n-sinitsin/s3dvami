@@ -3,8 +3,9 @@
 #pragma once
 
 #include <memory>
+#include <vector>
 
-#include "assimp/scene.h"
+#include "model/texture.h"
 
 namespace s3dvami
 {
@@ -13,11 +14,17 @@ namespace s3dvami
     public:
         TextureMgr();
 
-        //bool loadTexture(const aiTexture *tex);
-        //bool loadTexture(const std::string &fileName);
+        bool addByFileName(const std::string &id, const std::string &fileName, bool needCheckId = true);
+        bool addByFileData(const std::string &id, const std::vector<uint8_t> &fileData, bool needCheckId = true);
+        bool addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId = true);
+
+        TexturePtr texture(unsigned int index);
+        const std::vector<TexturePtr> &textures() const;
 
     private:
-        //std::vector<std::string> m_loadedTextures;
+        std::vector<TexturePtr> m_textures;
+
+        bool exist(const std::string &id);
     };
 
     using TextureMgrPtr = std::shared_ptr<TextureMgr>;
