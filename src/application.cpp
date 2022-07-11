@@ -61,6 +61,8 @@ namespace s3dvami
         , m_model(nullptr)
         , m_showFloorPlate(true)
         , m_floorPlate(nullptr)
+        , m_showGlobalAxes(true)
+        , m_globalAxes(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
@@ -139,6 +141,12 @@ namespace s3dvami
         mainMenuBarActions.viewActions.floorClick = [=]() {
             m_showFloorPlate = !m_showFloorPlate;
         };
+
+        mainMenuBarActions.viewActions.isGlobalAxes = m_showGlobalAxes;
+        mainMenuBarActions.viewActions.globalAxesClick = [=]() {
+            m_showGlobalAxes = !m_showGlobalAxes;
+        };
+
         m_mainMenu = std::make_shared<windows::MainMenu>(mainMenuBarActions);
 
         m_openFileDialog = std::make_shared<windows::OpenFileDialog>([=](const std::string &fileName) {
@@ -148,10 +156,11 @@ namespace s3dvami
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
-        m_camera->setView(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera->setView(glm::vec3(0.0f, 2.0f, 15.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
+        m_globalAxes = std::make_shared<objects::Axes>(defaultGlobalAxesLength, defaultGlobalAxesWidth);
     }
 
     void Application::run()
@@ -224,9 +233,9 @@ namespace s3dvami
         glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
 
         // draw scene
-        glEnable(GL_ALPHA_TEST);
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        //glEnable(GL_ALPHA_TEST);
+        //glEnable(GL_BLEND);
+        //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         glEnable(GL_DEPTH_TEST);
         glDepthMask(GL_TRUE);
@@ -243,10 +252,15 @@ namespace s3dvami
             m_floorPlate->draw(m_camera);
         }
 
+        if (m_showGlobalAxes)
+        {
+            m_globalAxes->draw(m_camera);
+        }
+
         glDisable(GL_DEPTH_TEST);
 
-        glDisable(GL_ALPHA_TEST);
-        glDisable(GL_BLEND);
+        //glDisable(GL_ALPHA_TEST); // glerror
+        //glDisable(GL_BLEND);
 
         // draw GUI
         renderImGui();

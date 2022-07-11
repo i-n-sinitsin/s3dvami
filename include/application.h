@@ -16,6 +16,7 @@
 #include "windows/msg_choose_file.h"
 #include "windows/wnd_model_description.h"
 
+#include "objects/axes.h"
 #include "objects/floor_plate.h"
 
 namespace s3dvami
@@ -51,6 +52,9 @@ namespace s3dvami
         //objects
         bool m_showFloorPlate;
         objects::FloorPlatePtr m_floorPlate;
+
+        bool m_showGlobalAxes;
+        objects::AxesPtr m_globalAxes;
 
         // windows
         windows::ChooseFileMessagePtr m_chooseFileMessage;

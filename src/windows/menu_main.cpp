@@ -36,6 +36,11 @@ namespace s3dvami::windows
                     m_mainMenuActions.viewActions.floorClick();
                 }
 
+                if (ImGui::MenuItem("Global Axes", NULL, &(m_mainMenuActions.viewActions.isGlobalAxes)))
+                {
+                    m_mainMenuActions.viewActions.globalAxesClick();
+                }
+
                 ImGui::EndMenu();
             }
 
