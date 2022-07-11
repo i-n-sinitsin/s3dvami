@@ -6,6 +6,9 @@
 #include <fstream>
 #include <iterator>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 namespace s3dvami
 {
 
@@ -42,7 +45,19 @@ namespace s3dvami
             }
         }
 
-        return addByFileData(id, fileData, false);
+        stbi_set_flip_vertically_on_load(true);
+        /// TODO: use channel from file
+        int width = 0;
+        int height = 0;
+        unsigned char *data = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
+
+        if (data == nullptr)
+        {
+            /// TODO: add log
+            return false;
+        }
+
+        return addByFileData(id, std::vector<uint8_t>(data, data + width * height * 4), false);
     }
 
     bool TextureMgr::addByRawData(const std::string & /*id*/, const std::vector<uint8_t> & /*rawData*/, bool /*needCheckId*/)
