@@ -25,7 +25,7 @@ namespace s3dvami::model
         , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
         , m_meshMgr(new MeshMgr())
         , m_nodeMgr(new NodeMgr())
-        , m_textures(nullptr)
+        , m_textureMgr(new TextureMgr())
         , m_translation(1.0f)
         , m_rotation(1.0f)
         , m_scale(1.0f)
@@ -106,12 +106,11 @@ namespace s3dvami::model
     bool Model::loadTextures(const aiScene *scene)
     {
         bool result = true;
-        m_textures = std::make_shared<TextureMgr>();
 
         for (unsigned int i = 0; i < scene->mNumTextures; i++)
         {
-            const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
-            result = result && m_textures->loadTexture(aiTex);
+            //const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
+            //result = result && m_textures->loadTexture(aiTex);
         }
 
         return result;
