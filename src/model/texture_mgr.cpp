@@ -57,11 +57,20 @@ namespace s3dvami
             return false;
         }
 
-        return addByFileData(id, std::vector<uint8_t>(data, data + width * height * 4), false);
+        return addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
     }
 
-    bool TextureMgr::addByRawData(const std::string & /*id*/, const std::vector<uint8_t> & /*rawData*/, bool /*needCheckId*/)
+    bool TextureMgr::addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId)
     {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        auto TexturePtr = std::make_shared<Texture>(id, rawData, width, height);
         return true;
     }
 

@@ -4,6 +4,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 namespace s3dvami
 {
@@ -17,14 +18,10 @@ namespace s3dvami
     class Texture
     {
     public:
-        Texture();
+        explicit Texture(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height);
+        ~Texture();
 
         std::string id() const;
-
-        //explicit Texture(const std::string &fileName);
-        //explicit Texture(const std::vector<uint8_t> &rawFile);
-
-        //~Texture();
 
     private:
     };

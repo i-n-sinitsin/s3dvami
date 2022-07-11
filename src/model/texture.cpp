@@ -5,7 +5,10 @@
 namespace s3dvami
 {
 
-    Texture::Texture()
+    Texture::Texture(const std::string & /*id*/, const std::vector<uint8_t> & /*rawData*/, unsigned int /*width*/, unsigned int /*height*/)
+    {}
+
+    Texture::~Texture()
     {}
 
     std::string Texture::id() const
