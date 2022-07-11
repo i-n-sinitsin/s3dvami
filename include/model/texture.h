@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include "glad/glad.h"
+
 namespace s3dvami
 {
     enum class TextureType
@@ -22,8 +24,15 @@ namespace s3dvami
         ~Texture();
 
         std::string id() const;
+        unsigned int width() const;
+        unsigned int height() const;
 
     private:
+        GLuint m_glId;
+
+        std::string m_id;
+        unsigned int m_width;
+        unsigned int m_height;
     };
 
     using TexturePtr = std::shared_ptr<Texture>;
