@@ -63,9 +63,10 @@ namespace s3dvami::model
         }
     }
 
-    void MeshMgr::add(const aiMesh *mesh)
+    bool MeshMgr::add(const aiMesh *mesh)
     {
         m_meshes.push_back(std::make_shared<Mesh>(mesh));
+        return true;
     }
 
     unsigned int MeshMgr::meshAmount() const
@@ -91,6 +92,17 @@ namespace s3dvami::model
             result += mesh->indicesAmount();
         }
         return result;
+    }
+
+    MeshPtr MeshMgr::mesh(unsigned int index)
+    {
+        /// TODO: add error out
+        if (index < m_meshes.size())
+        {
+            return m_meshes[index];
+        }
+
+        return nullptr;
     }
 
     const std::vector<MeshPtr> &MeshMgr::meshes() const

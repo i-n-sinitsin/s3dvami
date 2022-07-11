@@ -109,8 +109,23 @@ namespace s3dvami::model
 
         for (unsigned int i = 0; i < scene->mNumTextures; i++)
         {
-            //const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
-            //result = result && m_textures->loadTexture(aiTex);
+            const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
+
+            if (aiTex->mHeight > 0)
+            {
+                // external
+                // initialize by filename
+                result = result && m_textureMgr->addByFileName(aiTex->mFilename.C_Str(), aiTex->mFilename.C_Str());
+            }
+            else
+            {
+                // internal
+                unsigned int *startOffset = (unsigned int *)(aiTex->pcData);
+                unsigned int *endOffset = startOffset + aiTex->mWidth;
+                std::vector<uint8_t> data(startOffset, endOffset);
+                // initialize by raw file data
+                result = result && m_textureMgr->addByFileData(aiTex->mFilename.C_Str(), data);
+            }
         }
 
         return result;
@@ -123,17 +138,23 @@ namespace s3dvami::model
 
     bool Model::loadMeshes(const aiScene *scene)
     {
+        bool result = true;
         for (unsigned int i = 0; i < scene->mNumMeshes; i++)
         {
-            m_meshMgr->add(scene->mMeshes[i]);
+            result = result && m_meshMgr->add(scene->mMeshes[i]);
         }
 
-        return true;
+        return result;
     }
 
     bool Model::loadNodes(const aiScene *scene)
     {
+        if (scene->mRootNode == nullptr)
+        {
+            return false;
+        }
         m_nodeMgr = std::make_shared<NodeMgr>(scene->mRootNode);
+
         return true;
     }
 

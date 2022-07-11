@@ -2,12 +2,77 @@
 
 #include "model/texture_mgr.h"
 
+#include <algorithm>
+
 namespace s3dvami
 {
 
     TextureMgr::TextureMgr()
-    //: m_loadedTextures{}
+        : m_textures{}
     {}
+
+    bool TextureMgr::addByFileName(const std::string &id, const std::string & /*fileName*/, bool needCheckId)
+    {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        std::vector<uint8_t> t;
+        return addByFileData(id, t, false);
+    }
+
+    bool TextureMgr::addByFileData(const std::string &id, const std::vector<uint8_t> &fileData, bool needCheckId)
+    {
+        if (needCheckId)
+        {
+            if (exist(id))
+            {
+                return true;
+            }
+        }
+
+        return addByFileData(id, fileData, false);
+    }
+
+    bool TextureMgr::addByRawData(const std::string & /*id*/, const std::vector<uint8_t> & /*rawData*/, bool /*needCheckId*/)
+    {
+        return true;
+    }
+
+    TexturePtr TextureMgr::texture(unsigned int index)
+    {
+        /// TODO: add error out
+        if (index < m_textures.size())
+        {
+            return m_textures[index];
+        }
+
+        return nullptr;
+    }
+
+    const std::vector<TexturePtr> &TextureMgr::textures() const
+    {
+        return m_textures;
+    }
+
+    bool TextureMgr::exist(const std::string &id)
+    {
+        auto it = std::find_if(m_textures.begin(), m_textures.end(), [=](const TexturePtr texture) {
+            return id == texture->id();
+        });
+
+        if (it == m_textures.end())
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     /*
     bool TextureMgr::loadTexture(const aiTexture *tex)
     {

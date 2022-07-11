@@ -3,4 +3,14 @@
 #include "model/texture.h"
 
 namespace s3dvami
-{}
+{
+
+    Texture::Texture()
+    {}
+
+    std::string Texture::id() const
+    {
+        return "";
+    }
+
+}
