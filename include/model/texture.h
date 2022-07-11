@@ -4,8 +4,6 @@
 
 #include <memory>
 
-#include "assimp/scene.h"
-
 namespace s3dvami
 {
     enum class TextureType
@@ -18,27 +16,14 @@ namespace s3dvami
     class Texture
     {
     public:
-        explicit Texture(const std::string &fileName);
-        explicit Texture(const std::vector<uint8_t> &rawFile);
+        //Texture();
+        //explicit Texture(const std::string &fileName);
+        //explicit Texture(const std::vector<uint8_t> &rawFile);
 
-        ~Texture();
+        //~Texture();
 
     private:
     };
 
     using TexturePtr = std::shared_ptr<Texture>;
-
-    class TextureMgr
-    {
-    public:
-        TextureMgr();
-
-        bool loadTexture(const aiTexture *tex);
-        bool loadTexture(const std::string &fileName);
-
-    private:
-        std::vector<std::string> m_loadedTextures;
-    };
-
-    using TextureMgrPtr = std::shared_ptr<TextureMgr>;
 }
