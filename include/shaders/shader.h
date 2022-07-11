@@ -21,6 +21,10 @@ namespace s3dvami
 
         void setUniform(const std::string &name, const glm::mat4 &m);
 
+        void setUniform(const std::string &name, const glm::vec4 &v);
+        void setUniform(const std::string &name, const glm::vec3 &v);
+        void setUniform(const std::string &name, const glm::vec2 &v);
+
     private:
         GLuint m_programId;
 

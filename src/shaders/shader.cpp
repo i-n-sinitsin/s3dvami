@@ -58,6 +58,21 @@ namespace s3dvami
         glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, glm::value_ptr(m));
     }
 
+    void Shader::setUniform(const std::string &name, const glm::vec4 &v)
+    {
+        glUniform4fv(glGetUniformLocation(m_programId, name.c_str()), 1, glm::value_ptr(v));
+    }
+
+    void Shader::setUniform(const std::string &name, const glm::vec3 &v)
+    {
+        glUniform3fv(glGetUniformLocation(m_programId, name.c_str()), 1, glm::value_ptr(v));
+    }
+
+    void Shader::setUniform(const std::string &name, const glm::vec2 &v)
+    {
+        glUniform2fv(glGetUniformLocation(m_programId, name.c_str()), 1, glm::value_ptr(v));
+    }
+
     GLuint Shader::compile(const std::string &src, GLenum type)
     {
         GLuint id = glCreateShader(type);

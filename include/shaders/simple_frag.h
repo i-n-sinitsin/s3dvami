@@ -10,11 +10,14 @@ namespace s3dvami
 #version 430 core
 
 precision mediump float;
-out vec4 v_color;
+
+in vec4 v_color;
+
+out vec4 o_color;
 
 void main()
 {
-    v_color = vec4(0.8, 0.8, 0.8, 0.5);
+    o_color = v_color;
 }
 )FRAG";
 }

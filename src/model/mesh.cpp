@@ -67,7 +67,7 @@ namespace s3dvami::model
         //glEnable(GL_CULL_FACE);
 
         glBindVertexArray(m_VAO);
-        glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_indices.size()), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_TRIANGLES, static_cast<unsigned int>(m_indices.size()), GL_UNSIGNED_INT, (void *)0);
         glBindVertexArray(0);
 
         //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

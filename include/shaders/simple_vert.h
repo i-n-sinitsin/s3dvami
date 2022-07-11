@@ -16,9 +16,13 @@ layout(location = 2) in vec2 a_tex;
 uniform mat4 u_model;
 uniform mat4 u_view;
 uniform mat4 u_projection;
+uniform vec4 u_color;
+
+out vec4 v_color;
 
 void main()
 {
+    v_color = u_color;
     mat4 pvm = u_projection * u_view * u_model;
     gl_Position = pvm * vec4(a_pos, 1.0f);
 }

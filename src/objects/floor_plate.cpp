@@ -2,17 +2,14 @@
 
 #include "objects/floor_plate.h"
 
+#include <iostream>
+
 #include "glad/glad.h"
 
 #include "shaders/simple_frag.h"
 #include "shaders/simple_vert.h"
 
 #include "config.h"
-
-// x - red
-// y - green
-// z - b
-
 namespace s3dvami::objects
 {
     FloorPlate::FloorPlate()
@@ -89,13 +86,10 @@ namespace s3dvami::objects
         m_shader->setUniform("u_projection", camera->getProjection());
         m_shader->setUniform("u_view", camera->getView());
         m_shader->setUniform("u_model", glm::mat4(1.0f));
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        m_shader->setUniform("u_color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
         glBindVertexArray(m_VAO);
-        glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, 0);
+        glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, (void *)0);
         glBindVertexArray(0);
-
-        glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     }
 }
