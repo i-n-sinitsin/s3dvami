@@ -19,4 +19,7 @@ namespace s3dvami
     constexpr float defaultfloorPlateSize = 40.0f;
     constexpr unsigned int defaultfloorPartsByAxes = 40;
     constexpr float defaultModelSize = defaultfloorPlateSize / 2.0f;
+
+    constexpr float defaultGlobalAxesLength = 40.0f;
+    constexpr float defaultGlobalAxesWidth = 0.1f;
 }
