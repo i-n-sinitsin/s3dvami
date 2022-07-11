@@ -3,6 +3,8 @@
 #include "model/texture_mgr.h"
 
 #include <algorithm>
+#include <fstream>
+#include <iterator>
 
 namespace s3dvami
 {
@@ -11,7 +13,7 @@ namespace s3dvami
         : m_textures{}
     {}
 
-    bool TextureMgr::addByFileName(const std::string &id, const std::string & /*fileName*/, bool needCheckId)
+    bool TextureMgr::addByFileName(const std::string &id, const std::string &fileName, bool needCheckId)
     {
         if (needCheckId)
         {
@@ -21,8 +23,13 @@ namespace s3dvami
             }
         }
 
-        std::vector<uint8_t> t;
-        return addByFileData(id, t, false);
+        std::ifstream fi(fileName, std::ios::in | std::ios::binary);
+        fi.seekg(0, std::ios::end);
+        std::vector<uint8_t> buffer(fi.tellg(), '\0');
+        fi.seekg(0);
+        buffer.insert(buffer.begin(), std::istream_iterator<uint8_t>(fi), std::istream_iterator<uint8_t>());
+
+        return addByFileData(id, buffer, false);
     }
 
     bool TextureMgr::addByFileData(const std::string &id, const std::vector<uint8_t> &fileData, bool needCheckId)
