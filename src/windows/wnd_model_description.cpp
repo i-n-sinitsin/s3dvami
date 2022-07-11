@@ -24,8 +24,8 @@ namespace s3dvami::windows
                     drawMaterialsDescription();
                 }},
             {"Textures", false, Type::Attached,
-                [=](model::ModelPtr /*model*/) {
-                    drawTexturesDescription();
+                [=](model::ModelPtr model) {
+                    drawTexturesDescription(model->textureMgr());
                 }},
             {"Cameras", false, Type::Attached,
                 [=](model::ModelPtr /*model*/) {
@@ -179,8 +179,20 @@ namespace s3dvami::windows
     void Model::drawMaterialsDescription()
     {}
 
-    void Model::drawTexturesDescription()
-    {}
+    void Model::drawTexturesDescription(model::TextureMgrPtr textureMgr)
+    {
+        // main info
+        if (ImGui::BeginTable("table1", 3))
+        {
+            ImGui::TableNextColumn();
+            ImGui::Text("Amount");
+            ImGui::TableNextColumn();
+            ImGui::Text("%u", textureMgr->amount());
+            ImGui::TableNextRow();
+
+            ImGui::EndTable();
+        }
+    }
 
     void Model::drawNodeDescription(model::NodePtr node, int openAction)
     {

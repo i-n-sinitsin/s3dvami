@@ -9,7 +9,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
 
     TextureMgr::TextureMgr()
@@ -72,6 +72,11 @@ namespace s3dvami
 
         auto TexturePtr = std::make_shared<Texture>(id, rawData, width, height);
         return true;
+    }
+
+    unsigned int TextureMgr::amount() const
+    {
+        return m_textures.size();
     }
 
     TexturePtr TextureMgr::texture(unsigned int index)
