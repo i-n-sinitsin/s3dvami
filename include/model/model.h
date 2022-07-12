@@ -7,6 +7,7 @@
 
 #include "assimp/scene.h"
 
+#include "model/material_mgr.h"
 #include "model/mesh_mgr.h"
 #include "model/node_mgr.h"
 #include "model/texture_mgr.h"
@@ -35,6 +36,7 @@ namespace s3dvami::model
         std::string name() const;
         const MeshMgrPtr meshMgr() const;
         const NodeMgrPtr nodeMgr() const;
+        const MaterialMgrPtr materialMgr() const;
 
     private:
         bool m_loaded;
@@ -48,6 +50,7 @@ namespace s3dvami::model
         MeshMgrPtr m_meshMgr;
         NodeMgrPtr m_nodeMgr;
         TextureMgrPtr m_textureMgr;
+        MaterialMgrPtr m_materialMgr;
 
         glm::mat4 m_translation;
         glm::mat4 m_rotation;
