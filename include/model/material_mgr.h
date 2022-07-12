@@ -8,6 +8,7 @@
 #include "assimp/scene.h"
 
 #include "model/material.h"
+#include "model/texture_mgr.h"
 
 #include "shaders/shader.h"
 
@@ -16,7 +17,7 @@ namespace s3dvami::model
     class MaterialMgr
     {
     public:
-        MaterialMgr();
+        MaterialMgr(TextureMgrPtr textureMgr);
 
         bool add(const aiMaterial *material);
 
@@ -24,6 +25,7 @@ namespace s3dvami::model
         const std::vector<MaterialPtr> &materials() const;
 
     private:
+        TextureMgrPtr m_textureMgr;
         std::vector<MaterialPtr> m_materials;
     };
 

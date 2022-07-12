@@ -4,12 +4,14 @@
 
 namespace s3dvami::model
 {
-    MaterialMgr::MaterialMgr()
-        : m_materials{}
+    MaterialMgr::MaterialMgr(TextureMgrPtr textureMgr)
+        : m_textureMgr(textureMgr)
+        , m_materials{}
     {}
 
-    bool MaterialMgr::add(const aiMaterial * /*material*/)
+    bool MaterialMgr::add(const aiMaterial *material)
     {
+        m_materials.push_back(std::make_shared<Material>(material, m_textureMgr));
         return true;
     }
 
