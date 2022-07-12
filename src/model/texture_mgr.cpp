@@ -3,6 +3,7 @@
 #include "model/texture_mgr.h"
 
 #include <algorithm>
+#include <filesystem>
 #include <fstream>
 #include <iterator>
 
@@ -14,6 +15,7 @@ namespace s3dvami
 
     TextureMgr::TextureMgr()
         : m_textures{}
+        , m_currentPath{}
     {}
 
     bool TextureMgr::addByFileName(const std::string &id, const std::string &fileName, bool needCheckId)
@@ -26,7 +28,15 @@ namespace s3dvami
             }
         }
 
-        std::ifstream fi(fileName, std::ios::in | std::ios::binary);
+        std::string path = m_currentPath + "/" + fileName;
+
+        /// TODO: add log
+        if (!std::filesystem::exists(path))
+        {
+            return false;
+        }
+
+        std::ifstream fi(path, std::ios::in | std::ios::binary);
         fi.seekg(0, std::ios::end);
         std::vector<uint8_t> buffer(fi.tellg(), '\0');
         fi.seekg(0);
@@ -104,43 +114,22 @@ namespace s3dvami
         return true;
     }
 
-    /*
-    bool TextureMgr::loadTexture(const aiTexture *tex)
+    int TextureMgr::indexById(const std::string &id) const
     {
-        auto it = std::find_if(m_loadedTextures.begin(), m_loadedTextures.end(), [=](const std::string &x) {
-            return x == tex->mFilename.C_Str();
-        });
-
-        if (it == m_loadedTextures.end())
+        /// TODO: add error out
+        for (unsigned int i = 0; i < m_textures.size(); i++)
         {
-            std::shared_ptr<Texture> texture;
-
-            if (tex->mHeight > 0)
+            if (id == m_textures[i]->id())
             {
-                // external format
-                //texture = std::make_shared<Texture>(directory + "/" + tex->mFilename.C_Str());
+                return i;
             }
-            else
-            {
-                // internal format
-                //unsigned int *startOffset = (unsigned int *)(tex->pcData);
-                //unsigned int *endOffset = startOffset + tex->mWidth;
-                //std::vector<uint8_t> data(startOffset, endOffset);
-
-                //texture = std::make_shared<Texture>(data);
-            }
-            //texRaw->initialize(wrap);
-            //texture->_textureRaw = texRaw;
-            //_textures.push_back(texture);
-            //_texturesLoadedNames.push_back(texture->_name);
         }
 
-        return true;
+        return -1;
     }
 
-    bool TextureMgr::loadTexture(const std::string & fileName)
+    void TextureMgr::setCurrentPath(const std::string &path)
     {
-        return true;
+        m_currentPath = path;
     }
-*/
 }

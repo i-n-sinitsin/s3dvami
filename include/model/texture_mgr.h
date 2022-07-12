@@ -21,10 +21,14 @@ namespace s3dvami
         TexturePtr texture(unsigned int index);
         const std::vector<TexturePtr> &textures() const;
 
+        bool exist(const std::string &id);
+        int indexById(const std::string &id) const;
+
+        void setCurrentPath(const std::string &path);
+
     private:
         std::vector<TexturePtr> m_textures;
-
-        bool exist(const std::string &id);
+        std::string m_currentPath;
     };
 
     using TextureMgrPtr = std::shared_ptr<TextureMgr>;

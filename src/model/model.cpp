@@ -2,6 +2,9 @@
 
 #include "model/model.h"
 
+#include <filesystem>
+#include <iostream>
+
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
@@ -13,7 +16,6 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
-
 namespace s3dvami::model
 {
 
@@ -26,7 +28,7 @@ namespace s3dvami::model
         , m_meshMgr(new MeshMgr())
         , m_nodeMgr(new NodeMgr())
         , m_textureMgr(new TextureMgr())
-        , m_materialMgr(new MaterialMgr())
+        , m_materialMgr(new MaterialMgr(m_textureMgr))
         , m_translation(1.0f)
         , m_rotation(1.0f)
         , m_scale(1.0f)
@@ -46,6 +48,10 @@ namespace s3dvami::model
             return false;
         }
 
+        // save path
+        m_textureMgr->setCurrentPath(std::filesystem::path(fileName).parent_path());
+
+        // load
         auto result = loadTextures(scene);
         result = result && loadMaterials(scene);
         result = result && loadMeshes(scene);
