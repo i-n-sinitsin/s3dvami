@@ -233,9 +233,10 @@ namespace s3dvami
         glClearColor(defautBackgroundColor[0], defautBackgroundColor[1], defautBackgroundColor[2], defautBackgroundColor[3]);
 
         // draw scene
-        //glEnable(GL_ALPHA_TEST);
         //glEnable(GL_BLEND);
         //glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+        glEnable(GL_TEXTURE_2D);
 
         glEnable(GL_DEPTH_TEST);
         glDepthMask(GL_TRUE);
@@ -259,7 +260,8 @@ namespace s3dvami
 
         glDisable(GL_DEPTH_TEST);
 
-        //glDisable(GL_ALPHA_TEST); // glerror
+        glDisable(GL_TEXTURE_2D);
+
         //glDisable(GL_BLEND);
 
         // draw GUI

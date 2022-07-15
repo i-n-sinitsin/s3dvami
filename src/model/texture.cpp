@@ -58,7 +58,7 @@ namespace s3dvami
 
     void *Texture::glIdPtr()
     {
-        return static_cast<void *>(&m_glId);
+        return (void *)((intptr_t)m_glId);
     }
 
 }

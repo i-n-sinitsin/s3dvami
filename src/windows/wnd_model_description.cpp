@@ -3,6 +3,7 @@
 #include "windows/wnd_model_description.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "config.h"
 #include "imgui.h"
