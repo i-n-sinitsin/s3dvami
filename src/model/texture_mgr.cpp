@@ -62,9 +62,9 @@ namespace s3dvami::model
         /// TODO: use channel from file
         int width = 0;
         int height = 0;
-        unsigned char *data = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
+        unsigned char *rawData = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
 
-        if (data == nullptr)
+        if (rawData == nullptr)
         {
             /// TODO: add log
             std::cout << "Error load image: " << stbi_failure_reason() << std::endl;
@@ -72,8 +72,8 @@ namespace s3dvami::model
             return false;
         }
 
-        bool result = addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
-        stbi_image_free(&data);
+        bool result = addByRawData(id, std::vector<uint8_t>(rawData, rawData + width * height * 4), width, height, false);
+        stbi_image_free(rawData);
         return result;
     }
 
@@ -144,5 +144,19 @@ namespace s3dvami::model
     void TextureMgr::setCurrentPath(const std::string &path)
     {
         m_currentPath = path;
+    }
+
+    void TextureMgr::use(const std::string &id)
+    {
+        use(indexById(id));
+    }
+
+    void TextureMgr::use(unsigned int id)
+    {
+        if (id >= m_textures.size())
+        {
+            /// TODO: add log
+        }
+        m_textures[id]->use();
     }
 }

@@ -28,6 +28,9 @@ namespace s3dvami::model
 
         void setCurrentPath(const std::string &path);
 
+        void use(const std::string &id);
+        void use(unsigned int id);
+
     private:
         std::vector<TexturePtr> m_textures;
         std::string m_currentPath;
