@@ -20,46 +20,46 @@ namespace s3dvami::model
         return aabb;
     }
 
-    void MeshMgr::draw(ShaderPtr shader)
+    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr)
     {
         for (const auto &mesh : m_meshes)
         {
-            mesh->draw(shader);
+            mesh->draw(shader, materialMgr);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, unsigned int index)
+    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, unsigned int index)
     {
         /// TODO: add error out
         if (index < m_meshes.size())
         {
-            m_meshes[index]->draw(shader);
+            m_meshes[index]->draw(shader, materialMgr);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, std::vector<unsigned int> indeces)
+    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, std::vector<unsigned int> indeces)
     {
         for (const auto &index : indeces)
         {
-            draw(shader, index);
+            draw(shader, materialMgr, index);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, const std::string &id)
+    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::string &id)
     {
         /// TODO: add error out
         int index = indexById(id);
         if (index >= 0)
         {
-            draw(shader, index);
+            draw(shader, materialMgr, index);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, const std::vector<std::string> &ids)
+    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::vector<std::string> &ids)
     {
         for (const auto &id : ids)
         {
-            draw(shader, id);
+            draw(shader, materialMgr, id);
         }
     }
 

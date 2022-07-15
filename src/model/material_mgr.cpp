@@ -30,4 +30,13 @@ namespace s3dvami::model
     {
         return m_materials;
     }
+
+    void MaterialMgr::draw(ShaderPtr shader, unsigned int index)
+    {
+        /// TODO: add error out
+        if (index < m_materials.size())
+        {
+            m_materials[index]->draw(shader);
+        }
+    }
 }

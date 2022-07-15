@@ -23,7 +23,7 @@ namespace s3dvami::model
         NodeMgr();
         NodeMgr(const aiNode *rootNode);
 
-        void draw(ShaderPtr shader, MeshMgrPtr meshMgr);
+        void draw(ShaderPtr shader, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr);
 
         std::string id() const;
         const std::vector<NodePtr> nodes() const;

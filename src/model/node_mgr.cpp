@@ -35,11 +35,11 @@ namespace s3dvami::model
         }
     }
 
-    void NodeMgr::draw(ShaderPtr shader, MeshMgrPtr meshMgr)
+    void NodeMgr::draw(ShaderPtr shader, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr)
     {
         for (const auto &node : m_nodes)
         {
-            node->draw(shader, m_transformation, meshMgr);
+            node->draw(shader, m_transformation, meshMgr, materialMgr);
         }
     }
 

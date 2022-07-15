@@ -24,7 +24,7 @@ namespace s3dvami::model
     public:
         explicit Node(const aiNode *node);
 
-        void draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr);
+        void draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr);
 
         std::string id() const;
         const std::vector<NodePtr> nodes() const;

@@ -93,12 +93,13 @@ namespace s3dvami::windows
                     //    it.type = Type::Detached;
                     //}
 
+                    /*
                     if (ImGui::ArrowButton("Detach2", ImGuiDir_::ImGuiDir_Up))
                     {
                         it.type = Type::Detached;
-                    }
+                    }                    
                     ImGui::SameLine();
-
+                    */
                     if ((it.open = ImGui::CollapsingHeader(it.name.c_str())))
                     {
 

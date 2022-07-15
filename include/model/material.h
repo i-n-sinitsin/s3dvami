@@ -67,10 +67,12 @@ namespace s3dvami::model
         bool twoSided() const;
         bool wireframe() const;
 
+        void draw(const ShaderPtr shader);
+
     private:
         struct Color
         {
-            bool isUsed;
+            bool used;
             glm::vec4 value;
         };
 

@@ -15,12 +15,12 @@ namespace s3dvami::model
 
         AABBox aabb() const;
 
-        void draw(ShaderPtr shader);
-        void draw(ShaderPtr shader, unsigned int index);
-        void draw(ShaderPtr shader, std::vector<unsigned int> indeces);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, unsigned int index);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, std::vector<unsigned int> indeces);
 
-        void draw(ShaderPtr shader, const std::string &id);
-        void draw(ShaderPtr shader, const std::vector<std::string> &ids);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::string &id);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::vector<std::string> &ids);
 
         bool add(const aiMesh *mesh);
 

@@ -7,6 +7,8 @@
 
 #include "assimp/scene.h"
 
+#include "model/material_mgr.h"
+
 #include "shaders/shader.h"
 
 #include "bounding_box.h"
@@ -20,12 +22,13 @@ namespace s3dvami::model
         explicit Mesh(const aiMesh *mesh);
         ~Mesh();
 
-        void draw(ShaderPtr shader);
+        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
         AABBox aabb() const;
 
         std::string id() const;
         unsigned int verticiesAmount() const;
         unsigned int indicesAmount() const;
+        int materialIndex() const;
 
     private:
         GLuint m_VAO;
@@ -35,6 +38,7 @@ namespace s3dvami::model
         std::string m_id;
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;
+        int m_materialIndex;
 
         AABBox m_aabbox;
 
