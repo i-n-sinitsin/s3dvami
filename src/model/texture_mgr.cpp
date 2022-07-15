@@ -8,6 +8,8 @@
 #include <iterator>
 
 #define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
+
 #include "stb_image.h"
 
 namespace s3dvami::model
@@ -37,6 +39,7 @@ namespace s3dvami::model
         }
 
         std::ifstream fi(path, std::ios::in | std::ios::binary);
+        fi.unsetf(std::ios::skipws);
         fi.seekg(0, std::ios::end);
         std::vector<uint8_t> buffer(fi.tellg(), '\0');
         fi.seekg(0);
@@ -64,10 +67,14 @@ namespace s3dvami::model
         if (data == nullptr)
         {
             /// TODO: add log
+            std::cout << "Error load image: " << stbi_failure_reason() << std::endl;
+
             return false;
         }
 
-        return addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
+        bool result = addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
+        stbi_image_free(&data);
+        return result;
     }
 
     bool TextureMgr::addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId)
@@ -80,7 +87,8 @@ namespace s3dvami::model
             }
         }
 
-        auto TexturePtr = std::make_shared<Texture>(id, rawData, width, height);
+        auto texture = std::make_shared<Texture>(id, rawData, width, height);
+        m_textures.push_back(texture);
         return true;
     }
 
