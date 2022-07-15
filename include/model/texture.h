@@ -27,6 +27,11 @@ namespace s3dvami
         unsigned int width() const;
         unsigned int height() const;
 
+        void use();
+        GLuint glId() const;
+        // need for ImGui
+        void *glIdPtr();
+
     private:
         GLuint m_glId;
 

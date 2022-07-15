@@ -46,4 +46,19 @@ namespace s3dvami
         return m_height;
     }
 
+    void Texture::use()
+    {
+        glBindTexture(GL_TEXTURE_2D, m_glId);
+    }
+
+    GLuint Texture::glId() const
+    {
+        return m_glId;
+    }
+
+    void *Texture::glIdPtr()
+    {
+        return static_cast<void *>(&m_glId);
+    }
+
 }
