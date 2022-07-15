@@ -110,6 +110,11 @@ namespace s3dvami::model
         return m_nodeMgr;
     }
 
+    const TextureMgrPtr Model::textureMgr() const
+    {
+        return m_textureMgr;
+    }
+
     bool Model::loadTextures(const aiScene *scene)
     {
         bool result = true;

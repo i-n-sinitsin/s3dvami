@@ -36,6 +36,7 @@ namespace s3dvami::model
         std::string name() const;
         const MeshMgrPtr meshMgr() const;
         const NodeMgrPtr nodeMgr() const;
+        const TextureMgrPtr textureMgr() const;
         const MaterialMgrPtr materialMgr() const;
 
     private:

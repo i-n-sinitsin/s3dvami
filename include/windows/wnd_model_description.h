@@ -35,7 +35,7 @@ namespace s3dvami::windows
 
         void drawMeshesDescription(model::MeshMgrPtr meshMgr);
         void drawMaterialsDescription();
-        void drawTexturesDescription();
+        void drawTexturesDescription(model::TextureMgrPtr textureMgr);
         void drawNodeDescription(model::NodePtr node, int openAction);
         void drawNodesDescription(model::NodeMgrPtr nodeMgr);
         void drawCamerasDescription();

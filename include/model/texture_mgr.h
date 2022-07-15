@@ -7,7 +7,7 @@
 
 #include "model/texture.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
     class TextureMgr
     {
@@ -18,6 +18,8 @@ namespace s3dvami
         bool addByFileData(const std::string &id, const std::vector<uint8_t> &fileData, bool needCheckId = true);
         bool addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId = true);
 
+        unsigned int amount() const;
+
         TexturePtr texture(unsigned int index);
         const std::vector<TexturePtr> &textures() const;
 
@@ -25,6 +27,9 @@ namespace s3dvami
         int indexById(const std::string &id) const;
 
         void setCurrentPath(const std::string &path);
+
+        void use(const std::string &id);
+        void use(unsigned int id);
 
     private:
         std::vector<TexturePtr> m_textures;

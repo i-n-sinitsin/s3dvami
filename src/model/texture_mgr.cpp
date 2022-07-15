@@ -8,9 +8,11 @@
 #include <iterator>
 
 #define STB_IMAGE_IMPLEMENTATION
+#include <iostream>
+
 #include "stb_image.h"
 
-namespace s3dvami
+namespace s3dvami::model
 {
 
     TextureMgr::TextureMgr()
@@ -37,6 +39,7 @@ namespace s3dvami
         }
 
         std::ifstream fi(path, std::ios::in | std::ios::binary);
+        fi.unsetf(std::ios::skipws);
         fi.seekg(0, std::ios::end);
         std::vector<uint8_t> buffer(fi.tellg(), '\0');
         fi.seekg(0);
@@ -59,15 +62,19 @@ namespace s3dvami
         /// TODO: use channel from file
         int width = 0;
         int height = 0;
-        unsigned char *data = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
+        unsigned char *rawData = stbi_load_from_memory(fileData.data(), fileData.size(), &width, &height, nullptr, 4);
 
-        if (data == nullptr)
+        if (rawData == nullptr)
         {
             /// TODO: add log
+            std::cout << "Error load image: " << stbi_failure_reason() << std::endl;
+
             return false;
         }
 
-        return addByRawData(id, std::vector<uint8_t>(data, data + width * height * 4), width, height, false);
+        bool result = addByRawData(id, std::vector<uint8_t>(rawData, rawData + width * height * 4), width, height, false);
+        stbi_image_free(rawData);
+        return result;
     }
 
     bool TextureMgr::addByRawData(const std::string &id, const std::vector<uint8_t> &rawData, unsigned int width, unsigned int height, bool needCheckId)
@@ -80,8 +87,14 @@ namespace s3dvami
             }
         }
 
-        auto TexturePtr = std::make_shared<Texture>(id, rawData, width, height);
+        auto texture = std::make_shared<Texture>(id, rawData, width, height);
+        m_textures.push_back(texture);
         return true;
+    }
+
+    unsigned int TextureMgr::amount() const
+    {
+        return m_textures.size();
     }
 
     TexturePtr TextureMgr::texture(unsigned int index)
@@ -131,5 +144,19 @@ namespace s3dvami
     void TextureMgr::setCurrentPath(const std::string &path)
     {
         m_currentPath = path;
+    }
+
+    void TextureMgr::use(const std::string &id)
+    {
+        use(indexById(id));
+    }
+
+    void TextureMgr::use(unsigned int id)
+    {
+        if (id >= m_textures.size())
+        {
+            /// TODO: add log
+        }
+        m_textures[id]->use();
     }
 }

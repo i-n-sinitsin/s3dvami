@@ -3,6 +3,7 @@
 #include "windows/wnd_model_description.h"
 
 #include <algorithm>
+#include <iostream>
 
 #include "config.h"
 #include "imgui.h"
@@ -24,8 +25,8 @@ namespace s3dvami::windows
                     drawMaterialsDescription();
                 }},
             {"Textures", false, Type::Attached,
-                [=](model::ModelPtr /*model*/) {
-                    drawTexturesDescription();
+                [=](model::ModelPtr model) {
+                    drawTexturesDescription(model->textureMgr());
                 }},
             {"Cameras", false, Type::Attached,
                 [=](model::ModelPtr /*model*/) {
@@ -179,8 +180,62 @@ namespace s3dvami::windows
     void Model::drawMaterialsDescription()
     {}
 
-    void Model::drawTexturesDescription()
-    {}
+    void Model::drawTexturesDescription(model::TextureMgrPtr textureMgr)
+    {
+        // main info
+        if (ImGui::BeginTable("table1", 3))
+        {
+            ImGui::TableNextColumn();
+            ImGui::Text("Amount");
+            ImGui::TableNextColumn();
+            ImGui::Text("%u", textureMgr->amount());
+            ImGui::TableNextRow();
+
+            ImGui::EndTable();
+        }
+
+        // textures
+        int openAction = -1;
+        if (ImGui::Button("Open all"))
+        {
+            openAction = 1;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Close all"))
+        {
+            openAction = 0;
+        }
+        for (auto &texture : textureMgr->textures())
+        {
+            if (openAction != -1)
+                ImGui::SetNextItemOpen(openAction != 0);
+
+            if (ImGui::TreeNode(texture->id().c_str()))
+            {
+                if (ImGui::BeginTable(texture->id().c_str(), 2))
+                {
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Size");
+                    ImGui::TableNextColumn();
+                    ImGui::Text("%u x %u", texture->width(), texture->height());
+                    ImGui::TableNextRow();
+
+                    ImGui::TableNextColumn();
+                    ImGui::Text("Preview");
+                    ImGui::TableNextColumn();
+                    auto scale = 50.0f / std::max(texture->width(), texture->height());
+                    ImVec2 size(texture->width() * scale, texture->height() * scale);
+                    ImGui::Image(texture->glIdPtr(), size);
+
+                    ImGui::TableNextRow();
+
+                    ImGui::EndTable();
+                }
+
+                ImGui::TreePop();
+            }
+        }
+    }
 
     void Model::drawNodeDescription(model::NodePtr node, int openAction)
     {
