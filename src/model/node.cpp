@@ -27,17 +27,17 @@ namespace s3dvami::model
         }
     }
 
-    void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr)
+    void Node::draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr)
     {
         glm::mat4 nodeTransformation = glm::mat4(1.0f);
         // TODO: update when animations is ready
         nodeTransformation = parentTransformation * m_transformation;
         shader->setUniform("u_nodeTransformation", nodeTransformation);
 
-        meshMgr->draw(shader, m_meshes);
+        meshMgr->draw(shader, materialMgr, m_meshes);
         for (const auto &node : m_nodes)
         {
-            node->draw(shader, nodeTransformation, meshMgr);
+            node->draw(shader, nodeTransformation, meshMgr, materialMgr);
         }
     }
 

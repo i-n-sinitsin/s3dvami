@@ -85,7 +85,7 @@ namespace s3dvami::model
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
 
-        m_nodeMgr->draw(m_shader, m_meshMgr);
+        m_nodeMgr->draw(m_shader, m_meshMgr, m_materialMgr);
     }
 
     void Model::process(float /*dt*/)

@@ -13,6 +13,7 @@ namespace s3dvami::model
         , m_id()
         , m_vertices{}
         , m_indices{}
+        , m_materialIndex{-1}
         , m_aabbox(mesh->mAABB)
     {
         m_id = mesh->mName.C_Str();
@@ -47,6 +48,8 @@ namespace s3dvami::model
             }
         }
 
+        m_materialIndex = mesh->mMaterialIndex;
+
         createBuffers();
         fillBuffers();
     }
@@ -56,9 +59,12 @@ namespace s3dvami::model
         destroyBuffers();
     }
 
-    void Mesh::draw(ShaderPtr /*shader*/)
+    void Mesh::draw(ShaderPtr shader, MaterialMgrPtr materialMgr)
     {
-        ///TODO: apply material
+        if (m_materialIndex >= 0)
+        {
+            materialMgr->draw(shader, materialIndex());
+        }
 
         // TODO: add reading polygon mode from material
         //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -94,6 +100,11 @@ namespace s3dvami::model
     unsigned int Mesh::indicesAmount() const
     {
         return m_indices.size();
+    }
+
+    int Mesh::materialIndex() const
+    {
+        return m_materialIndex;
     }
 
     void Mesh::createBuffers()

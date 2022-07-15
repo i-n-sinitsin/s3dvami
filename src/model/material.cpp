@@ -170,17 +170,14 @@ namespace s3dvami::model
     void Material::draw(const ShaderPtr shader)
     {
         // colors
-        for(unsigned int i = 0; i < m_colors.size(); i++)
+        for (unsigned int i = 0; i < m_colors.size(); i++)
         {
             std::string common = "u_baseColors[" + std::to_string(i) + "].";
 
-            shader->setUniform(common+"used", m_colors[ColorType::diffuse].used);
-            shader->setUniform(common+"value", m_colors[ColorType::diffuse].value);
+            shader->setUniform(common + "used", m_colors[ColorType::diffuse].used);
+            shader->setUniform(common + "value", m_colors[ColorType::diffuse].value);
         }
 
         // textures
-
-
-
     }
 }

@@ -24,6 +24,8 @@ namespace s3dvami::model
         MaterialPtr material(unsigned int index);
         const std::vector<MaterialPtr> &materials() const;
 
+        void draw(ShaderPtr shader, unsigned int index);
+
     private:
         TextureMgrPtr m_textureMgr;
         std::vector<MaterialPtr> m_materials;
