@@ -53,6 +53,31 @@ namespace s3dvami
         glUseProgram(m_programId);
     }
 
+    void Shader::setUniform(const std::string &name, const unsigned int val)
+    {
+        glUniform1i(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
+    void Shader::setUniform(const std::string &name, const int val)
+    {
+     glUniform1i(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
+    void Shader::setUniform(const std::string &name, const float val)
+    {
+        glUniform1f(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
+    void Shader::setUniform(const std::string &name, const double val)
+    {
+        glUniform1d(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
+    void Shader::setUniform(const std::string &name, const bool val)
+    {
+        glUniform1i(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
     void Shader::setUniform(const std::string &name, const glm::mat4 &m)
     {
         glUniformMatrix4fv(glGetUniformLocation(m_programId, name.c_str()), 1, GL_FALSE, glm::value_ptr(m));
