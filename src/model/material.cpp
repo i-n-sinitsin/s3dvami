@@ -83,7 +83,7 @@ namespace s3dvami::model
         for (auto &[key, value] : m_colors)
         {
             auto &t = colorHelper.at(key);
-            value.isUsed = readColor(std::get<0>(t), std::get<1>(t), std::get<2>(t), value.value);
+            value.used = readColor(std::get<0>(t), std::get<1>(t), std::get<2>(t), value.value);
         }
 
         // read textures
@@ -165,5 +165,22 @@ namespace s3dvami::model
     bool Material::wireframe() const
     {
         return m_wireframe;
+    }
+
+    void Material::draw(const ShaderPtr shader)
+    {
+        // colors
+        for(unsigned int i = 0; i < m_colors.size(); i++)
+        {
+            std::string common = "u_baseColors[" + std::to_string(i) + "].";
+
+            shader->setUniform(common+"used", m_colors[ColorType::diffuse].used);
+            shader->setUniform(common+"value", m_colors[ColorType::diffuse].value);
+        }
+
+        // textures
+
+
+
     }
 }
