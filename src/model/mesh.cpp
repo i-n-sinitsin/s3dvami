@@ -82,7 +82,7 @@ namespace s3dvami::model
         //    glDisable(GL_CULL_FACE);
     }
 
-    AABBox Mesh::aabb() const
+    AABB Mesh::aabb() const
     {
         return m_aabbox;
     }

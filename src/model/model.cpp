@@ -61,7 +61,7 @@ namespace s3dvami::model
         m_globalTransform = glm::transpose(glm::make_mat4(&(scene->mRootNode->mTransformation.a1)));
         m_globalInverseTransform = glm::inverse(m_globalTransform);
 
-        AABBox aabb = m_meshMgr->aabb();
+        AABB aabb = m_meshMgr->aabb();
         m_name = scene->mName.C_Str();
 
         // calc scale

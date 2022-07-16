@@ -11,7 +11,7 @@
 
 #include "shaders/shader.h"
 
-#include "bounding_box.h"
+#include "aabb.h"
 #include "vertex.h"
 
 namespace s3dvami::model
@@ -23,7 +23,7 @@ namespace s3dvami::model
         ~Mesh();
 
         void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
-        AABBox aabb() const;
+        AABB aabb() const;
 
         std::string id() const;
         unsigned int verticiesAmount() const;
@@ -40,7 +40,7 @@ namespace s3dvami::model
         std::vector<unsigned int> m_indices;
         int m_materialIndex;
 
-        AABBox m_aabbox;
+        AABB m_aabbox;
 
         void createBuffers();
         void destroyBuffers();
