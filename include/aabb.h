@@ -10,13 +10,13 @@
 
 namespace s3dvami
 {
-    class AABBox
+    class AABB
     {
     public:
-        AABBox();
-        AABBox(const aiAABB &aabb);
+        AABB();
+        AABB(const aiAABB &aabb);
 
-        AABBox operator+(const AABBox &o) const;
+        AABB operator+(const AABB &o) const;
 
         glm::vec3 delta() const;
         float minDelta() const;

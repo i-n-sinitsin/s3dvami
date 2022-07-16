@@ -332,6 +332,10 @@ namespace s3dvami
                 ///TODO: show error message
                 return;
             }
+
+            glm::vec3 eye = m_model->meshMgr()->aabb().center();
+
+            m_camera->setView(eye, eye + glm::vec3(0.0f, 0.0f, -50.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         }
     }
 } // namespace s3dvami

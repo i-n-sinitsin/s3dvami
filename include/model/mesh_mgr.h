@@ -13,7 +13,7 @@ namespace s3dvami::model
     public:
         MeshMgr();
 
-        AABBox aabb() const;
+        AABB aabb() const;
 
         void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
         void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, unsigned int index);

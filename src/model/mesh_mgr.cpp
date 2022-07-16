@@ -9,9 +9,9 @@ namespace s3dvami::model
         : m_meshes{}
     {}
 
-    AABBox MeshMgr::aabb() const
+    AABB MeshMgr::aabb() const
     {
-        AABBox aabb;
+        AABB aabb;
         for (auto &it : m_meshes)
         {
             aabb = aabb + it->aabb();
