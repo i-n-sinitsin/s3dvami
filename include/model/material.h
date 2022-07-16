@@ -2,9 +2,9 @@
 
 #pragma once
 
+#include <array>
 #include <map>
 #include <memory>
-#include <vector>
 
 #include "assimp/scene.h"
 
@@ -27,7 +27,8 @@ namespace s3dvami::model
         ambient,
         emission,
         transporent,
-        reflective
+        reflective,
+        amount
     };
 
     enum class TextureType
@@ -44,7 +45,8 @@ namespace s3dvami::model
         displacement,
         lightmap,
         reflection,
-        unknown
+        unknown,
+        amount,
     };
 
     enum class TextureOperation
@@ -67,13 +69,13 @@ namespace s3dvami::model
         bool twoSided() const;
         bool wireframe() const;
 
-        void draw(const ShaderPtr shader);
+        void draw(const ShaderPtr shader, const TextureMgrPtr textureMgr);
 
     private:
         struct Color
         {
-            bool used;
-            glm::vec4 value;
+            bool used{false};
+            glm::vec4 value{0.0f};
         };
 
         std::string m_id;
@@ -89,7 +91,7 @@ namespace s3dvami::model
             unsigned int textureIndex{};
         };
 
-        std::vector<Texture> m_textures;
+        std::map<TextureType, std::vector<Texture>> m_textures;
     };
 
     using MaterialPtr = std::shared_ptr<Material>;

@@ -36,7 +36,7 @@ namespace s3dvami::model
         /// TODO: add error out
         if (index < m_materials.size())
         {
-            m_materials[index]->draw(shader);
+            m_materials[index]->draw(shader, m_textureMgr);
         }
     }
 }

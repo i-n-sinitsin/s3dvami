@@ -19,8 +19,13 @@ uniform mat4 u_view;
 uniform mat4 u_projection;
 uniform mat4 u_nodeTransformation;
 
+// out
+out vec2 v_texCoord;
+
 void main()
 {
+    v_texCoord = a_tex;
+
     mat4 pvm = u_projection * u_view * u_model;
     mat4 pvmnt = pvm * u_nodeTransformation;
     gl_Position = pvm * vec4(a_pos, 1.0f);
