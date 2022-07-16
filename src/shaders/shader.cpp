@@ -73,6 +73,11 @@ namespace s3dvami
         glUniform1d(glGetUniformLocation(m_programId, name.c_str()), val);
     }
 
+    void Shader::setUniform(const std::string &name, const size_t val)
+    {
+        glUniform1i(glGetUniformLocation(m_programId, name.c_str()), val);
+    }
+
     void Shader::setUniform(const std::string &name, const bool val)
     {
         glUniform1i(glGetUniformLocation(m_programId, name.c_str()), val);
