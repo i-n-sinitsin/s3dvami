@@ -25,6 +25,7 @@ namespace s3dvami
         void setUniform(const std::string &name, const bool val);
         void setUniform(const std::string &name, const float val);
         void setUniform(const std::string &name, const double val);
+        void setUniform(const std::string &name, const size_t val);
 
         // matrix
         void setUniform(const std::string &name, const glm::mat4 &m);

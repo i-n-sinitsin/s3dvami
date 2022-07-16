@@ -2,6 +2,8 @@
 
 #include "model/material.h"
 
+#include <iostream>
+
 namespace s3dvami::model
 {
 
@@ -33,7 +35,7 @@ namespace s3dvami::model
     Material::Material(const aiMaterial *material, const TextureMgrPtr textureMgr)
         : m_id{}
         , m_twoSided(true)
-        , m_wireframe(true)
+        , m_wireframe(false)
         , m_colors{
               {ColorType::diffuse, {false, glm::vec4(0.0f)}},
               {ColorType::specular, {false, glm::vec4(0.0f)}},
@@ -41,6 +43,21 @@ namespace s3dvami::model
               {ColorType::emission, {false, glm::vec4(0.0f)}},
               {ColorType::transporent, {false, glm::vec4(0.0f)}},
               {ColorType::reflective, {false, glm::vec4(0.0f)}},
+          }
+        , m_textures{
+              {TextureType::none, {}},
+              {TextureType::diffuse, {}},
+              {TextureType::specular, {}},
+              {TextureType::ambient, {}},
+              {TextureType::emission, {}},
+              {TextureType::height, {}},
+              {TextureType::normals, {}},
+              {TextureType::shininess, {}},
+              {TextureType::opacity, {}},
+              {TextureType::displacement, {}},
+              {TextureType::lightmap, {}},
+              {TextureType::reflection, {}},
+              {TextureType::unknown, {}},
           }
     {
         // read name
@@ -125,10 +142,9 @@ namespace s3dvami::model
                     }
                     index = textureMgr->indexById(texture.name);
                 }
-
                 texture.textureIndex = index;
 
-                m_textures.push_back(texture);
+                m_textures.at(type).push_back(texture);
             }
         }
 
@@ -167,17 +183,40 @@ namespace s3dvami::model
         return m_wireframe;
     }
 
-    void Material::draw(const ShaderPtr shader)
+    void Material::draw(const ShaderPtr shader, const TextureMgrPtr textureMgr)
     {
         // colors
-        for (unsigned int i = 0; i < m_colors.size(); i++)
+        for (const auto &[key, value] : m_colors)
         {
-            std::string common = "u_baseColors[" + std::to_string(i) + "].";
+            std::string common = "u_baseColors[" + std::to_string(static_cast<unsigned int>(key)) + "].";
 
-            shader->setUniform(common + "used", m_colors[ColorType::diffuse].used);
-            shader->setUniform(common + "value", m_colors[ColorType::diffuse].value);
+            shader->setUniform(common + "used", value.used);
+            shader->setUniform(common + "value", value.value);
         }
 
         // textures
+        unsigned int samplerId = 0;
+        for (const auto &[key, value] : m_textures)
+        {
+            std::string common = "u_texTyped[" + std::to_string(static_cast<unsigned int>(key)) + "].";
+
+            shader->setUniform(common + "amount", value.size());
+
+            for (unsigned int i = 0; i < maxTexturesInOneType; i++)
+            {
+                common = common + "textures[" + std::to_string(i) + "].";
+                if (i < value.size())
+                {
+                    glActiveTexture(GL_TEXTURE0 + samplerId);
+                    textureMgr->use(value[i].textureIndex);
+
+                    shader->setUniform(common + "id", samplerId);
+                    shader->setUniform(common + "blend", value[i].blend);
+                    shader->setUniform(common + "operation", static_cast<unsigned int>(value[i].textureOperation));
+
+                    samplerId++;
+                }
+            }
+        }
     }
 }
