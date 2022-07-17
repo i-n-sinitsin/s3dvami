@@ -204,8 +204,15 @@ namespace s3dvami
         std::cout << "Error: ( " << error << " ) Description: " << description << std::endl;
     }
 
-    void Application::onKey(int key, int /*scancode*/, int action, int /*mods*/)
+    void Application::onKey(int key, int /*scancode*/, int action, int mods)
     {
+        [[maybe_unused]] auto isShiftPressed = mods & GLFW_MOD_SHIFT;
+        [[maybe_unused]] auto isCtrlPressed = mods & GLFW_MOD_CONTROL;
+        [[maybe_unused]] auto isAltPressed = mods & GLFW_MOD_ALT;
+        [[maybe_unused]] auto isSuperPressed = mods & GLFW_MOD_SUPER;
+        [[maybe_unused]] auto isCapsLockPressed = mods & GLFW_MOD_CAPS_LOCK;
+        [[maybe_unused]] auto isNumLockPressed = mods & GLFW_MOD_NUM_LOCK;
+
         // process key state
         // need store key state for work with long press status
         if (static_cast<unsigned int>(key) < m_keysState.size())
@@ -221,21 +228,18 @@ namespace s3dvami
         }
 
         // check single press/release
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        auto close = (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS);
+        close = close || (key == GLFW_KEY_Q && action == GLFW_PRESS && isCtrlPressed);
+        if (close)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
 
-        /*
-        GLFW_KEY_MENU
-        if (key >= 0 && key < 1024)
+        auto openFile = (key == GLFW_KEY_O && action == GLFW_PRESS && isCtrlPressed);
+        if (openFile)
         {
-            if(action == GLFW_PRESS)
-                keys[key] = true;
-            else if(action == GLFW_RELEASE)
-                keys[key] = false;
+            m_openFileDialog->show();
         }
-        */
     }
 
     void Application::onResize(int width, int height)
@@ -252,6 +256,7 @@ namespace s3dvami
 
     void Application::process(float dt)
     {
+        processKeys(dt);
         if (m_model)
         {
             m_model->process(dt);
@@ -349,6 +354,29 @@ namespace s3dvami
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+
+    void Application::processKeys(float /*dt*/)
+    {
+        auto leftPressed = (m_keysState[GLFW_KEY_LEFT] == KeyState::pressed || m_keysState[GLFW_KEY_A] == KeyState::pressed);
+        if (leftPressed)
+        {
+        }
+
+        auto rightPressed = (m_keysState[GLFW_KEY_RIGHT] == KeyState::pressed || m_keysState[GLFW_KEY_D] == KeyState::pressed);
+        if (rightPressed)
+        {
+        }
+
+        auto upPressed = (m_keysState[GLFW_KEY_UP] == KeyState::pressed || m_keysState[GLFW_KEY_W] == KeyState::pressed);
+        if (upPressed)
+        {
+        }
+
+        auto downPressed = (m_keysState[GLFW_KEY_DOWN] == KeyState::pressed || m_keysState[GLFW_KEY_S] == KeyState::pressed);
+        if (downPressed)
+        {
+        }
     }
 
     void Application::reload(const std::optional<std::string> &fileName)

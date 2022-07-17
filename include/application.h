@@ -46,12 +46,12 @@ namespace s3dvami
         static Application *m_instance;
         GLFWwindow *m_window;
 
+        // TODO: think about glfwGetKey
         enum KeyState
         {
             pressed,
             released
         };
-
         std::array<KeyState, GLFW_KEY_LAST> m_keysState;
 
         double m_lastTime;
@@ -78,6 +78,8 @@ namespace s3dvami
         void initImGui();
         void deinitGui();
         void renderImGui();
+
+        void processKeys(float dt);
 
         void reload(const std::optional<std::string> &fileName);
     };
