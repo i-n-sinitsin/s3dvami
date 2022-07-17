@@ -156,7 +156,8 @@ namespace s3dvami
 
         // camera
         m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
-        m_camera->setView(glm::vec3(0.0f, 2.0f, 15.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        //m_camera->setView(glm::vec3(0.0f, 2.0f, 15.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera->setView(glm::vec3(25.0f, 25.0f, 50.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
@@ -333,10 +334,9 @@ namespace s3dvami
                 return;
             }
 
-            //glm::vec3 pos = m_model->meshMgr()->aabb().center();
-            //glm::vec3 eye = m_model->meshMgr()->aabb().max();
-
-            //m_camera->setView(eye, pos, glm::vec3(0.0f, 1.0f, 0.0f));
+            //std::optional<AABB> nodeAABB = m_model->nodeMgr()->aabb();
+            //glm::vec3 eye = nodeAABB.value().center();
+            //m_camera->setView(eye + glm::vec3(25.0f, 25.0f, 50.0f), eye, glm::vec3(0.0f, 1.0f, 0.0f));
         }
     }
 } // namespace s3dvami

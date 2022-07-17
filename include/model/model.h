@@ -48,10 +48,10 @@ namespace s3dvami::model
         glm::mat4 m_globalTransform;
         glm::mat4 m_globalInverseTransform;
 
-        MeshMgrPtr m_meshMgr;
-        NodeMgrPtr m_nodeMgr;
         TextureMgrPtr m_textureMgr;
         MaterialMgrPtr m_materialMgr;
+        MeshMgrPtr m_meshMgr;
+        NodeMgrPtr m_nodeMgr;
 
         glm::mat4 m_translation;
         glm::mat4 m_rotation;

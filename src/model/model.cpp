@@ -25,10 +25,10 @@ namespace s3dvami::model
         , m_name()
         , m_globalTransform(1.0f)
         , m_globalInverseTransform(glm::inverse(glm::mat4(1.0f)))
-        , m_meshMgr(new MeshMgr())
-        , m_nodeMgr(new NodeMgr())
         , m_textureMgr(new TextureMgr())
         , m_materialMgr(new MaterialMgr(m_textureMgr))
+        , m_meshMgr(new MeshMgr(m_materialMgr))
+        , m_nodeMgr(new NodeMgr(m_meshMgr))
         , m_translation(1.0f)
         , m_rotation(1.0f)
         , m_scale(1.0f)
@@ -61,12 +61,15 @@ namespace s3dvami::model
         m_globalTransform = glm::transpose(glm::make_mat4(&(scene->mRootNode->mTransformation.a1)));
         m_globalInverseTransform = glm::inverse(m_globalTransform);
 
-        AABB aabb = m_meshMgr->aabb();
+        std::optional<AABB> aabb = m_meshMgr->aabb();
         m_name = scene->mName.C_Str();
 
         // calc scale
-        auto scale = defaultModelSize / aabb.maxDelta();
-        m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+        if (aabb.has_value())
+        {
+            auto scale = defaultModelSize / aabb.value().maxDelta();
+            m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+        }
 
         m_loaded = result;
         return result;
@@ -85,7 +88,7 @@ namespace s3dvami::model
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
 
-        m_nodeMgr->draw(m_shader, m_meshMgr, m_materialMgr);
+        m_nodeMgr->draw(m_shader);
     }
 
     void Model::process(float /*dt*/)
@@ -172,7 +175,7 @@ namespace s3dvami::model
         {
             return false;
         }
-        m_nodeMgr = std::make_shared<NodeMgr>(scene->mRootNode);
+        m_nodeMgr = std::make_shared<NodeMgr>(scene->mRootNode, m_meshMgr);
 
         return true;
     }

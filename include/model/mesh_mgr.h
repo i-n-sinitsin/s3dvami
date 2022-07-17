@@ -11,16 +11,16 @@ namespace s3dvami::model
     class MeshMgr
     {
     public:
-        MeshMgr();
+        MeshMgr(const MaterialMgrPtr materialMgr);
 
-        AABB aabb() const;
+        std::optional<AABB> aabb() const;
 
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, unsigned int index);
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, std::vector<unsigned int> indeces);
+        void draw(ShaderPtr shader);
+        void draw(ShaderPtr shader, unsigned int index);
+        void draw(ShaderPtr shader, std::vector<unsigned int> indeces);
 
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::string &id);
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::vector<std::string> &ids);
+        void draw(ShaderPtr shader, const std::string &id);
+        void draw(ShaderPtr shader, const std::vector<std::string> &ids);
 
         bool add(const aiMesh *mesh);
 
@@ -32,6 +32,8 @@ namespace s3dvami::model
         const std::vector<MeshPtr> &meshes() const;
 
     private:
+        MaterialMgrPtr m_materialMgr;
+
         std::vector<MeshPtr> m_meshes;
 
         int indexById(const std::string &id); // -1 if not find

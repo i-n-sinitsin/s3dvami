@@ -6,8 +6,9 @@
 
 namespace s3dvami::model
 {
-    Mesh::Mesh(const aiMesh *mesh)
-        : m_VAO(0)
+    Mesh::Mesh(const aiMesh *mesh, const MaterialMgrPtr materialMgr)
+        : m_materialMgr(materialMgr)
+        , m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
         , m_id()
@@ -59,11 +60,11 @@ namespace s3dvami::model
         destroyBuffers();
     }
 
-    void Mesh::draw(ShaderPtr shader, MaterialMgrPtr materialMgr)
+    void Mesh::draw(ShaderPtr shader)
     {
         if (m_materialIndex >= 0)
         {
-            materialMgr->draw(shader, materialIndex());
+            m_materialMgr->draw(shader, materialIndex());
         }
 
         // TODO: add reading polygon mode from material
