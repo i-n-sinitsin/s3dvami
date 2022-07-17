@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <array>
 #include <optional>
 #include <vector>
 
@@ -44,6 +45,14 @@ namespace s3dvami
     private:
         static Application *m_instance;
         GLFWwindow *m_window;
+
+        enum KeyState
+        {
+            pressed,
+            released
+        };
+
+        std::array<KeyState, GLFW_KEY_LAST> m_keysState;
 
         double m_lastTime;
 

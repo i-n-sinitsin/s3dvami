@@ -52,6 +52,7 @@ namespace s3dvami
 {
     Application::Application()
         : m_window(nullptr)
+        , m_keysState{}
         , m_lastTime(0.0)
         , m_camera(new Camera())
         , m_model(nullptr)
@@ -63,7 +64,9 @@ namespace s3dvami
         , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
         , m_modelWindow(nullptr)
-    {}
+    {
+        m_keysState.fill(KeyState::released);
+    }
 
     Application *Application::GetInstance()
     {
@@ -203,6 +206,21 @@ namespace s3dvami
 
     void Application::onKey(int key, int /*scancode*/, int action, int /*mods*/)
     {
+        // process key state
+        // need store key state for work with long press status
+        if (static_cast<unsigned int>(key) < m_keysState.size())
+        {
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+            {
+                m_keysState[key] = KeyState::pressed;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                m_keysState[key] = KeyState::released;
+            }
+        }
+
+        // check single press/release
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
