@@ -14,18 +14,14 @@
 
 s3dvami::Application *s3dvami::Application::m_instance = nullptr;
 
-static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+static void keyCallback(GLFWwindow * /*window*/, int key, int scancode, int action, int mods)
 {
     s3dvami::Application::GetInstance()->onKey(key, scancode, action, mods);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
 }
 
-static void errorCallback(int /*error*/, const char *description)
+static void errorCallback(int error, const char *description)
 {
-    std::cerr << "Error:" << description << std::endl;
+    s3dvami::Application::GetInstance()->onError(error, std::string(description));
 }
 
 static void frameBufferSizeCallback(GLFWwindow * /*window*/, int width, int height)
@@ -200,12 +196,28 @@ namespace s3dvami
         glfwTerminate();
     }
 
+    void Application::onError(int error, const std::string &description)
+    {
+        std::cout << "Error: ( " << error << " ) Description: " << description << std::endl;
+    }
+
     void Application::onKey(int key, int /*scancode*/, int action, int /*mods*/)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
+
+        /*
+        GLFW_KEY_MENU
+        if (key >= 0 && key < 1024)
+        {
+            if(action == GLFW_PRESS)
+                keys[key] = true;
+            else if(action == GLFW_RELEASE)
+                keys[key] = false;
+        }
+        */
     }
 
     void Application::onResize(int width, int height)
