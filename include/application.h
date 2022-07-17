@@ -37,9 +37,13 @@ namespace s3dvami
         void run();
         void deinit();
 
-        void onError(int error, const std::string &description);
-        void onKey(int key, int scancode, int action, int mods);
-        void onResize(int width, int height);
+        void onError(const int error, const std::string &description);
+        void onKey(const int key, const int scancode, const int action, const int mods);
+        void onMouseMove(const glm::vec2 &pos);
+        void onMouseScroll(const glm::vec2 &offset);
+        void onMouseKey(const int key, const int action, const int mods);
+
+        void onResize(const int width, const int height);
         void onDrop(const std::string &fileName);
 
     private:
@@ -53,6 +57,8 @@ namespace s3dvami
             released
         };
         std::array<KeyState, GLFW_KEY_LAST> m_keysState;
+        std::array<KeyState, GLFW_MOUSE_BUTTON_LAST> m_mouseKeysState;
+        std::optional<glm::vec2> m_lastMousePosition;
 
         double m_lastTime;
 
