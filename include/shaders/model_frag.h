@@ -118,11 +118,17 @@ vec4 calcDiffuseColor() {
     return calc(u_baseColors[baseColorDiffuse], u_texTyped[texTypeDiffuse]);
 }
 
+vec4 calcSpecularColor() {
+    return calc(u_baseColors[baseColorSpecular], u_texTyped[texTypeSpecular]);
+}
+
 void main()
 {
     vec4 diffuse = calcDiffuseColor();
+    vec4 specular = calcSpecularColor();
 
-    v_color = diffuse;
+    // TODO: think - + or *
+    v_color = diffuse + specular;
 }
 )FRAG";
 }
