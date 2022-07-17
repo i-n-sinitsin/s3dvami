@@ -78,7 +78,7 @@ out vec4 v_color;
 
 vec4 calc(BaseColor baseColor, TexTyped texTyped)
 {
-    vec4 color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+    vec4 color = vec4(0.0f, 0.0f, 0.0f, 0.0f);
     if ( baseColor.used )
     {
         color = baseColor.value;
