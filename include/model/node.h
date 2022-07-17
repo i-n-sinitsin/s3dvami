@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 
+#include <aabb.h>
+
 #include "assimp/scene.h"
 
 #include "model/mesh_mgr.h"
@@ -22,15 +24,19 @@ namespace s3dvami::model
     class Node
     {
     public:
-        explicit Node(const aiNode *node);
+        explicit Node(const aiNode *node, const MeshMgrPtr meshMgr);
 
-        void draw(ShaderPtr shader, glm::mat4 parentTransformation, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr);
+        std::optional<AABB> aabb(const glm::mat4 &parentTransformation) const;
+
+        void draw(ShaderPtr shader, glm::mat4 parentTransformation);
 
         std::string id() const;
         const std::vector<NodePtr> nodes() const;
         const std::vector<unsigned int> meshes() const;
 
     private:
+        MeshMgrPtr m_meshMgr;
+
         std::string m_id;
         glm::mat4 m_transformation;
 

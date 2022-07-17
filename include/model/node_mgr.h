@@ -20,16 +20,20 @@ namespace s3dvami::model
     class NodeMgr
     {
     public:
-        NodeMgr();
-        NodeMgr(const aiNode *rootNode);
+        NodeMgr(MeshMgrPtr meshMgr);
+        NodeMgr(const aiNode *rootNode, MeshMgrPtr meshMgr);
 
-        void draw(ShaderPtr shader, MeshMgrPtr meshMgr, MaterialMgrPtr materialMgr);
+        std::optional<AABB> aabb() const;
+
+        void draw(ShaderPtr shader);
 
         std::string id() const;
         const std::vector<NodePtr> nodes() const;
         const std::vector<unsigned int> meshes() const;
 
     private:
+        MeshMgrPtr m_meshMgr;
+
         std::string m_id;
         glm::mat4 m_transformation;
 

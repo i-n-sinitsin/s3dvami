@@ -5,67 +5,75 @@
 namespace s3dvami::model
 {
 
-    MeshMgr::MeshMgr()
-        : m_meshes{}
+    MeshMgr::MeshMgr(const MaterialMgrPtr materialMgr)
+        : m_materialMgr(materialMgr)
+        , m_meshes{}
     {}
 
-    AABB MeshMgr::aabb() const
+    std::optional<AABB> MeshMgr::aabb() const
     {
-        AABB aabb;
+        std::optional<AABB> result;
         for (auto &it : m_meshes)
         {
-            aabb = aabb + it->aabb();
+            if (result.has_value())
+            {
+                result = result.value() + it->aabb();
+            }
+            else
+            {
+                result = it->aabb();
+            }
         }
 
-        return aabb;
+        return result;
     }
 
-    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr)
+    void MeshMgr::draw(ShaderPtr shader)
     {
         for (const auto &mesh : m_meshes)
         {
-            mesh->draw(shader, materialMgr);
+            mesh->draw(shader);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, unsigned int index)
+    void MeshMgr::draw(ShaderPtr shader, unsigned int index)
     {
         /// TODO: add error out
         if (index < m_meshes.size())
         {
-            m_meshes[index]->draw(shader, materialMgr);
+            m_meshes[index]->draw(shader);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, std::vector<unsigned int> indeces)
+    void MeshMgr::draw(ShaderPtr shader, std::vector<unsigned int> indeces)
     {
         for (const auto &index : indeces)
         {
-            draw(shader, materialMgr, index);
+            draw(shader, index);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::string &id)
+    void MeshMgr::draw(ShaderPtr shader, const std::string &id)
     {
         /// TODO: add error out
         int index = indexById(id);
         if (index >= 0)
         {
-            draw(shader, materialMgr, index);
+            draw(shader, index);
         }
     }
 
-    void MeshMgr::draw(ShaderPtr shader, MaterialMgrPtr materialMgr, const std::vector<std::string> &ids)
+    void MeshMgr::draw(ShaderPtr shader, const std::vector<std::string> &ids)
     {
         for (const auto &id : ids)
         {
-            draw(shader, materialMgr, id);
+            draw(shader, id);
         }
     }
 
     bool MeshMgr::add(const aiMesh *mesh)
     {
-        m_meshes.push_back(std::make_shared<Mesh>(mesh));
+        m_meshes.push_back(std::make_shared<Mesh>(mesh, m_materialMgr));
         return true;
     }
 

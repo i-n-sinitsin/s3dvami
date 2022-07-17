@@ -19,10 +19,10 @@ namespace s3dvami::model
     class Mesh
     {
     public:
-        explicit Mesh(const aiMesh *mesh);
+        explicit Mesh(const aiMesh *mesh, const MaterialMgrPtr materialMgr);
         ~Mesh();
 
-        void draw(ShaderPtr shader, MaterialMgrPtr materialMgr);
+        void draw(ShaderPtr shader);
         AABB aabb() const;
 
         std::string id() const;
@@ -31,6 +31,8 @@ namespace s3dvami::model
         int materialIndex() const;
 
     private:
+        MaterialMgrPtr m_materialMgr;
+
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;
