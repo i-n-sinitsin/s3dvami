@@ -80,6 +80,6 @@ namespace s3dvami
         auto newMax = m * glm::vec4(m_max, 1.0f);
 
         m_min = glm::vec3(std::min(newMin.x, newMax.x), std::min(newMin.y, newMax.y), std::min(newMin.z, newMax.z));
-        m_min = glm::vec3(std::max(newMin.x, newMax.x), std::max(newMin.y, newMax.y), std::max(newMin.z, newMax.z));
+        m_max = glm::vec3(std::max(newMin.x, newMax.x), std::max(newMin.y, newMax.y), std::max(newMin.z, newMax.z));
     }
 }
