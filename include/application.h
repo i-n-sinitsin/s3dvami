@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <array>
 #include <optional>
 #include <vector>
 
@@ -36,6 +37,7 @@ namespace s3dvami
         void run();
         void deinit();
 
+        void onError(int error, const std::string &description);
         void onKey(int key, int scancode, int action, int mods);
         void onResize(int width, int height);
         void onDrop(const std::string &fileName);
@@ -43,6 +45,14 @@ namespace s3dvami
     private:
         static Application *m_instance;
         GLFWwindow *m_window;
+
+        // TODO: think about glfwGetKey
+        enum KeyState
+        {
+            pressed,
+            released
+        };
+        std::array<KeyState, GLFW_KEY_LAST> m_keysState;
 
         double m_lastTime;
 
@@ -68,6 +78,8 @@ namespace s3dvami
         void initImGui();
         void deinitGui();
         void renderImGui();
+
+        void processKeys(float dt);
 
         void reload(const std::optional<std::string> &fileName);
     };
