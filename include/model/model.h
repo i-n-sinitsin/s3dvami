@@ -5,6 +5,8 @@
 #include <memory>
 #include <string>
 
+#include <aabb.h>
+
 #include "assimp/scene.h"
 
 #include "model/material_mgr.h"
@@ -38,6 +40,8 @@ namespace s3dvami::model
         const NodeMgrPtr nodeMgr() const;
         const TextureMgrPtr textureMgr() const;
         const MaterialMgrPtr materialMgr() const;
+
+        std::optional<AABB> aabb() const;
 
     private:
         bool m_loaded;

@@ -118,6 +118,18 @@ namespace s3dvami::model
         return m_textureMgr;
     }
 
+    std::optional<AABB> Model::aabb() const
+    {
+        std::optional<AABB> result = m_nodeMgr->aabb();
+
+        if (result.has_value())
+        {
+            auto model = m_translation * m_rotation * m_scale;
+            result.value().aplayTransformation(model);
+        }
+        return result;
+    }
+
     bool Model::loadTextures(const aiScene *scene)
     {
         bool result = true;
