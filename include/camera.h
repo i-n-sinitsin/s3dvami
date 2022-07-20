@@ -85,14 +85,20 @@ namespace s3dvami
         void setTarget(const glm::vec3 &position);
         void setUp(const glm::vec3 &position);
 
+
+
+
+
+
+
     private:
         projection::BasePtr m_projection;
-
         glm::mat4 m_view;
 
         glm::vec3 m_position;
         glm::vec3 m_target;
         glm::vec3 m_up;
+
         float m_scale;
 
         void updateMatricies();
