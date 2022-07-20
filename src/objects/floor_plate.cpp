@@ -84,7 +84,7 @@ namespace s3dvami::objects
     {
         m_shader->use();
         m_shader->setUniform("u_projection", camera->projection()->matrix());
-        m_shader->setUniform("u_view", camera->view());
+        m_shader->setUniform("u_view", camera->view()->matrix());
         m_shader->setUniform("u_model", glm::mat4(1.0f));
         m_shader->setUniform("u_color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 

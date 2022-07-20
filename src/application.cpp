@@ -162,9 +162,9 @@ namespace s3dvami
         m_modelWindow = std::make_shared<windows::Model>();
 
         // camera
-        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate));
-        //m_camera->setView(glm::vec3(0.0f, 2.0f, 15.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-        m_camera->setView(glm::vec3(25.0f, 25.0f, 50.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate), std::make_shared<view::Free>());
+        m_camera->view()->setPosition({25.0f, 25.0f, 50.0f});
+        m_camera->view()->setTarget({0.0f, 0.0f, 0.0f});
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
