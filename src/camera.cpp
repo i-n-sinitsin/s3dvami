@@ -80,13 +80,64 @@ namespace s3dvami
 
     }
 
-    Camera::Camera(const projection::BasePtr projection)
+    namespace view
+    {
+        Base::Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
+            : m_type(Type::base)
+            , m_view(1.0f)
+            , m_position(position)
+            , m_target(target)
+            , m_up(up)
+        {
+            updateMatrix();
+        }
+
+        Type Base::type() const
+        {
+            return m_type;
+        }
+
+        const glm::mat4 &Base::matrix() const
+        {
+            return m_view;
+        }
+
+        void Base::setPosition(const glm::vec3 &position)
+        {
+            m_position = position;
+            updateMatrix();
+        }
+
+        void Base::setTarget(const glm::vec3 &target)
+        {
+            m_target = target;
+            updateMatrix();
+        }
+
+        void Base::setUp(const glm::vec3 &up)
+        {
+            m_up = up;
+            updateMatrix();
+        }
+
+        void Base::updateMatrix()
+        {
+            m_view = glm::lookAt(m_position, m_target, m_up);
+        }
+
+        Free::Free()
+            : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
+        {}
+
+        Orbit::Orbit()
+            : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
+        {}
+
+    }
+
+    Camera::Camera(const projection::BasePtr projection, const view::BasePtr view)
         : m_projection(projection)
-        , m_view(1.0f)
-        , m_position(0.0f, 0.0f, 0.0f)
-        , m_target(0.0f, 0.0f, 0.0f)
-        , m_up(0.0f, 0.0f, 0.0f)
-        , m_scale(1.0f)
+        , m_view(view)
     {}
 
     const projection::BasePtr Camera::projection() const
@@ -94,18 +145,12 @@ namespace s3dvami
         return m_projection;
     }
 
-    glm::mat4 Camera::view() const
+    const view::BasePtr Camera::view() const
     {
         return m_view;
     }
 
-    void Camera::setView(glm::vec3 eye, glm::vec3 center, glm::vec3 up)
-    {
-        m_view = glm::lookAt(eye, center, up);
-    }
-
     void Camera::updateMatricies()
-    {
-        m_view = glm::lookAt(m_position, m_target, m_up);
-    }
+    {}
+
 }

@@ -71,29 +71,78 @@ namespace s3dvami
         using OrthoPtr = std::shared_ptr<Ortho>;
     }
 
+    namespace view
+    {
+        enum class Type
+        {
+            base,
+            free,
+            orbit,
+        };
+
+        class Base
+        {
+        public:
+            explicit Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            Type type() const;
+
+            const glm::mat4 &matrix() const;
+
+            void setPosition(const glm::vec3 &position);
+            void setTarget(const glm::vec3 &target);
+            void setUp(const glm::vec3 &up);
+
+        protected:
+            Type m_type;
+
+            glm::mat4 m_view;
+
+            glm::vec3 m_position;
+            glm::vec3 m_target;
+            glm::vec3 m_up;
+
+            void updateMatrix();
+        };
+
+        using BasePtr = std::shared_ptr<Base>;
+
+        class Free : public Base
+        {
+        public:
+            explicit Free();
+        };
+
+        using FreePtr = std::shared_ptr<Free>;
+
+        class Orbit : public Base
+        {
+        public:
+            explicit Orbit();
+        };
+
+        using OrbitPtr = std::shared_ptr<Orbit>;
+    }
+
     class Camera
     {
     public:
-        explicit Camera(const projection::BasePtr projection);
+        explicit Camera(const projection::BasePtr projection, const view::BasePtr view);
 
         const projection::BasePtr projection() const;
-        glm::mat4 view() const;
+        const view::BasePtr view() const;
 
-        void setView(glm::vec3 eye, glm::vec3 pos, glm::vec3 up);
+        //  позиция
+        //  сдвиг вправо/влево     -- по сфере/free
+        //  вверх/вниз             -- по сфере/free
+        //  вперед/наза             -- дистанция/free
 
         void setPosition(const glm::vec3 &position);
-        void setTarget(const glm::vec3 &position);
-        void setUp(const glm::vec3 &position);
+        void setTarget(const glm::vec3 &target);
+        void setUp(const glm::vec3 &up);
 
     private:
         projection::BasePtr m_projection;
-
-        glm::mat4 m_view;
-
-        glm::vec3 m_position;
-        glm::vec3 m_target;
-        glm::vec3 m_up;
-        float m_scale;
+        view::BasePtr m_view;
 
         void updateMatricies();
     };
