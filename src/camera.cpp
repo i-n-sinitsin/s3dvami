@@ -15,10 +15,16 @@ namespace s3dvami
             , m_near(near)
             , m_far(far)
             , m_projection(1.0f)
+            , m_needUpdateMatrix(true)
         {}
 
-        const glm::mat4 &Base::matrix() const
+        const glm::mat4 &Base::matrix()
         {
+            if (m_needUpdateMatrix)
+            {
+                updateMatrix();
+                m_needUpdateMatrix = false;
+            }
             return m_projection;
         }
 
@@ -30,38 +36,36 @@ namespace s3dvami
         void Base::setWidth(float width)
         {
             m_width = width;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::setHeight(float height)
         {
             m_height = height;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::setNear(float near)
         {
             m_near = near;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::setFar(float far)
         {
             m_far = far;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         Perspective::Perspective(float fov, float width, float height, float near, float far)
             : Base(width, height, near, far)
             , m_fov(fov)
-        {
-            updateMatrix();
-        }
+        {}
 
         void Perspective::setFov(float fov)
         {
             m_fov = fov;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Perspective::updateMatrix()

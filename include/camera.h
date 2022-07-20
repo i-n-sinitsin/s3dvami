@@ -15,7 +15,7 @@ namespace s3dvami
             base,
             perspective,
             ortho,
-            ortho2d
+            ortho2d,
         };
 
         class Base
@@ -23,7 +23,7 @@ namespace s3dvami
         public:
             explicit Base(float width, float height, float near, float far);
 
-            const glm::mat4 &matrix() const;
+            const glm::mat4 &matrix();
             Type type() const;
 
             void setWidth(float width);
@@ -38,6 +38,7 @@ namespace s3dvami
             float m_near;
             float m_far;
             glm::mat4 m_projection;
+            bool m_needUpdateMatrix;
 
             virtual void updateMatrix() = 0;
         };
