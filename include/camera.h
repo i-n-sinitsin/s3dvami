@@ -16,9 +16,13 @@ namespace s3dvami
         glm::mat4 getProjection() const;
         glm::mat4 getView() const;
 
+        // 3D
         void setPerspectiveProjection(float fov, float width, float height, float near, float far);
-        /// TODO: realize ortho projection
-        //void setOrthoProjection();
+        void setOrthoProjection(float left, float right, float bottom, float top, float near, float far);
+        void setOrthoProjection(float width, float height, float depth);
+        // 2D
+        void setOrtho2DProjection(float left, float right, float bottom, float top);
+        void setOrtho2DProjection(float width, float height);
 
         void setView(glm::vec3 eye, glm::vec3 pos, glm::vec3 up);
 
