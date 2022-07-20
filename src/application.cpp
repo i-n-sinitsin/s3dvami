@@ -14,18 +14,14 @@
 
 s3dvami::Application *s3dvami::Application::m_instance = nullptr;
 
-static void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods)
+static void keyCallback(GLFWwindow * /*window*/, int key, int scancode, int action, int mods)
 {
     s3dvami::Application::GetInstance()->onKey(key, scancode, action, mods);
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-    {
-        glfwSetWindowShouldClose(window, GLFW_TRUE);
-    }
 }
 
-static void errorCallback(int /*error*/, const char *description)
+static void errorCallback(int error, const char *description)
 {
-    std::cerr << "Error:" << description << std::endl;
+    s3dvami::Application::GetInstance()->onError(error, std::string(description));
 }
 
 static void frameBufferSizeCallback(GLFWwindow * /*window*/, int width, int height)
@@ -33,14 +29,19 @@ static void frameBufferSizeCallback(GLFWwindow * /*window*/, int width, int heig
     s3dvami::Application::GetInstance()->onResize(width, height);
 }
 
-void mouseCallback(GLFWwindow * /*window*/, double /*xPos*/, double /*yPos*/)
+void mouseMoveCallback(GLFWwindow * /*window*/, double xPos, double yPos)
 {
-    //s3dvami::Application::GetInstance()->onMouseMove(width, height);
+    s3dvami::Application::GetInstance()->onMouseMove(glm::vec2(xPos, yPos));
 }
 
-void scrollCallback(GLFWwindow * /*window*/, double /*xOffset*/, double /*yOffset*/)
+void mouseScrollCallback(GLFWwindow * /*window*/, double xOffset, double yOffset)
 {
-    //s3dvami::Application::GetInstance()->onMouseScroll(width, height);
+    s3dvami::Application::GetInstance()->onMouseScroll(glm::vec2(xOffset, yOffset));
+}
+
+static void mouseKeyCallback(GLFWwindow * /*window*/, int key, int action, int mods)
+{
+    s3dvami::Application::GetInstance()->onMouseKey(key, action, mods);
 }
 
 void dropCallback(GLFWwindow * /*window*/, int pathCount, const char *paths[])
@@ -56,6 +57,9 @@ namespace s3dvami
 {
     Application::Application()
         : m_window(nullptr)
+        , m_keysState{}
+        , m_mouseKeysState{}
+        , m_lastMousePosition{}
         , m_lastTime(0.0)
         , m_camera(nullptr)
         , m_model(nullptr)
@@ -67,7 +71,10 @@ namespace s3dvami
         , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
         , m_modelWindow(nullptr)
-    {}
+    {
+        m_keysState.fill(KeyState::released);
+        m_mouseKeysState.fill(KeyState::released);
+    }
 
     Application *Application::GetInstance()
     {
@@ -110,9 +117,9 @@ namespace s3dvami
 
         // callbacks
         glfwSetKeyCallback(m_window, keyCallback);
-        glfwSetCursorPosCallback(m_window, mouseCallback);
-        glfwSetScrollCallback(m_window, scrollCallback);
-        //glfwSetMouseButtonCallback
+        glfwSetCursorPosCallback(m_window, mouseMoveCallback);
+        glfwSetScrollCallback(m_window, mouseScrollCallback);
+        glfwSetMouseButtonCallback(m_window, mouseKeyCallback);
         glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
         glfwSetDropCallback(m_window, dropCallback);
         //glfwSetInputMode
@@ -200,15 +207,92 @@ namespace s3dvami
         glfwTerminate();
     }
 
-    void Application::onKey(int key, int /*scancode*/, int action, int /*mods*/)
+    void Application::onError(const int error, const std::string &description)
     {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
+        std::cout << "Error: ( " << error << " ) Description: " << description << std::endl;
+    }
+
+    void Application::onKey(int key, const int /*scancode*/, const int action, const int mods)
+    {
+        [[maybe_unused]] auto isShiftPressed = mods & GLFW_MOD_SHIFT;
+        [[maybe_unused]] auto isCtrlPressed = mods & GLFW_MOD_CONTROL;
+        [[maybe_unused]] auto isAltPressed = mods & GLFW_MOD_ALT;
+        [[maybe_unused]] auto isSuperPressed = mods & GLFW_MOD_SUPER;
+        [[maybe_unused]] auto isCapsLockPressed = mods & GLFW_MOD_CAPS_LOCK;
+        [[maybe_unused]] auto isNumLockPressed = mods & GLFW_MOD_NUM_LOCK;
+
+        // process key state
+        // need store key state for work with long press status
+        if (static_cast<unsigned int>(key) < m_keysState.size())
+        {
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+            {
+                m_keysState[key] = KeyState::pressed;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                m_keysState[key] = KeyState::released;
+            }
+        }
+
+        // check single press/release
+        auto close = (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS);
+        close = close || (key == GLFW_KEY_Q && action == GLFW_PRESS && isCtrlPressed);
+        if (close)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
         }
+
+        auto openFile = (key == GLFW_KEY_O && action == GLFW_PRESS && isCtrlPressed);
+        if (openFile)
+        {
+            m_openFileDialog->show();
+        }
     }
 
-    void Application::onResize(int width, int height)
+    void Application::onMouseMove(const glm::vec2 &pos)
+    {
+        if (m_lastMousePosition.has_value())
+        {
+        }
+        else
+        {
+            m_lastMousePosition = pos;
+        }
+    }
+
+    void Application::onMouseScroll(const glm::vec2 & /*offset*/)
+    {}
+
+    void Application::onMouseKey(const int key, const int action, const int mods)
+    {
+        [[maybe_unused]] auto isShiftPressed = mods & GLFW_MOD_SHIFT;
+        [[maybe_unused]] auto isCtrlPressed = mods & GLFW_MOD_CONTROL;
+        [[maybe_unused]] auto isAltPressed = mods & GLFW_MOD_ALT;
+        [[maybe_unused]] auto isSuperPressed = mods & GLFW_MOD_SUPER;
+        [[maybe_unused]] auto isCapsLockPressed = mods & GLFW_MOD_CAPS_LOCK;
+        [[maybe_unused]] auto isNumLockPressed = mods & GLFW_MOD_NUM_LOCK;
+
+        // process key state
+        // need store key state for work with long press status
+        if (static_cast<unsigned int>(key) < m_mouseKeysState.size())
+        {
+            if (action == GLFW_PRESS || action == GLFW_REPEAT)
+            {
+                m_mouseKeysState[key] = KeyState::pressed;
+            }
+            else if (action == GLFW_RELEASE)
+            {
+                m_mouseKeysState[key] = KeyState::released;
+            }
+        }
+
+        //GLFW_MOUSE_BUTTON_LEFT
+        //GLFW_MOUSE_BUTTON_RIGHT
+        //GLFW_MOUSE_BUTTON_MIDDLE
+    }
+
+    void Application::onResize(const int width, const int height)
     {
         glViewport(0, 0, width, height);
         m_camera->projection()->setWidth(width);
@@ -223,6 +307,7 @@ namespace s3dvami
 
     void Application::process(float dt)
     {
+        processKeys(dt);
         if (m_model)
         {
             m_model->process(dt);
@@ -320,6 +405,29 @@ namespace s3dvami
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    }
+
+    void Application::processKeys(float /*dt*/)
+    {
+        auto leftPressed = (m_keysState[GLFW_KEY_LEFT] == KeyState::pressed || m_keysState[GLFW_KEY_A] == KeyState::pressed);
+        if (leftPressed)
+        {
+        }
+
+        auto rightPressed = (m_keysState[GLFW_KEY_RIGHT] == KeyState::pressed || m_keysState[GLFW_KEY_D] == KeyState::pressed);
+        if (rightPressed)
+        {
+        }
+
+        auto upPressed = (m_keysState[GLFW_KEY_UP] == KeyState::pressed || m_keysState[GLFW_KEY_W] == KeyState::pressed);
+        if (upPressed)
+        {
+        }
+
+        auto downPressed = (m_keysState[GLFW_KEY_DOWN] == KeyState::pressed || m_keysState[GLFW_KEY_S] == KeyState::pressed);
+        if (downPressed)
+        {
+        }
     }
 
     void Application::reload(const std::optional<std::string> &fileName)

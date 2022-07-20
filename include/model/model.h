@@ -57,15 +57,18 @@ namespace s3dvami::model
         MeshMgrPtr m_meshMgr;
         NodeMgrPtr m_nodeMgr;
 
-        glm::mat4 m_translation;
-        glm::mat4 m_rotation;
-        glm::mat4 m_scale;
+        glm::vec3 m_translation;
+        glm::vec3 m_rotation;
+        glm::vec3 m_scale;
+        glm::mat4 m_modelTransformation;
 
         bool loadTextures(const aiScene *scene);
         bool loadMaterials(const aiScene *scene);
         bool loadMeshes(const aiScene *scene);
         bool loadNodes(const aiScene *scene);
         bool loadAnimations(const aiScene *scene);
+
+        void calcModelTransformation();
     };
 
     using ModelPtr = std::shared_ptr<Model>;

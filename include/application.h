@@ -2,6 +2,7 @@
 
 #pragma once
 
+#include <array>
 #include <optional>
 #include <vector>
 
@@ -36,13 +37,28 @@ namespace s3dvami
         void run();
         void deinit();
 
-        void onKey(int key, int scancode, int action, int mods);
-        void onResize(int width, int height);
+        void onError(const int error, const std::string &description);
+        void onKey(const int key, const int scancode, const int action, const int mods);
+        void onMouseMove(const glm::vec2 &pos);
+        void onMouseScroll(const glm::vec2 &offset);
+        void onMouseKey(const int key, const int action, const int mods);
+
+        void onResize(const int width, const int height);
         void onDrop(const std::string &fileName);
 
     private:
         static Application *m_instance;
         GLFWwindow *m_window;
+
+        // TODO: think about glfwGetKey
+        enum KeyState
+        {
+            pressed,
+            released
+        };
+        std::array<KeyState, GLFW_KEY_LAST> m_keysState;
+        std::array<KeyState, GLFW_MOUSE_BUTTON_LAST> m_mouseKeysState;
+        std::optional<glm::vec2> m_lastMousePosition;
 
         double m_lastTime;
 
@@ -68,6 +84,8 @@ namespace s3dvami
         void initImGui();
         void deinitGui();
         void renderImGui();
+
+        void processKeys(float dt);
 
         void reload(const std::optional<std::string> &fileName);
     };

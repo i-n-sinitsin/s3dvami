@@ -5,6 +5,8 @@
 #include <filesystem>
 #include <iostream>
 
+#include <glm/gtx/euler_angles.hpp>
+
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 #include "assimp/scene.h"
@@ -16,6 +18,7 @@
 #include "glm/gtc/matrix_transform.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "imgui.h"
+
 namespace s3dvami::model
 {
 
@@ -29,9 +32,10 @@ namespace s3dvami::model
         , m_materialMgr(new MaterialMgr(m_textureMgr))
         , m_meshMgr(new MeshMgr(m_materialMgr))
         , m_nodeMgr(new NodeMgr(m_meshMgr))
-        , m_translation(1.0f)
-        , m_rotation(1.0f)
+        , m_translation(0.0f)
+        , m_rotation(0.0f)
         , m_scale(1.0f)
+        , m_modelTransformation(1.0f)
     {}
 
     Model::~Model()
@@ -68,8 +72,10 @@ namespace s3dvami::model
         if (aabb.has_value())
         {
             auto scale = defaultModelSize / aabb.value().maxDelta();
-            m_scale = glm::scale(glm::mat4(1.0f), glm::vec3(scale, scale, scale));
+            m_scale = glm::vec3(scale, scale, scale);
         }
+
+        calcModelTransformation();
 
         m_loaded = result;
         return result;
@@ -85,8 +91,7 @@ namespace s3dvami::model
         m_shader->use();
         m_shader->setUniform("u_projection", camera->projection()->matrix());
         m_shader->setUniform("u_view", camera->getView());
-        auto model = m_translation * m_rotation * m_scale;
-        m_shader->setUniform("u_model", model);
+        m_shader->setUniform("u_model", m_modelTransformation);
 
         m_nodeMgr->draw(m_shader);
     }
@@ -124,8 +129,7 @@ namespace s3dvami::model
 
         if (result.has_value())
         {
-            auto model = m_translation * m_rotation * m_scale;
-            result.value().aplayTransformation(model);
+            result.value().aplayTransformation(m_modelTransformation);
         }
         return result;
     }
@@ -195,6 +199,14 @@ namespace s3dvami::model
     bool Model::loadAnimations(const aiScene * /*scene*/)
     {
         return true;
+    }
+
+    void Model::calcModelTransformation()
+    {
+        glm::mat4 translation = glm::translate(glm::mat4(1.0f), m_translation);
+        glm::mat4 rotation = glm::yawPitchRoll(m_rotation.x, m_rotation.y, m_rotation.z);
+        glm::mat4 scale = glm::scale(glm::mat4(1.0f), m_scale);
+        m_modelTransformation = translation * rotation * scale;
     }
 
 }

@@ -79,9 +79,6 @@ namespace s3dvami
         const projection::BasePtr projection() const;
         glm::mat4 view() const;
 
-        /// TODO: realize ortho projection
-        //void setOrthoProjection();
-
         void setView(glm::vec3 eye, glm::vec3 pos, glm::vec3 up);
 
         void setPosition(const glm::vec3 &position);
