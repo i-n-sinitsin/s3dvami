@@ -83,7 +83,7 @@ namespace s3dvami::objects
     void FloorPlate::draw(CameraPtr camera)
     {
         m_shader->use();
-        m_shader->setUniform("u_projection", camera->getProjection());
+        m_shader->setUniform("u_projection", camera->projection()->matrix());
         m_shader->setUniform("u_view", camera->getView());
         m_shader->setUniform("u_model", glm::mat4(1.0f));
         m_shader->setUniform("u_color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));

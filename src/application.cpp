@@ -61,7 +61,7 @@ namespace s3dvami
         , m_mouseKeysState{}
         , m_lastMousePosition{}
         , m_lastTime(0.0)
-        , m_camera(new Camera())
+        , m_camera(nullptr)
         , m_model(nullptr)
         , m_showFloorPlate(true)
         , m_floorPlate(nullptr)
@@ -162,7 +162,7 @@ namespace s3dvami
         m_modelWindow = std::make_shared<windows::Model>();
 
         // camera
-        m_camera->setPerspectiveProjection(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate);
+        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate));
         //m_camera->setView(glm::vec3(0.0f, 2.0f, 15.0f), glm::vec3(0.0f, 2.0f, -1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
         m_camera->setView(glm::vec3(25.0f, 25.0f, 50.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
@@ -295,7 +295,8 @@ namespace s3dvami
     void Application::onResize(const int width, const int height)
     {
         glViewport(0, 0, width, height);
-        m_camera->setPerspectiveProjection(45.0f, width, height, 0.1f, 100.0f);
+        m_camera->projection()->setWidth(width);
+        m_camera->projection()->setHeight(height);
         render();
     }
 
