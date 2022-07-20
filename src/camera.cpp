@@ -88,40 +88,43 @@ namespace s3dvami
     {
         Base::Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : m_type(Type::base)
+            , m_needUpdateMatrix(true)
             , m_view(1.0f)
             , m_position(position)
             , m_target(target)
             , m_up(up)
-        {
-            updateMatrix();
-        }
+        {}
 
         Type Base::type() const
         {
             return m_type;
         }
 
-        const glm::mat4 &Base::matrix() const
+        const glm::mat4 &Base::matrix()
         {
+            if (m_needUpdateMatrix)
+            {
+                updateMatrix();
+            }
             return m_view;
         }
 
         void Base::setPosition(const glm::vec3 &position)
         {
             m_position = position;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::setTarget(const glm::vec3 &target)
         {
             m_target = target;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::setUp(const glm::vec3 &up)
         {
             m_up = up;
-            updateMatrix();
+            m_needUpdateMatrix = true;
         }
 
         void Base::updateMatrix()

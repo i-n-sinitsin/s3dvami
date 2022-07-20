@@ -87,7 +87,7 @@ namespace s3dvami
             explicit Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
             Type type() const;
 
-            const glm::mat4 &matrix() const;
+            const glm::mat4 &matrix();
 
             void setPosition(const glm::vec3 &position);
             void setTarget(const glm::vec3 &target);
@@ -95,7 +95,7 @@ namespace s3dvami
 
         protected:
             Type m_type;
-
+            bool m_needUpdateMatrix;
             glm::mat4 m_view;
 
             glm::vec3 m_position;
