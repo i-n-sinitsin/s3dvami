@@ -83,7 +83,7 @@ namespace s3dvami::model
         }
 
         m_shader->use();
-        m_shader->setUniform("u_projection", camera->getProjection());
+        m_shader->setUniform("u_projection", camera->projection()->matrix());
         m_shader->setUniform("u_view", camera->getView());
         auto model = m_translation * m_rotation * m_scale;
         m_shader->setUniform("u_model", model);
