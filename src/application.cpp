@@ -237,7 +237,6 @@ namespace s3dvami
 
         // check single press/release
         auto close = (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS);
-        close = close || (key == GLFW_KEY_Q && action == GLFW_PRESS && isCtrlPressed);
         if (close)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
@@ -407,26 +406,42 @@ namespace s3dvami
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void Application::processKeys(float /*dt*/)
+    void Application::processKeys(float dt)
     {
         auto leftPressed = (m_keysState[GLFW_KEY_LEFT] == KeyState::pressed || m_keysState[GLFW_KEY_A] == KeyState::pressed);
         if (leftPressed)
         {
+            m_camera->moveLeft(0.05f * dt);
         }
 
         auto rightPressed = (m_keysState[GLFW_KEY_RIGHT] == KeyState::pressed || m_keysState[GLFW_KEY_D] == KeyState::pressed);
         if (rightPressed)
         {
+            m_camera->moveRight(0.05f * dt);
         }
 
         auto upPressed = (m_keysState[GLFW_KEY_UP] == KeyState::pressed || m_keysState[GLFW_KEY_W] == KeyState::pressed);
         if (upPressed)
         {
+            m_camera->moveFront(0.05f * dt);
         }
 
         auto downPressed = (m_keysState[GLFW_KEY_DOWN] == KeyState::pressed || m_keysState[GLFW_KEY_S] == KeyState::pressed);
         if (downPressed)
         {
+            m_camera->moveBack(0.05f * dt);
+        }
+
+        auto ctrlUpPressed = (m_keysState[GLFW_KEY_E] == KeyState::pressed || (m_keysState[GLFW_KEY_RIGHT_CONTROL] == KeyState::pressed && m_keysState[GLFW_KEY_UP] == KeyState::pressed));
+        if (ctrlUpPressed)
+        {
+            m_camera->moveUp(0.05f * dt);
+        }
+
+        auto ctrlDownPressed = (m_keysState[GLFW_KEY_Q] == KeyState::pressed || (m_keysState[GLFW_KEY_RIGHT_CONTROL] == KeyState::pressed && m_keysState[GLFW_KEY_DOWN] == KeyState::pressed));
+        if (ctrlDownPressed)
+        {
+            m_camera->moveDown(0.05f * dt);
         }
     }
 

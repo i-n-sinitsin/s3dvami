@@ -92,7 +92,7 @@ namespace s3dvami
             , m_view(1.0f)
             , m_position(position)
             , m_target(target)
-            , m_up(up)
+            , m_up(glm::normalize(up))
         {}
 
         Type Base::type() const
@@ -123,7 +123,7 @@ namespace s3dvami
 
         void Base::setUp(const glm::vec3 &up)
         {
-            m_up = up;
+            m_up = glm::normalize(up);
             m_needUpdateMatrix = true;
         }
 
@@ -136,8 +136,80 @@ namespace s3dvami
             : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
         {}
 
+        void Free::moveLeft(float distance)
+        {
+            glm::vec3 direction = m_target - m_position;
+            glm::vec3 left = glm::normalize(glm::cross(direction, m_up));
+
+            m_position = m_position - distance * left;
+            m_target = m_target - distance * left;
+        }
+
+        void Free::moveRight(float distance)
+        {
+            glm::vec3 direction = m_target - m_position;
+            glm::vec3 left = glm::normalize(glm::cross(direction, m_up));
+
+            m_position = m_position + distance * left;
+            m_target = m_target + distance * left;
+        }
+
+        void Free::moveUp(float distance)
+        {
+            glm::vec3 direction = m_target - m_position;
+            glm::vec3 left = glm::cross(direction, m_up);
+            glm::vec3 up = glm::normalize(glm::cross(left, direction));
+
+            m_position = m_position + distance * up;
+            m_target = m_target + distance * up;
+        }
+
+        void Free::moveDown(float distance)
+        {
+            glm::vec3 direction = m_target - m_position;
+            glm::vec3 left = glm::cross(direction, m_up);
+            glm::vec3 up = glm::normalize(glm::cross(left, direction));
+
+            m_position = m_position - distance * up;
+            m_target = m_target - distance * up;
+        }
+
+        void Free::moveFront(float distance)
+        {
+            glm::vec3 direction = glm::normalize(m_target - m_position);
+
+            m_position = m_position + distance * direction;
+            m_target = m_target + distance * direction;
+        }
+
+        void Free::moveBack(float distance)
+        {
+            glm::vec3 direction = glm::normalize(m_target - m_position);
+
+            m_position = m_position - distance * direction;
+            m_target = m_target - distance * direction;
+        }
+
         Orbit::Orbit()
             : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
+        {}
+
+        void Orbit::moveLeft(float /*distance*/)
+        {}
+
+        void Orbit::moveRight(float /*distance*/)
+        {}
+
+        void Orbit::moveUp(float /*distance*/)
+        {}
+
+        void Orbit::moveDown(float /*distance*/)
+        {}
+
+        void Orbit::moveFront(float /*distance*/)
+        {}
+
+        void Orbit::moveBack(float /*distance*/)
         {}
 
     }
@@ -155,6 +227,36 @@ namespace s3dvami
     const view::BasePtr Camera::view() const
     {
         return m_view;
+    }
+
+    void Camera::moveLeft(float distance)
+    {
+        m_view->moveLeft(distance);
+    }
+
+    void Camera::moveRight(float distance)
+    {
+        m_view->moveRight(distance);
+    }
+
+    void Camera::moveUp(float distance)
+    {
+        m_view->moveUp(distance);
+    }
+
+    void Camera::moveDown(float distance)
+    {
+        m_view->moveDown(distance);
+    }
+
+    void Camera::moveFront(float distance)
+    {
+        m_view->moveFront(distance);
+    }
+
+    void Camera::moveBack(float distance)
+    {
+        m_view->moveBack(distance);
     }
 
     void Camera::updateMatricies()

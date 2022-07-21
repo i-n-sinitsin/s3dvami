@@ -93,6 +93,13 @@ namespace s3dvami
             void setTarget(const glm::vec3 &target);
             void setUp(const glm::vec3 &up);
 
+            virtual void moveLeft(float distance) = 0;
+            virtual void moveRight(float distance) = 0;
+            virtual void moveUp(float distance) = 0;
+            virtual void moveDown(float distance) = 0;
+            virtual void moveFront(float distance) = 0;
+            virtual void moveBack(float distance) = 0;
+
         protected:
             Type m_type;
             bool m_needUpdateMatrix;
@@ -111,6 +118,13 @@ namespace s3dvami
         {
         public:
             explicit Free();
+
+            void moveLeft(float distance) override;
+            void moveRight(float distance) override;
+            void moveUp(float distance) override;
+            void moveDown(float distance) override;
+            void moveFront(float distance) override;
+            void moveBack(float distance) override;
         };
 
         using FreePtr = std::shared_ptr<Free>;
@@ -119,6 +133,13 @@ namespace s3dvami
         {
         public:
             explicit Orbit();
+
+            void moveLeft(float distance) override;
+            void moveRight(float distance) override;
+            void moveUp(float distance) override;
+            void moveDown(float distance) override;
+            void moveFront(float distance) override;
+            void moveBack(float distance) override;
         };
 
         using OrbitPtr = std::shared_ptr<Orbit>;
@@ -132,14 +153,16 @@ namespace s3dvami
         const projection::BasePtr projection() const;
         const view::BasePtr view() const;
 
-        //  позиция
-        //  сдвиг вправо/влево     -- по сфере/free
-        //  вверх/вниз             -- по сфере/free
-        //  вперед/наза             -- дистанция/free
-
         void setPosition(const glm::vec3 &position);
         void setTarget(const glm::vec3 &target);
         void setUp(const glm::vec3 &up);
+
+        void moveLeft(float distance);
+        void moveRight(float distance);
+        void moveUp(float distance);
+        void moveDown(float distance);
+        void moveFront(float distance);
+        void moveBack(float distance);
 
     private:
         projection::BasePtr m_projection;
