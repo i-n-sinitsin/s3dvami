@@ -30,8 +30,10 @@ namespace s3dvami::model
             }
         }
 
-        std::string path = m_currentPath + "/" + fileName;
-
+        // Replace the slashes
+        std::string fixedFileName = fileName;
+        std::replace(fixedFileName.begin(), fixedFileName.end(), '\\', '/');
+        std::string path = std::filesystem::path(m_currentPath + "/" + fixedFileName).make_preferred();
         /// TODO: add log
         if (!std::filesystem::exists(path))
         {
