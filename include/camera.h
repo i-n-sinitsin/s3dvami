@@ -81,10 +81,15 @@ namespace s3dvami
             orbit,
         };
 
+        class Base;
+        using BasePtr = std::shared_ptr<Base>;
+
         class Base
         {
         public:
-            explicit Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            Base() = delete;
+            Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            Base(const BasePtr &view);
             Type type() const;
 
             const glm::mat4 &matrix();
@@ -93,12 +98,21 @@ namespace s3dvami
             void setTarget(const glm::vec3 &target);
             void setUp(const glm::vec3 &up);
 
+            glm::vec3 position() const;
+            glm::vec3 target() const;
+            glm::vec3 up() const;
+
             virtual void moveLeft(float distance) = 0;
             virtual void moveRight(float distance) = 0;
             virtual void moveUp(float distance) = 0;
             virtual void moveDown(float distance) = 0;
             virtual void moveFront(float distance) = 0;
             virtual void moveBack(float distance) = 0;
+
+            virtual void turnLeft(float distance) = 0;
+            virtual void turnRight(float distance) = 0;
+            virtual void turnUp(float distance) = 0;
+            virtual void turnDown(float distance) = 0;
 
         protected:
             Type m_type;
@@ -112,12 +126,12 @@ namespace s3dvami
             void updateMatrix();
         };
 
-        using BasePtr = std::shared_ptr<Base>;
-
         class Free : public Base
         {
         public:
-            explicit Free();
+            Free();
+            Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            Free(const BasePtr &view);
 
             void moveLeft(float distance) override;
             void moveRight(float distance) override;
@@ -125,6 +139,11 @@ namespace s3dvami
             void moveDown(float distance) override;
             void moveFront(float distance) override;
             void moveBack(float distance) override;
+
+            void turnLeft(float distance) override;
+            void turnRight(float distance) override;
+            void turnUp(float distance) override;
+            void turnDown(float distance) override;
         };
 
         using FreePtr = std::shared_ptr<Free>;
@@ -132,7 +151,9 @@ namespace s3dvami
         class Orbit : public Base
         {
         public:
-            explicit Orbit();
+            Orbit();
+            Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            Orbit(const BasePtr &view);
 
             void moveLeft(float distance) override;
             void moveRight(float distance) override;
@@ -140,6 +161,11 @@ namespace s3dvami
             void moveDown(float distance) override;
             void moveFront(float distance) override;
             void moveBack(float distance) override;
+
+            void turnLeft(float distance) override;
+            void turnRight(float distance) override;
+            void turnUp(float distance) override;
+            void turnDown(float distance) override;
         };
 
         using OrbitPtr = std::shared_ptr<Orbit>;
@@ -153,16 +179,17 @@ namespace s3dvami
         const projection::BasePtr projection() const;
         const view::BasePtr view() const;
 
-        void setPosition(const glm::vec3 &position);
-        void setTarget(const glm::vec3 &target);
-        void setUp(const glm::vec3 &up);
-
         void moveLeft(float distance);
         void moveRight(float distance);
         void moveUp(float distance);
         void moveDown(float distance);
         void moveFront(float distance);
         void moveBack(float distance);
+
+        void turnLeft(float angle);
+        void turnRight(float angle);
+        void turnUp(float angle);
+        void turnDown(float angle);
 
     private:
         projection::BasePtr m_projection;

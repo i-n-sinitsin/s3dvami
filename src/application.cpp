@@ -443,6 +443,30 @@ namespace s3dvami
         {
             m_camera->moveDown(0.05f * dt);
         }
+
+        auto ctrlTurnLeftPressed = (m_keysState[GLFW_KEY_Z] == KeyState::pressed);
+        if (ctrlTurnLeftPressed)
+        {
+            m_camera->turnLeft(0.05f * dt);
+        }
+
+        auto ctrlTurnRightPressed = (m_keysState[GLFW_KEY_V] == KeyState::pressed);
+        if (ctrlTurnRightPressed)
+        {
+            m_camera->turnRight(0.05f * dt);
+        }
+
+        auto ctrlTurnUpPressed = (m_keysState[GLFW_KEY_C] == KeyState::pressed);
+        if (ctrlTurnUpPressed)
+        {
+            m_camera->turnUp(0.05f * dt);
+        }
+
+        auto ctrlTurnDownPressed = (m_keysState[GLFW_KEY_X] == KeyState::pressed);
+        if (ctrlTurnDownPressed)
+        {
+            m_camera->turnDown(0.05f * dt);
+        }
     }
 
     void Application::reload(const std::optional<std::string> &fileName)
