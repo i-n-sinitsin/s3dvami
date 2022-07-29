@@ -97,9 +97,7 @@ namespace s3dvami
 
         Base::Base(const BasePtr &view)
             : Base(view->position(), view->target(), view->up())
-        {
-
-        }
+        {}
 
         Type Base::type() const
         {
@@ -160,15 +158,11 @@ namespace s3dvami
 
         Free::Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : Base(position, target, up)
-        {
-
-        }
+        {}
 
         Free::Free(const BasePtr &view)
-            :Base(view)
-        {
-
-        }
+            : Base(view)
+        {}
 
         void Free::moveLeft(float distance)
         {
@@ -237,40 +231,28 @@ namespace s3dvami
         }
 
         void Free::turnLeft(float /*distance*/)
-        {
-
-        }
+        {}
 
         void Free::turnRight(float /*distance*/)
-        {
-
-        }
+        {}
 
         void Free::turnUp(float /*distance*/)
-        {
-
-        }
+        {}
 
         void Free::turnDown(float /*distance*/)
-        {
-
-        }
+        {}
 
         Orbit::Orbit()
             : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
         {}
 
         Orbit::Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
-            :Base(position, target, up)
-        {
-
-        }
+            : Base(position, target, up)
+        {}
 
         Orbit::Orbit(const BasePtr &view)
             : Base(view)
-        {
-
-        }
+        {}
 
         void Orbit::moveLeft(float distance)
         {
