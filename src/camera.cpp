@@ -154,15 +154,21 @@ namespace s3dvami
 
         Free::Free()
             : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
-        {}
+        {
+            m_type = Type::free;
+        }
 
         Free::Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : Base(position, target, up)
-        {}
+        {
+            m_type = Type::free;
+        }
 
         Free::Free(const BasePtr &view)
             : Base(view)
-        {}
+        {
+            m_type = Type::free;
+        }
 
         void Free::moveLeft(float distance)
         {
@@ -244,15 +250,21 @@ namespace s3dvami
 
         Orbit::Orbit()
             : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
-        {}
+        {
+            m_type = Type::orbit;
+        }
 
         Orbit::Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : Base(position, target, up)
-        {}
+        {
+            m_type = Type::free;
+        }
 
         Orbit::Orbit(const BasePtr &view)
             : Base(view)
-        {}
+        {
+            m_type = Type::free;
+        }
 
         void Orbit::moveLeft(float distance)
         {
@@ -316,23 +328,43 @@ namespace s3dvami
             m_needUpdateMatrix = true;
         }
 
-        void Orbit::moveFront(float /*distance*/)
-        {}
+        void Orbit::moveFront(float distance)
+        {
+            glm::vec3 direction = glm::normalize(m_target - m_position);
 
-        void Orbit::moveBack(float /*distance*/)
-        {}
+            m_position = m_position + distance * direction;
+
+            m_needUpdateMatrix = true;
+        }
+
+        void Orbit::moveBack(float distance)
+        {
+            glm::vec3 direction = glm::normalize(m_target - m_position);
+
+            m_position = m_position - distance * direction;
+
+            m_needUpdateMatrix = true;
+        }
 
         void Orbit::turnLeft(float /*angle*/)
-        {}
+        {
+            // orbit camera can`t do this
+        }
 
         void Orbit::turnRight(float /*angle*/)
-        {}
+        {
+            // orbit camera can`t do this
+        }
 
         void Orbit::turnUp(float /*angle*/)
-        {}
+        {
+            // orbit camera can`t do this
+        }
 
         void Orbit::turnDown(float /*angle*/)
-        {}
+        {
+            // orbit camera can`t do this
+        }
 
     }
 
