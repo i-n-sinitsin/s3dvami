@@ -142,6 +142,8 @@ namespace s3dvami::model
         {
             const aiTexture *aiTex = scene->GetEmbeddedTexture(scene->mTextures[i]->mFilename.C_Str());
 
+            std::cout << scene->mTextures[i]->mFilename.C_Str() << std::endl;
+
             if (aiTex->mHeight > 0)
             {
                 // external

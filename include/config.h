@@ -22,4 +22,10 @@ namespace s3dvami
 
     constexpr float defaultGlobalAxesLength = 40.0f;
     constexpr float defaultGlobalAxesWidth = 0.1f;
+
+    constexpr float cameraOrbitMouseMoveSpeed = 0.1f;
+    constexpr float cameraFreeMouseMoveSpeed = 0.05f;
+
+    constexpr float cameraOrbitMouseScrollSpeed = 2.0f;
+    constexpr float cameraFreeMouseScrollSpeed = 2.0f;
 }

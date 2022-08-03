@@ -2,8 +2,10 @@
 
 #include "application.h"
 
+#include <functional>
 #include <iostream>
 #include <type_traits>
+#include <vector>
 
 #include <math.h>
 
@@ -44,6 +46,18 @@ static void mouseKeyCallback(GLFWwindow * /*window*/, int key, int action, int m
     s3dvami::Application::GetInstance()->onMouseKey(key, action, mods);
 }
 
+static void mouseCursorEntered(GLFWwindow * /*window*/, int entered)
+{
+    if (entered == GL_TRUE)
+    {
+        s3dvami::Application::GetInstance()->onMouseEnter();
+    }
+    else
+    {
+        s3dvami::Application::GetInstance()->onMouseLeave();
+    }
+}
+
 void dropCallback(GLFWwindow * /*window*/, int pathCount, const char *paths[])
 {
     // take only first path if exist
@@ -57,6 +71,7 @@ namespace s3dvami
 {
     Application::Application()
         : m_window(nullptr)
+        , m_showDemoMenu(false)
         , m_keysState{}
         , m_mouseKeysState{}
         , m_lastMousePosition{}
@@ -120,6 +135,7 @@ namespace s3dvami
         glfwSetCursorPosCallback(m_window, mouseMoveCallback);
         glfwSetScrollCallback(m_window, mouseScrollCallback);
         glfwSetMouseButtonCallback(m_window, mouseKeyCallback);
+        glfwSetCursorEnterCallback(m_window, mouseCursorEntered);
         glfwSetFramebufferSizeCallback(m_window, frameBufferSizeCallback);
         glfwSetDropCallback(m_window, dropCallback);
         //glfwSetInputMode
@@ -162,9 +178,7 @@ namespace s3dvami
         m_modelWindow = std::make_shared<windows::Model>();
 
         // camera
-        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate), std::make_shared<view::Free>());
-        m_camera->view()->setPosition({25.0f, 25.0f, 50.0f});
-        m_camera->view()->setTarget({0.0f, 0.0f, 0.0f});
+        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate), std::make_shared<view::Orbit>(glm::vec3(25.0f, 25.0f, 50.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
@@ -237,7 +251,6 @@ namespace s3dvami
 
         // check single press/release
         auto close = (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS);
-        close = close || (key == GLFW_KEY_Q && action == GLFW_PRESS && isCtrlPressed);
         if (close)
         {
             glfwSetWindowShouldClose(m_window, GLFW_TRUE);
@@ -248,20 +261,56 @@ namespace s3dvami
         {
             m_openFileDialog->show();
         }
+
+        auto changeCamera = (key == GLFW_KEY_C && action == GLFW_PRESS);
+        if (changeCamera)
+        {
+            if (m_camera->view()->type() == view::Type::orbit)
+            {
+                m_camera->changeViewTo(view::Type::free);
+            }
+            else if (m_camera->view()->type() == view::Type::free)
+            {
+                m_camera->changeViewTo(view::Type::orbit);
+            }
+        }
+
+        auto demoMenuShow = (key == GLFW_KEY_H && action == GLFW_PRESS);
+        if (demoMenuShow)
+        {
+            m_showDemoMenu = !m_showDemoMenu;
+        }
     }
 
     void Application::onMouseMove(const glm::vec2 &pos)
     {
         if (m_lastMousePosition.has_value())
         {
+            auto speed = m_camera->view()->type() == view::Type::orbit ? cameraOrbitMouseMoveSpeed : cameraFreeMouseMoveSpeed;
+            auto deltaX = (pos.x - m_lastMousePosition->x) * speed;
+            auto deltaY = (pos.y - m_lastMousePosition->y) * speed;
+
+            if (m_mouseKeysState[GLFW_MOUSE_BUTTON_LEFT] == KeyState::pressed)
+            {
+                deltaX > 0 ? m_camera->moveLeft(fabs(deltaX)) : m_camera->moveRight(fabs(deltaX));
+                deltaY > 0 ? m_camera->moveUp(fabs(deltaY)) : m_camera->moveDown(fabs(deltaY));
+            }
         }
-        else
-        {
-            m_lastMousePosition = pos;
-        }
+        m_lastMousePosition = pos;
     }
 
-    void Application::onMouseScroll(const glm::vec2 & /*offset*/)
+    void Application::onMouseScroll(const glm::vec2 &offset)
+    {
+        auto speed = m_camera->view()->type() == view::Type::orbit ? cameraOrbitMouseScrollSpeed : cameraFreeMouseScrollSpeed;
+        [[maybe_unused]] auto deltaX = offset.x * speed;
+        [[maybe_unused]] auto deltaY = offset.y * speed;
+        deltaY > 0 ? m_camera->moveFront(fabs(deltaY)) : m_camera->moveBack(fabs(deltaY));
+    }
+
+    void Application::onMouseEnter()
+    {}
+
+    void Application::onMouseLeave()
     {}
 
     void Application::onMouseKey(const int key, const int action, const int mods)
@@ -286,10 +335,6 @@ namespace s3dvami
                 m_mouseKeysState[key] = KeyState::released;
             }
         }
-
-        //GLFW_MOUSE_BUTTON_LEFT
-        //GLFW_MOUSE_BUTTON_RIGHT
-        //GLFW_MOUSE_BUTTON_MIDDLE
     }
 
     void Application::onResize(const int width, const int height)
@@ -387,7 +432,10 @@ namespace s3dvami
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
 
-        ImGui::ShowDemoWindow();
+        if (m_showDemoMenu)
+        {
+            ImGui::ShowDemoWindow();
+        }
 
         m_mainMenu->draw();
 
@@ -407,26 +455,53 @@ namespace s3dvami
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
     }
 
-    void Application::processKeys(float /*dt*/)
+    void Application::processKeys(float dt)
     {
-        auto leftPressed = (m_keysState[GLFW_KEY_LEFT] == KeyState::pressed || m_keysState[GLFW_KEY_A] == KeyState::pressed);
-        if (leftPressed)
+        // TODO: add excludes
+        using Keys = std::vector<int>;
+        using KeysList = std::vector<Keys>;
+        static const std::vector<std::tuple<KeysList, std::function<void(float)>>> ations = {
+            {{{GLFW_KEY_LEFT}, {GLFW_KEY_A}},
+                [=](float dt) {
+                    m_camera->moveLeft(0.05f * dt);
+                }},
+            {{{GLFW_KEY_RIGHT}, {GLFW_KEY_D}},
+                [=](float dt) {
+                    m_camera->moveRight(0.05f * dt);
+                }},
+            {{{GLFW_KEY_UP}, {GLFW_KEY_W}},
+                [=](float dt) {
+                    m_camera->moveFront(0.05f * dt);
+                }},
+            {{{GLFW_KEY_DOWN}, {GLFW_KEY_S}},
+                [=](float dt) {
+                    m_camera->moveBack(0.05f * dt);
+                }},
+            {{{GLFW_KEY_E}, {GLFW_KEY_RIGHT_CONTROL, GLFW_KEY_UP}},
+                [=](float dt) {
+                    m_camera->moveUp(0.05f * dt);
+                }},
+            {{{GLFW_KEY_Q}, {GLFW_KEY_RIGHT_CONTROL, GLFW_KEY_DOWN}},
+                [=](float dt) {
+                    m_camera->moveDown(0.05f * dt);
+                }},
+        };
+        for (const auto &[keysList, action] : ations)
         {
-        }
-
-        auto rightPressed = (m_keysState[GLFW_KEY_RIGHT] == KeyState::pressed || m_keysState[GLFW_KEY_D] == KeyState::pressed);
-        if (rightPressed)
-        {
-        }
-
-        auto upPressed = (m_keysState[GLFW_KEY_UP] == KeyState::pressed || m_keysState[GLFW_KEY_W] == KeyState::pressed);
-        if (upPressed)
-        {
-        }
-
-        auto downPressed = (m_keysState[GLFW_KEY_DOWN] == KeyState::pressed || m_keysState[GLFW_KEY_S] == KeyState::pressed);
-        if (downPressed)
-        {
+            bool resultOr = false;
+            for (const auto &keys : keysList)
+            {
+                bool resultAnd = true;
+                for (const auto &key : keys)
+                {
+                    resultAnd = resultAnd && m_keysState[key] == KeyState::pressed;
+                }
+                resultOr = resultOr || resultAnd;
+            }
+            if (resultOr)
+            {
+                action(dt);
+            }
         }
     }
 
@@ -448,4 +523,5 @@ namespace s3dvami
             //m_camera->setView(eye + glm::vec3(25.0f, 25.0f, 50.0f), eye, glm::vec3(0.0f, 1.0f, 0.0f));
         }
     }
-} // namespace s3dvami
+
+}

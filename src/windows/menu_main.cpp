@@ -22,7 +22,7 @@ namespace s3dvami::windows
                     m_mainMenuActions.fileActions.openClick();
                 }
                 ImGui::Separator();
-                if (ImGui::MenuItem("Exit", "ESC or CTRL+Q"))
+                if (ImGui::MenuItem("Exit", "ESC"))
                 {
                     m_mainMenuActions.fileActions.exitClick();
                 }

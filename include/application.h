@@ -42,6 +42,8 @@ namespace s3dvami
         void onMouseMove(const glm::vec2 &pos);
         void onMouseScroll(const glm::vec2 &offset);
         void onMouseKey(const int key, const int action, const int mods);
+        void onMouseEnter();
+        void onMouseLeave();
 
         void onResize(const int width, const int height);
         void onDrop(const std::string &fileName);
@@ -49,6 +51,8 @@ namespace s3dvami
     private:
         static Application *m_instance;
         GLFWwindow *m_window;
+
+        bool m_showDemoMenu;
 
         // TODO: think about glfwGetKey
         enum KeyState

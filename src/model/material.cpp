@@ -138,7 +138,7 @@ namespace s3dvami::model
                 { // texture not found
                     if (!textureMgr->addByFileName(texture.name, texture.name))
                     {
-                        /// TODO: add log
+                        /// TODO: add log report about error
                     }
                     index = textureMgr->indexById(texture.name);
                 }
