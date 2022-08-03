@@ -433,6 +433,26 @@ namespace s3dvami
         m_view->turnDown(angle);
     }
 
+    void Camera::changeViewTo(view::Type type)
+    {
+        if (m_view->type() == type)
+            return;
+
+        if (type == view::Type::free)
+        {
+            m_view = std::make_shared<view::Free>(m_view);
+        }
+        else if (type == view::Type::free)
+        {
+            m_view = std::make_shared<view::Orbit>(m_view);
+        }
+    }
+
+    void Camera::changeViewTo(const view::BasePtr view)
+    {
+        m_view = view;
+    }
+
     void Camera::updateMatricies()
     {}
 

@@ -191,6 +191,9 @@ namespace s3dvami
         void turnUp(float angle);
         void turnDown(float angle);
 
+        void changeViewTo(view::Type type);
+        void changeViewTo(const view::BasePtr view);
+
     private:
         projection::BasePtr m_projection;
         view::BasePtr m_view;
