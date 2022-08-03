@@ -178,9 +178,7 @@ namespace s3dvami
         m_modelWindow = std::make_shared<windows::Model>();
 
         // camera
-        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate), std::make_shared<view::Free>());
-        m_camera->view()->setPosition({25.0f, 25.0f, 50.0f});
-        m_camera->view()->setTarget({0.0f, 0.0f, 0.0f});
+        m_camera = std::make_shared<Camera>(std::make_shared<projection::Perspective>(45.0f, defaultWindowWidth, defaultWindowHeight, defaultNearPlate, defaultFarPlate), std::make_shared<view::Orbit>(glm::vec3(25.0f, 25.0f, 50.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f)));
 
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
@@ -264,6 +262,19 @@ namespace s3dvami
             m_openFileDialog->show();
         }
 
+        auto changeCamera = (key == GLFW_KEY_C && action == GLFW_PRESS);
+        if (changeCamera)
+        {
+            if (m_camera->view()->type() == view::Type::orbit)
+            {
+                m_camera->changeViewTo(view::Type::free);
+            }
+            else if (m_camera->view()->type() == view::Type::free)
+            {
+                m_camera->changeViewTo(view::Type::orbit);
+            }
+        }
+
         auto demoMenuShow = (key == GLFW_KEY_H && action == GLFW_PRESS);
         if (demoMenuShow)
         {
@@ -275,12 +286,13 @@ namespace s3dvami
     {
         if (m_lastMousePosition.has_value())
         {
-            auto deltaX = (pos.x - m_lastMousePosition->x) * 0.05f;
-            auto deltaY = (pos.y - m_lastMousePosition->y) * 0.05f;
+            auto speed = m_camera->view()->type() == view::Type::orbit ? cameraOrbitMouseMoveSpeed : cameraFreeMouseMoveSpeed;
+            auto deltaX = (pos.x - m_lastMousePosition->x) * speed;
+            auto deltaY = (pos.y - m_lastMousePosition->y) * speed;
 
             if (m_mouseKeysState[GLFW_MOUSE_BUTTON_LEFT] == KeyState::pressed)
             {
-                deltaX > 0 ? m_camera->moveRight(fabs(deltaX)) : m_camera->moveLeft(fabs(deltaX));
+                deltaX > 0 ? m_camera->moveLeft(fabs(deltaX)) : m_camera->moveRight(fabs(deltaX));
                 deltaY > 0 ? m_camera->moveUp(fabs(deltaY)) : m_camera->moveDown(fabs(deltaY));
             }
         }
@@ -289,8 +301,9 @@ namespace s3dvami
 
     void Application::onMouseScroll(const glm::vec2 &offset)
     {
-        [[maybe_unused]] auto deltaX = offset.x * 2.0f;
-        [[maybe_unused]] auto deltaY = offset.y * 2.0f;
+        auto speed = m_camera->view()->type() == view::Type::orbit ? cameraOrbitMouseScrollSpeed : cameraFreeMouseScrollSpeed;
+        [[maybe_unused]] auto deltaX = offset.x * speed;
+        [[maybe_unused]] auto deltaY = offset.y * speed;
         deltaY > 0 ? m_camera->moveFront(fabs(deltaY)) : m_camera->moveBack(fabs(deltaY));
     }
 
@@ -444,35 +457,35 @@ namespace s3dvami
 
     void Application::processKeys(float dt)
     {
+        // TODO: add excludes
         using Keys = std::vector<int>;
         using KeysList = std::vector<Keys>;
-        static const std::map<KeysList, std::function<void()>> ations = {
+        static const std::vector<std::tuple<KeysList, std::function<void(float)>>> ations = {
             {{{GLFW_KEY_LEFT}, {GLFW_KEY_A}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveLeft(0.05f * dt);
                 }},
             {{{GLFW_KEY_RIGHT}, {GLFW_KEY_D}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveRight(0.05f * dt);
                 }},
             {{{GLFW_KEY_UP}, {GLFW_KEY_W}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveFront(0.05f * dt);
                 }},
             {{{GLFW_KEY_DOWN}, {GLFW_KEY_S}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveBack(0.05f * dt);
                 }},
             {{{GLFW_KEY_E}, {GLFW_KEY_RIGHT_CONTROL, GLFW_KEY_UP}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveUp(0.05f * dt);
                 }},
             {{{GLFW_KEY_Q}, {GLFW_KEY_RIGHT_CONTROL, GLFW_KEY_DOWN}},
-                [=]() {
+                [=](float dt) {
                     m_camera->moveDown(0.05f * dt);
                 }},
         };
-
         for (const auto &[keysList, action] : ations)
         {
             bool resultOr = false;
@@ -487,7 +500,7 @@ namespace s3dvami
             }
             if (resultOr)
             {
-                action();
+                action(dt);
             }
         }
     }

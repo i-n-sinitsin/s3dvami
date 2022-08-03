@@ -87,8 +87,7 @@ namespace s3dvami
         class Base
         {
         public:
-            Base() = delete;
-            Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            explicit Base(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
             Base(const BasePtr &view);
             Type type() const;
 
@@ -129,8 +128,7 @@ namespace s3dvami
         class Free : public Base
         {
         public:
-            Free();
-            Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            explicit Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
             Free(const BasePtr &view);
 
             void moveLeft(float distance) override;
@@ -151,8 +149,7 @@ namespace s3dvami
         class Orbit : public Base
         {
         public:
-            Orbit();
-            Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
+            explicit Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up);
             Orbit(const BasePtr &view);
 
             void moveLeft(float distance) override;

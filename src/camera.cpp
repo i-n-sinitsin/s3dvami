@@ -152,12 +152,6 @@ namespace s3dvami
             m_needUpdateMatrix = false;
         }
 
-        Free::Free()
-            : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
-        {
-            m_type = Type::free;
-        }
-
         Free::Free(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : Base(position, target, up)
         {
@@ -248,22 +242,16 @@ namespace s3dvami
         void Free::turnDown(float /*distance*/)
         {}
 
-        Orbit::Orbit()
-            : Base({0.0f, 0.0f, 0.0f}, {0.0f, 0.0f, -1.0f}, {0.0f, 1.0f, 0.0f})
-        {
-            m_type = Type::orbit;
-        }
-
         Orbit::Orbit(const glm::vec3 &position, const glm::vec3 &target, const glm::vec3 &up)
             : Base(position, target, up)
         {
-            m_type = Type::free;
+            m_type = Type::orbit;
         }
 
         Orbit::Orbit(const BasePtr &view)
             : Base(view)
         {
-            m_type = Type::free;
+            m_type = Type::orbit;
         }
 
         void Orbit::moveLeft(float distance)
@@ -442,7 +430,7 @@ namespace s3dvami
         {
             m_view = std::make_shared<view::Free>(m_view);
         }
-        else if (type == view::Type::free)
+        else if (type == view::Type::orbit)
         {
             m_view = std::make_shared<view::Orbit>(m_view);
         }
