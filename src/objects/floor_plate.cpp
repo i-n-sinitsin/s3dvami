@@ -89,7 +89,7 @@ namespace s3dvami::objects
         m_shader->setUniform("u_color", glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
 
         glBindVertexArray(m_VAO);
-        glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, (void *)0);
+        glDrawElements(GL_LINES, m_indices.size(), GL_UNSIGNED_INT, (void *)(0 * sizeof(unsigned int)));
         glBindVertexArray(0);
     }
 }
