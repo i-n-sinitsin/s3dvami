@@ -41,6 +41,11 @@ namespace s3dvami::windows
                     m_mainMenuActions.viewActions.globalAxesClick();
                 }
 
+                if (ImGui::MenuItem("Model AABB", NULL, &(m_mainMenuActions.viewActions.isModelAABB)))
+                {
+                    m_mainMenuActions.viewActions.modelAABBClick();
+                }
+
                 ImGui::EndMenu();
             }
 

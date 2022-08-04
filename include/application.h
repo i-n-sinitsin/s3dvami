@@ -17,6 +17,7 @@
 #include "windows/msg_choose_file.h"
 #include "windows/wnd_model_description.h"
 
+#include "objects/aabb.h"
 #include "objects/axes.h"
 #include "objects/floor_plate.h"
 
@@ -75,6 +76,9 @@ namespace s3dvami
 
         bool m_showGlobalAxes;
         objects::AxesPtr m_globalAxes;
+
+        bool m_showModelAABB;
+        objects::AABBPtr m_modelAABB;
 
         // windows
         windows::ChooseFileMessagePtr m_chooseFileMessage;

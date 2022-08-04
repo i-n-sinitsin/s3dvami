@@ -17,6 +17,8 @@ namespace s3dvami::objects
         : m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
+        , m_min{}
+        , m_max{}
         , m_vertices{}
         , m_indices{}
         , m_shader(new Shader(simple_vert, simple_frag))
@@ -37,6 +39,11 @@ namespace s3dvami::objects
 
     void AABB::draw(CameraPtr camera)
     {
+        if (!m_min.has_value() || !m_max.has_value())
+        {
+            return;
+        }
+
         m_shader->use();
         m_shader->setUniform("u_projection", camera->projection()->matrix());
         m_shader->setUniform("u_view", camera->view()->matrix());

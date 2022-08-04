@@ -20,6 +20,9 @@ namespace s3dvami::windows
 
             bool isGlobalAxes;
             std::function<void()> globalAxesClick;
+
+            bool isModelAABB;
+            std::function<void()> modelAABBClick;
         } viewActions;
 
         struct

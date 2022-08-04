@@ -3,6 +3,7 @@
 #pragma once
 
 #include <memory>
+#include <optional>
 #include <vector>
 
 #include "model/vertex.h"
@@ -25,6 +26,9 @@ namespace s3dvami::objects
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;
+
+        std::optional<glm::vec3> m_min;
+        std::optional<glm::vec3> m_max;
 
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;

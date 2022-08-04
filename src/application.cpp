@@ -82,6 +82,8 @@ namespace s3dvami
         , m_floorPlate(nullptr)
         , m_showGlobalAxes(true)
         , m_globalAxes(nullptr)
+        , m_showModelAABB(true)
+        , m_modelAABB(nullptr)
         , m_chooseFileMessage(nullptr)
         , m_mainMenu(nullptr)
         , m_openFileDialog(nullptr)
@@ -170,6 +172,11 @@ namespace s3dvami
             m_showGlobalAxes = !m_showGlobalAxes;
         };
 
+        mainMenuBarActions.viewActions.isModelAABB = m_showModelAABB;
+        mainMenuBarActions.viewActions.modelAABBClick = [=]() {
+            m_showModelAABB = !m_showModelAABB;
+        };
+
         m_mainMenu = std::make_shared<windows::MainMenu>(mainMenuBarActions);
 
         m_openFileDialog = std::make_shared<windows::OpenFileDialog>([=](const std::string &fileName) {
@@ -183,6 +190,7 @@ namespace s3dvami
         // objects
         m_floorPlate = std::make_shared<objects::FloorPlate>();
         m_globalAxes = std::make_shared<objects::Axes>(defaultGlobalAxesLength, defaultGlobalAxesWidth);
+        m_modelAABB = std::make_shared<objects::AABB>();
     }
 
     void Application::run()
@@ -378,6 +386,11 @@ namespace s3dvami
         if (m_model)
         {
             m_model->draw(m_camera);
+        }
+
+        if (m_showModelAABB)
+        {
+            m_modelAABB->draw(m_camera);
         }
 
         if (m_showFloorPlate)
