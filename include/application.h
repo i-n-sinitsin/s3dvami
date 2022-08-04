@@ -92,5 +92,7 @@ namespace s3dvami
         void processKeys(float dt);
 
         void reload(const std::optional<std::string> &fileName);
+
+        void setTargetToModelCenter();
     };
 } // namespace s3dvami

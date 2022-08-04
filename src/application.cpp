@@ -275,6 +275,13 @@ namespace s3dvami
             }
         }
 
+        auto changeCameraTarget= (key == GLFW_KEY_T && action == GLFW_PRESS);
+        if (changeCameraTarget)
+        {
+            setTargetToModelCenter();
+        }
+
+
         auto demoMenuShow = (key == GLFW_KEY_H && action == GLFW_PRESS);
         if (demoMenuShow)
         {
@@ -518,9 +525,37 @@ namespace s3dvami
                 return;
             }
 
-            //std::optional<AABB> nodeAABB = m_model->nodeMgr()->aabb();
-            //glm::vec3 eye = nodeAABB.value().center();
-            //m_camera->setView(eye + glm::vec3(25.0f, 25.0f, 50.0f), eye, glm::vec3(0.0f, 1.0f, 0.0f));
+        }
+    }
+
+    void Application::setTargetToModelCenter()
+    {
+        if (m_model && m_model->isLoaded())
+        {
+            glm::vec3 cameraPosition = m_camera->view()->position();
+            glm::vec3 cameraTarget= m_camera->view()->target();
+
+            std::optional<AABB> nodeAABB = m_model->nodeMgr()->aabb();
+            glm::vec3 newTarget = nodeAABB.value().center();
+
+            //std::optional<AABB> meshAABB = m_model->meshMgr()->aabb();
+            //glm::vec3 newTarget = meshAABB.value().center();
+
+
+            glm::vec3 targetsDistance = cameraTarget - newTarget;
+
+            std::cout << "WTF cameraPosition " << cameraPosition.x << " " << cameraPosition.y << " " << cameraPosition.z << std::endl;
+            std::cout << "WTF cameraTarget " << cameraTarget.x << " " << cameraTarget.y << " " << cameraTarget.z << std::endl;
+            std::cout << "WTF newTarget " << newTarget.x << " " << newTarget.y << " " << newTarget.z << std::endl;
+            std::cout << "WTF targetsDistance " << targetsDistance.x << " " << targetsDistance.y << " " << targetsDistance.z << std::endl;
+
+           // m_camera->view()->setPosition(cameraPosition - targetsDistance);
+           // m_camera->view()->setTarget(cameraTarget - targetsDistance);
+
+            m_camera->view()->setPosition(newTarget + glm::vec3(25.0f, 25.0f, 50.0f));
+            m_camera->view()->setTarget(newTarget);
+
+
         }
     }
 

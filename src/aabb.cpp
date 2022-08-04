@@ -1,7 +1,7 @@
 // Copyright © 2022 Sinitsin Ivan, Contacts: <i.n.sinitsin@gmail.com>
 
 #include "aabb.h"
-
+#include <iostream>
 namespace s3dvami
 {
     AABB::AABB()
@@ -20,6 +20,9 @@ namespace s3dvami
     {
         m_min = glm::vec3(aabb.mMin.x, aabb.mMin.y, aabb.mMin.z);
         m_max = glm::vec3(aabb.mMax.x, aabb.mMax.y, aabb.mMax.z);
+
+        std::cout << __PRETTY_FUNCTION__ << " min  " << m_min.x << "  " << m_min.y << "  "<< m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << " max  " << m_max.x << "  " << m_max.y << "  "<< m_max.z << std::endl;
     }
 
     AABB AABB::operator+(const AABB &aabb) const
@@ -28,6 +31,11 @@ namespace s3dvami
 
         result.m_min = glm::vec3(std::min(m_min.x, aabb.m_min.x), std::min(m_min.y, aabb.m_min.y), std::min(m_min.z, aabb.m_min.z));
         result.m_max = glm::vec3(std::max(m_max.x, aabb.m_max.x), std::max(m_max.y, aabb.m_max.y), std::max(m_max.z, aabb.m_max.z));
+
+        std::cout << __PRETTY_FUNCTION__ << " min  " << m_min.x << "  " << m_min.y << "  "<< m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << " max  " << m_max.x << "  " << m_max.y << "  "<< m_max.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "  result.  " <<  result.m_min.x << "  " << result. m_min.y << "  "<<  result.m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "  result.  " <<  result.m_max.x << "  " <<  result.m_max.y << "  "<<  result.m_max.z << std::endl;
 
         return result;
     }
@@ -48,6 +56,11 @@ namespace s3dvami
 
         result.m_min = glm::vec3(std::min(m_min.x, v.x), std::min(m_min.y, v.y), std::min(m_min.z, v.z));
         result.m_max = glm::vec3(std::max(m_max.x, v.x), std::max(m_max.y, v.y), std::max(m_max.z, v.z));
+
+        std::cout << __PRETTY_FUNCTION__ << " min  " << m_min.x << "  " << m_min.y << "  "<< m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << " max  " << m_max.x << "  " << m_max.y << "  "<< m_max.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "  result.  " <<  result.m_min.x << "  " << result. m_min.y << "  "<<  result.m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << "  result.  " <<  result.m_max.x << "  " <<  result.m_max.y << "  "<<  result.m_max.z << std::endl;
 
         return result;
     }
@@ -79,7 +92,13 @@ namespace s3dvami
         auto newMin = m * glm::vec4(m_min, 1.0f);
         auto newMax = m * glm::vec4(m_max, 1.0f);
 
+        std::cout << __PRETTY_FUNCTION__ << " b min  " << m_min.x << "  " << m_min.y << "  "<< m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << " b max  " << m_max.x << "  " << m_max.y << "  "<< m_max.z << std::endl;
+
         m_min = glm::vec3(std::min(newMin.x, newMax.x), std::min(newMin.y, newMax.y), std::min(newMin.z, newMax.z));
         m_max = glm::vec3(std::max(newMin.x, newMax.x), std::max(newMin.y, newMax.y), std::max(newMin.z, newMax.z));
+
+        std::cout << __PRETTY_FUNCTION__ << " a min  " << m_min.x << "  " << m_min.y << "  "<< m_min.z << std::endl;
+        std::cout << __PRETTY_FUNCTION__ << " a max  " << m_max.x << "  " << m_max.y << "  "<< m_max.z << std::endl;
     }
 }

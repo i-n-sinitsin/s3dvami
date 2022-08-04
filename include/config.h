@@ -14,7 +14,7 @@ namespace s3dvami
     constexpr float defaultModelDescroptionWidth = 350.0f;
 
     constexpr float defaultNearPlate = 0.1f;
-    constexpr float defaultFarPlate = 100.0f;
+    constexpr float defaultFarPlate = 1000.0f;
 
     constexpr float defaultfloorPlateSize = 40.0f;
     constexpr unsigned int defaultfloorPartsByAxes = 40;
