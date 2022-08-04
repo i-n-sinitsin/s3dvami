@@ -21,15 +21,23 @@ namespace s3dvami::objects
 
         void draw(CameraPtr camera);
 
+        void setLength(float length);
+        void setWidth(float width);
+
     private:
         GLuint m_VAO;
         GLuint m_VBO;
         GLuint m_EBO;
 
+        float m_length;
+        float m_width;
+
         std::vector<Vertex> m_vertices;
         std::vector<unsigned int> m_indices;
 
         ShaderPtr m_shader;
+
+        void build();
     };
 
     using AxesPtr = std::shared_ptr<Axes>;

@@ -17,65 +17,17 @@ namespace s3dvami::objects
         : m_VAO(0)
         , m_VBO(0)
         , m_EBO(0)
+        , m_length(length)
+        , m_width(width)
         , m_vertices{}
         , m_indices{}
         , m_shader(new Shader(simple_vert, simple_frag))
     {
-        float half = width / 2.0f;
-
-        // X
-        m_vertices.push_back({{0.0f, -half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{length, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_vertices.push_back({{0.0f, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{length, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_indices.insert(m_indices.end(), {0, 1, 2, 3, 4, 5});
-
-        // Y
-        m_vertices.push_back({{-half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, length, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_vertices.push_back({{0.0f, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, length, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_indices.insert(m_indices.end(), {6, 7, 8, 9, 10, 11});
-
-        // Z
-        m_vertices.push_back({{-half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, 0.0f, length}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_vertices.push_back({{0.0f, -half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, 0.0f, length}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-        m_vertices.push_back({{0.0f, half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
-
-        m_indices.insert(m_indices.end(), {12, 13, 14, 15, 16, 17});
-
         glGenVertexArrays(1, &m_VAO);
         glGenBuffers(1, &m_VBO);
         glGenBuffers(1, &m_EBO);
 
-        glBindVertexArray(m_VAO);
-
-        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
-
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
-
-        glEnableVertexAttribArray(0);
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
-        glEnableVertexAttribArray(1);
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, norm));
-        glEnableVertexAttribArray(2);
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tex));
-
-        glBindVertexArray(0);
+        build();
     }
 
     Axes::~Axes()
@@ -102,6 +54,73 @@ namespace s3dvami::objects
 
         m_shader->setUniform("u_color", glm::vec4(0.0f, 0.0f, 1.0f, 1.0f));
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, (void *)(12 * sizeof(unsigned int)));
+
+        glBindVertexArray(0);
+    }
+
+    void Axes::setLength(float length)
+    {
+        m_length = length;
+        build();
+    }
+
+    void Axes::setWidth(float width)
+    {
+        m_width = width;
+        build();
+    }
+
+    void Axes::build()
+    {
+        float half = m_width / 2.0f;
+
+        // X
+        m_vertices.push_back({{0.0f, -half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{m_length, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_vertices.push_back({{0.0f, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{m_length, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_indices.insert(m_indices.end(), {0, 1, 2, 3, 4, 5});
+
+        // Y
+        m_vertices.push_back({{-half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, m_length, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_vertices.push_back({{0.0f, 0.0f, -half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, m_length, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, 0.0f, half}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_indices.insert(m_indices.end(), {6, 7, 8, 9, 10, 11});
+
+        // Z
+        m_vertices.push_back({{-half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, 0.0f, m_length}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{half, 0.0f, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_vertices.push_back({{0.0f, -half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, 0.0f, m_length}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+        m_vertices.push_back({{0.0f, half, 0.0f}, {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f}});
+
+        m_indices.insert(m_indices.end(), {12, 13, 14, 15, 16, 17});
+
+        glBindVertexArray(m_VAO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+        glBufferData(GL_ARRAY_BUFFER, m_vertices.size() * sizeof(Vertex), &m_vertices[0], GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indices.size() * sizeof(unsigned int), &m_indices[0], GL_STATIC_DRAW);
+
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)0);
+        glEnableVertexAttribArray(1);
+        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, norm));
+        glEnableVertexAttribArray(2);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void *)offsetof(Vertex, tex));
 
         glBindVertexArray(0);
     }
