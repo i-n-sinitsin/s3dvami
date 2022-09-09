@@ -153,10 +153,7 @@ namespace s3dvami::model
             {
                 // internal
                 uint8_t *startOffset = (uint8_t *)(aiTex->pcData);
-                std::cout << " pointer = " << startOffset << std::endl;
                 uint8_t *endOffset = startOffset + aiTex->mWidth;
-                std::cout << " pointer = " << endOffset << std::endl;
-                std::cout << " aiTex->mWidth = " << aiTex->mWidth << std::endl;
                 std::vector<uint8_t> data(startOffset, endOffset);
                 // initialize by raw file data
                 result = result && m_textureMgr->addByFileData(aiTex->mFilename.C_Str(), data);
