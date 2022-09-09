@@ -99,8 +99,7 @@ namespace s3dvami::model
     void Model::process(float /*dt*/)
     {
         if (m_loaded)
-        {
-        }
+        {}
     }
 
     std::string Model::name() const
@@ -153,8 +152,11 @@ namespace s3dvami::model
             else
             {
                 // internal
-                unsigned int *startOffset = (unsigned int *)(aiTex->pcData);
-                unsigned int *endOffset = startOffset + aiTex->mWidth;
+                uint8_t *startOffset = (uint8_t *)(aiTex->pcData);
+                std::cout << " pointer = " << startOffset << std::endl;
+                uint8_t *endOffset = startOffset + aiTex->mWidth;
+                std::cout << " pointer = " << endOffset << std::endl;
+                std::cout << " aiTex->mWidth = " << aiTex->mWidth << std::endl;
                 std::vector<uint8_t> data(startOffset, endOffset);
                 // initialize by raw file data
                 result = result && m_textureMgr->addByFileData(aiTex->mFilename.C_Str(), data);
