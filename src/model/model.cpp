@@ -99,8 +99,7 @@ namespace s3dvami::model
     void Model::process(float /*dt*/)
     {
         if (m_loaded)
-        {
-        }
+        {}
     }
 
     std::string Model::name() const
